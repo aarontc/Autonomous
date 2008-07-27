@@ -1,0 +1,90 @@
+<?php
+
+	define ( MAX_STRING_LENGTH, 32768 );
+
+	if ( ! $fp = fopen ( "/home/aaron/rules", "r" ) )
+		die ( "Unable to access rules file." );
+	
+	
+function stringTokenize($sBuffer, $sSplit) {
+        $iCount = 0;
+       
+        if(strlen($sBuffer) == 0)
+            return;
+       
+        $sToken = strtok($sBuffer, $sSplit);
+        $aTokens[$iCount] = $sToken;
+
+        while ($sToken !== false) {
+            $sToken = strtok($sSplit);
+            if(strlen($sToken) > 0) {
+                $iCount++;
+                $aTokens[$iCount] = $sToken;
+            }
+        }    // end while
+       
+        return $aTokens;
+    }	
+	
+	
+	
+	echo "<pre>";
+	
+	$rules = array();
+	
+	while ( $line = fgets ( $fp, MAX_STRING_LENGTH ) ) {
+		$line = trim ( $line );
+		
+		$tokens = stringTokenize ( $line, " \t" );
+			
+		$entry["Action"] = $tokens[0];
+		switch ( $entry["Action"] ) {
+			case "DNAT":
+				$entry["Params"]["Source"] = stringTokenize ( $tokens[1], ":" );
+				$entry["Params"]["Dest"] = stringTokenize ( $tokens[2], ":" );
+				$entry["Params"]["Proto"] = $tokens[3];
+				$entry["Params"]["DestPorts"] = stringTokenize ( $tokens[4], ":" );
+				$entry["Params"]["SourcePorts"] = stringTokenize ( $tokens[5], ":" );
+				$entry["Params"]["OriginalDest"] = stringTokenize ( $tokens[6], "," );
+				$entry["Params"]["RateLimit"] = $tokens[7];
+				$entry["Params"]["UserGroup"] = $tokens[8];
+				$entry["Params"]["Mark"] = $tokens[9];
+				break;
+			default:
+				array_shift ( $tokens );
+				$entry["Params"] = $tokens;
+		}
+		
+		$rules[] = $entry;
+		unset ( $entry );
+
+	}
+	
+	//print_r ( $rules );
+
+	function GenerateDisplayArray ( $rules ) {
+		foreach ( $rules as $id => $rule ) {
+			if ( $rule["Action"] == "DNAT" ) {
+				$tmp["ID"] = $id;
+				$tmp["LAN IP"] = $rule["Params"]["Dest"][1];
+				$tmp["LAN Port Start"] = $rule["Params"]["Dest"][2];
+				$tmp["LAN Port End"] = $rule["Params"]["Dest"][3];
+				$tmp["WAN Port Start"] = $rule["Params"]["DestPorts"][0];
+				$tmp["WAN Port End"] = $rule["Params"]["DestPorts"][1];
+				$tmp["Protocol"] = $rule["Params"]["Proto"];
+				if ( $prevrule["Action"] == "#" )
+					$tmp["Description"] = implode ( $prevrule["Params"], " " );
+				
+				$display[] = $tmp;
+				unset ( $tmp );
+			}
+			
+			
+			$prevrule = $rule;
+		}
+		return $display;
+	}
+
+	print_r ( GenerateDisplayArray ( $rules ) );
+
+?>
