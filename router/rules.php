@@ -22,25 +22,25 @@
 	<body bgcolor="FFFFFF">
 		<form action="test.php" method="post">
 			<div align="center">
-				<table width="750" border="0" cellpadding="0" cellspacing="0">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
 					<tr>
-						<td colspan="3" width="750">
-							<table width="750" border="0" cellpadding="0" cellspacing="0">
+						<td colspan="3" width="100%">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0">
 								<tr>
-									<td width="750" colspan="3">
+									<td width="100%" colspan="3">
 									<span style="font-size:28px;color:85C329">
 										Autonomous
 									</span>
 									</td>
 								</tr>
 								<tr>
-									<td width="330">
+									<td width="50%">
 										<span style="font-size:20px;color:CCCCCC">
 											Self-Governing Routing
 										</span>
 									</td>
-									<td width="400" align="right">
-										<table width="400" border="0" cellpadding="0" cellspacing="0">
+									<td width="50%" align="right">
+										<table width="100%" border="0" cellpadding="0" cellspacing="0">
 											<tr>
 												<td align="right" height="20">
 													<span style="color:AAAAAA">
@@ -61,7 +61,7 @@
 						<td colspan="3" height="15" bgcolor="FFFFFF"></td>
 					</tr>
 					<tr>
-						<td colspan="3" height="1" bgcolor="CCCCCC"></td>
+						<td colspan="3" height="1" class="hsep"></td>
 					</tr>
 					<tr>
 						<td colspan="3" height="10" bgcolor="FFFFFF"></td>
@@ -160,47 +160,48 @@
 								<span style="font-size:6px"><br /></span>
 							</div>
 						</td>
-						<td width="1" bgcolor="CCCCCC"></td>
-						<td width="579" valign="top">
+						<td width="1" class='vsep'></td>
+						<td width="83%" valign="top">
 							<span style="font-size:6px"><br /></span>
 							<div align="center">
 								<?php
 									foreach ( GenerateDisplayArray ( $_SESSION["Rules"] ) as $rule ) {
 								?>
-								<table width="549" border="0" cellpadding="0" cellspacing="0">
+								<table cellpadding='0' cellspacing='0' width='90%'>
 									<tr>
-										<td colspan="4" height="1" bgcolor="AAAAAA"></td>
-										<td width="5" height="1" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td rowspan="2" colspan="2" width="542" height="27" bgcolor="F9F9F9" style="color:85C329;font-size:15px;font-weight:bold;" valign='middle'><div style='float:right;padding-right:5px;' ><input name="Action[<?= $rule["ID"] ?>]" value="Delete" type='image' src='delete-15x15.png' style='border:none;' /></div><div style='padding:0px 0px 0px 5px'><input type='text' value='<?= htmlentities ( $rule["Description"] ) ?>' name="Description[<?= $rule["ID"] ?>]" style='border:none; color:#85C329; font-size:15px;' /></div></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" height="4" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0" height="23"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td colspan="2" height="1" bgcolor="AAAAAA"></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td colspan="2" bgcolor="FFFFFF">
-											<table width="542" border="0" cellpadding="17" cellspacing="0">
+										<td rowspan='2' colspan='2' class='rulehead'>
+											<table cellpadding='0' cellspacing='0' width='100%'>
 												<tr>
-													<td style="color:999999;line-height:1.6em">
+													<td width='95%'>
+														<span style='padding: 8px;'>
+															<input type='text' class='desc' value='<?= htmlentities ( $rule["Description"] ) ?>' name="Description[<?= $rule["ID"] ?>]" />
+														</span>
+													</td>
+													<td align='right'>
+														<span style='padding-right: 1px; padding-top: 2px;'>
+															<input name="Action[<?= $rule["ID"] ?>]" value="Remove" type='image' src='delete-15x15.png' class='delimg' title='Remove' alt='Remove' />
+														</span>
+													</td>
+												</tr>
+											</table>
+										</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td class='shadow' width='5'></td>
+									</tr>
+									<tr>
+										<td colspan='2' class='rulebody'>
+											<table width="80%" border="0" cellpadding="17" cellspacing="0">
+												<tr>
+													<td style="padding:12px">
 														<div align="justify">
 															<table cellpadding='3' cellspacing='0' border='0'>
 																<tr>
-																	<th>LAN Computer IP</th>
+																	<th align='right'>LAN Computer IP</th>
 																	<td><input type='text' name="LAN IP[<?= $rule["ID"] ?>]" value="<?= htmlentities ( $rule["LAN IP"] ) ?>" size='15' /></td>
-																	<th>Protocol</th>
+																	<td width='20' rowspan='2'></td><!-- separator -->
+																	<th align='right'>Protocol</th>
 																	<td>
 																		<select name="Protocol[<?= $rule["ID"] ?>]">
 																		<option value="tcp" <?php echo ( $rule["Protocol"] == "tcp" ? "selected" : "" ); ?>>TCP</option>
@@ -209,7 +210,7 @@
 																	</td>
 																</tr>
 																<tr>
-																	<th>LAN Port</th>
+																	<th align='right'>LAN Port</th>
 																	<td colspan='1'>
 																		<input type='text' name="LAN Port Start[<?= $rule["ID"] ?>]" value="<?= htmlentities ( $rule["LAN Port Start"] ) ?>" size='5' />
 																		<input type='text' name="LAN Port End[<?= $rule["ID"] ?>]" value="<?= htmlentities ( $rule["LAN Port End"] ) ?>" size='5' />
@@ -226,134 +227,19 @@
 												</tr>
 											</table>
 										</td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0"></td>
+										<td class='shadow'></td>
 									</tr>
 									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td colspan="2" height="1" bgcolor="AAAAAA"></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0"></td>
-									</tr>
+										<td width='4' height='5'></td>
+										<td class='shadow' width='99%'></td>
+										<td class='shadow'></td>
 									<tr>
-										<td width="1" height="5" bgcolor="FFFFFF"></td>
-										<td width="4" height="5" bgcolor="FFFFFF"></td>
-										<td width="538" height="5" bgcolor="F0F0F0"></td>
-										<td width="1" height="5" bgcolor="F0F0F0"></td>
-										<td width="5" height="5" bgcolor="F0F0F0"></td>
 									</tr>
 								</table>
 								<br />
 								<?php
 								}
 								?>
-								<table width="549" border="0" cellpadding="0" cellspacing="0">
-									<tr>
-										<td colspan="4" height="1" bgcolor="AAAAAA"></td>
-										<td width="5" height="1" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td rowspan="2" colspan="2" width="542" height="27" bgcolor="F9F9F9" style="color:85C329;font-size:15px">&nbsp;&nbsp;thoughts on this design</td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" height="4" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0" height="23"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td colspan="2" height="1" bgcolor="AAAAAA"></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td colspan="2" bgcolor="FFFFFF">
-											<table width="542" border="0" cellpadding="17" cellspacing="0">
-												<tr>
-													<td style="color:999999;line-height:1.6em">
-														<div align="justify">
-															After <a href="http://www.oswd.org/design/1529/orangray/" style="font-size:12px">orangray</a>, I wasn't happy with what I had made, so I decided to make another orange and gray design. This one I like much better and everything doesn't feel so cramped.
-														</div>
-													</td>
-												</tr>
-											</table>
-										</td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td colspan="2" height="1" bgcolor="AAAAAA"></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0"></td>
-									</tr>
-									<tr>
-										<td width="1" height="5" bgcolor="FFFFFF"></td>
-										<td width="4" height="5" bgcolor="FFFFFF"></td>
-										<td width="538" height="5" bgcolor="F0F0F0"></td>
-										<td width="1" height="5" bgcolor="F0F0F0"></td>
-										<td width="5" height="5" bgcolor="F0F0F0"></td>
-									</tr>
-								</table>
-								<br />
-								<table width="549" border="0" cellpadding="0" cellspacing="0">
-									<tr>
-										<td colspan="4" height="1" bgcolor="AAAAAA"></td>
-										<td width="5" height="1" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td rowspan="2" colspan="2" width="542" height="27" bgcolor="F9F9F9" style="color:85C329;font-size:15px">&nbsp;&nbsp;design usage</td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" height="4" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0" height="23"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td colspan="2" height="1" bgcolor="AAAAAA"></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td colspan="2" bgcolor="FFFFFF">
-											<table width="542" border="0" cellpadding="17" cellspacing="0">
-												<tr>
-													<td style="color:999999;line-height:1.6em">
-														<div align="justify">
-															This design was made to be full screen on a 800 x 600, but works with any other resolution.
-															<br />
-															Anyone is free to use this design, but if you do, <a href="mailto:webmaster@principleofdesign.com" style="font-size:12px">email me</a> please. Thanks! 
-														</div>
-													</td>
-												</tr>
-											</table>
-										</td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td colspan="2" height="1" bgcolor="AAAAAA"></td>
-										<td width="1" bgcolor="AAAAAA"></td>
-										<td width="5" bgcolor="F0F0F0"></td>
-									</tr>
-									<tr>
-										<td width="1" height="5" bgcolor="FFFFFF"></td>
-										<td width="4" height="5" bgcolor="FFFFFF"></td>
-										<td width="538" height="5" bgcolor="F0F0F0"></td>
-										<td width="1" height="5" bgcolor="F0F0F0"></td>
-										<td width="5" height="5" bgcolor="F0F0F0"></td>
-									</tr>
-								</table>
 								<span style="font-size:6px"><br /></span>
 								<input type='submit' value='Update' />&nbsp;&nbsp;<input type='reset' name='reset' value='Retry' />
 							</div>
@@ -363,14 +249,14 @@
 						<td colspan="3" height="10" bgcolor="FFFFFF"></td>
 					</tr>
 					<tr>
-						<td colspan="3" height="1" bgcolor="CCCCCC"></td>
+						<td colspan="3" height="1" class="hsep"></td>
 					</tr>
 					<tr>
 						<td colspan="3" height="5" bgcolor="FFFFFF"></td>
 					</tr>
 					<tr>
 						<td colspan="3" bgcolor="FFFFFF" align="right">
-							Copyright &#0169; 2004, <a href="http://www.principleofdesign.com" style="font-size:12px;color:AAAAAA">Adam Particka</a>. All Rights Reserved.
+							Copyright &#0169; 2008, <a href="http://www.principleofdesign.com" style="font-size:12px;color:AAAAAA">Scott Deutsch, Ben Mann, Aaron Tenclay</a>. All Rights Reserved.
 						</td>
 					</tr>
 				</table>
