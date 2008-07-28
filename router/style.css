@@ -4,7 +4,7 @@ body {
 	cursor:default;
 	color:AAAAAA
 }
-td {
+th, td {
 	font-family:arial;
 	font-size:12px;
 	cursor:default;
@@ -29,4 +29,40 @@ input,select {
 	border-style:solid;
 	background-color:F9F9F9;
 	color:999999
+}
+.rulehead {
+	background-color: #f9f9f9;
+	border: 1px solid #aaaaaa;
+	height: 27px;
+}
+.rulehead input.desc {
+	border: none;
+	color: #85C329;
+	background-color: #f9f9f9;
+/* 	background-color: red; */
+	font-size: 15px;
+	font-weight: bold;
+	width: 98%;
+}
+.rulebody {
+	background-color: #ffffff;
+	border-left: 1px solid #aaaaaa;
+	border-bottom: 1px solid #aaaaaa;
+	border-right: 1px solid #aaaaaa
+}
+.shadow {
+	background-color: #f0f0f0;
+}
+.delimg {
+	padding-right: 5px;
+	padding-top: 2px;
+	border: none;
+	width: 15px;
+	height: 15px;
+}
+.hsep {
+	background: transparent url("ccc_1x1.png") repeat-x;
+}
+.vsep {
+	background: transparent url("ccc_1x1.png") repeat-y;
 }
