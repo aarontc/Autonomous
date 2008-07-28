@@ -265,7 +265,7 @@
 					</tr>
 					<tr>
 						<td colspan="3" bgcolor="FFFFFF" align="right">
-							Copyright &#0169; 2008, <a href="http://www.principleofdesign.com" style="font-size:12px;color:AAAAAA">Scott Deutsch, Ben Mann, Aaron Tenclay</a>. All Rights Reserved.
+							Copyright &#0169; 2008, <a href="http://www.principleofdesign.com" style="font-size:12px;color:AAAAAA">Scott Deutsch, Ben Mann, Aaron Ten Clay</a>. All Rights Reserved.
 						</td>
 					</tr>
 				</table>
