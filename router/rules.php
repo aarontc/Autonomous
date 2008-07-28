@@ -72,6 +72,15 @@
 							<div align="center">
 								<table width="140" border="0" cellpadding="0" cellspacing="0">
 									<tr>
+										<td><a href="rules.php">Port Forwarding</a></td>
+									</tr>
+									<tr>
+										<td>Forward ports to LAN machines</td>
+									</tr>
+									<tr>
+										<td height="5" bgcolor="FFFFFF"></td>
+									</tr>
+									<!--<tr>
 										<td><a href="#">company overview</a></td>
 									</tr>
 									<tr>
@@ -121,9 +130,9 @@
 									</tr>
 									<tr>
 										<td>how you can reach us</td>
-									</tr>
+									</tr>-->
 								</table>
-								<br /><span style="font-size:6px"><br /></span>
+								<!--<br /><span style="font-size:6px"><br /></span>
 								<table width="140" border="0" cellpadding="0" cellspacing="0">
 									<tr>
 										<td colspan="3" height="1" bgcolor="AAAAAA"></td>
@@ -157,7 +166,7 @@
 										<td height="1" bgcolor="AAAAAA"></td>
 									</tr>
 								</table>
-								<span style="font-size:6px"><br /></span>
+								<span style="font-size:6px"><br /></span>-->
 							</div>
 						</td>
 						<td width="1" class='vsep'></td>
