@@ -1,12 +1,5 @@
 <?php
 	require ('autonomous.inc.php');
-	session_start ();
-	ob_start ();
-	
-	
-	define ( "SHOREWALL_RULES_FILE", "/home/aaron/rules" );
-	
-	// EVERYTHING ABOVE HERE SHOULD COME FROM THE COMMON INCLUDE	
 
 
 	// Get file mtime and cache rules

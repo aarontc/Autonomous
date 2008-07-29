@@ -1,10 +1,6 @@
 <?php
 
 	require ('autonomous.inc.php'); 
-	session_start ();
-	ob_start ();
-	
-	define ( "SHOREWALL_RULES_FILE", "/home/aaron/rules" );
 	
 	// Get file mtime and cache rules
 	clearstatcache ();

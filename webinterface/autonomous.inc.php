@@ -1,7 +1,13 @@
 <?php
 
-	define ( MAX_STRING_LENGTH, 32768 );
-
+	define ( "MAX_STRING_LENGTH", 32768 );
+	define ( "SHOREWALL_RULES_FILE", "/tmp/rules" );
+	
+	session_start ();
+	ob_start ();
+	
+	
+		
 	function stringTokenize ( $sBuffer, $sSplit ) {
 			$iCount = 0;
 		
