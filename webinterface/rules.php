@@ -184,7 +184,7 @@
 													</td>
 													<td align='right'>
 														<span style='padding-right: 1px; padding-top: 2px;'>
-															<input name="Action[<?= $rule["ID"] ?>]" value="Remove" type='image' src='delete-15x15.png' class='delimg' title='Remove' alt='Remove' />
+															<input name="Action[<?= $rule["ID"] ?>]" value="Delete" type='image' src='delete-15x15.png' class='delimg' title='Remove' alt='Remove' />
 														</span>
 													</td>
 												</tr>
