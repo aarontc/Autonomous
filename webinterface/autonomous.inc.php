@@ -6,7 +6,19 @@
 	session_start ();
 	ob_start ();
 	
-	
+	class Rule {
+		var $type;
+		var $source;
+		var $destination;
+		var $protocol;
+		var $destination_ports;
+		var $source_ports;
+		var $original_destination;
+		var $rate_limit;
+		var $user_group;
+		var $mark;
+		var $comment;
+	}
 		
 	function stringTokenize ( $sBuffer, $sSplit ) {
 			$iCount = 0;
@@ -28,7 +40,7 @@
 			return $aTokens;
 		}	
 	
-	function ShorewallGetRules ( $file = "/etc/shorewall/rules" ) {
+	function ShorewallGetRules_old ( $file = "/etc/shorewall/rules" ) {
 		if ( ! $fp = fopen ( $file, "r" ) )
 			die ( "Unable to access rules file." );
 		
@@ -73,24 +85,71 @@
 		return $rules;
 	}
 
-	function GenerateDisplayArray ( $rules ) {
-		foreach ( $rules as $id => $rule ) {
-			if ( $rule["Action"] == "DNAT" && $rule["Params"]["Dest"][0] == "loc" ) {
-				$tmp["ID"] = $id;
-				$tmp["LAN IP"] = $rule["Params"]["Dest"][1];
-				$tmp["LAN Port Start"] = $rule["Params"]["Dest"][2];
-				$tmp["LAN Port End"] = $rule["Params"]["Dest"][3];
-				$tmp["WAN Port Start"] = $rule["Params"]["DestPorts"][0];
-				$tmp["WAN Port End"] = $rule["Params"]["DestPorts"][1];
-				$tmp["Protocol"] = $rule["Params"]["Proto"];
-				if ( $prevrule["Action"] == "#" )
-					$tmp["Description"] = implode ( " ", $prevrule["Params"] );
-				
-				$display[] = $tmp;
-				unset ( $tmp );
-			}
-			$prevrule = $rule;
+	function ShorewallGetRules ( $file = "/etc/shorewall/rules" ) {
+		$rules = array();
+		if ( ! $fp = fopen ( $file, "r" ) )
+			die ( "Unable to access rules file." );
+		
+		// Read all the lines from the file
+		$lines = array ();
+		while ( $line = fgets ( $fp ) )
+			$lines[] = trim ( $line );
+		
+		for ( $i = 0; $i < count ( $lines ); ++$i ) {
+			// If this is a comment line, skip it
+			if ( substr ( $line, 0, 1 ) == "#" )
+				continue;
+			
+			$tokens = stringTokenize ( $lines[$i], " \t" );
+			$rule = new Rule;
+			$rule->type = $tokens[0];
+			//$entry["Action"] = $tokens[0];
+
+			switch ( $rule->type ) {
+				case "DNAT":
+					$rule->source = stringTokenize ( $tokens[1], ":" );
+					$rule->destination = stringTokenize ( $tokens[2], ":" );
+					$rule->protocol = $tokens[3];
+					$rule->destination_ports = stringTokenize ( $tokens[4], ":" );
+					$rule->source_ports = stringTokenize ( $tokens[5], ":" );
+					$rule->original_destination = stringTokenize ( $tokens[6], "," );
+					$rule->rate_limit = $tokens[7];
+					$rule->user_group = $tokens[8];
+					$rule->mark = $tokens[9];
+					$rule->comment = "Unnamed rule";
+					
+					if ( $i > 0 )
+						if ( substr ( $lines[$i-1], 0, 1 ) == "#" )
+							$rule->comment = $lines[$i-1];
+					break;
+				default:
+					array_shift ( $tokens );
+					$rule->comment = $tokens;
+			}	
+			$rules[] = $rule;
 		}
+		print_r ( $rules );
+		return $rules;
+	}
+	
+	function GenerateDisplayArray ( $rules ) {
+	//	foreach ( $rules as $id => $rule ) {
+	//		if ( $rule["Action"] == "DNAT" && $rule["Params"]["Dest"][0] == "loc" ) {
+	//			$tmp["ID"] = $id;
+	//			$tmp["LAN IP"] = $rule["Params"]["Dest"][1];
+	//			$tmp["LAN Port Start"] = $rule["Params"]["Dest"][2];
+	//			$tmp["LAN Port End"] = $rule["Params"]["Dest"][3];
+	//			$tmp["WAN Port Start"] = $rule["Params"]["DestPorts"][0];
+	//			$tmp["WAN Port End"] = $rule["Params"]["DestPorts"][1];
+	//			$tmp["Protocol"] = $rule["Params"]["Proto"];
+	//			if ( $prevrule["Action"] == "#" )
+	//				$tmp["Description"] = implode ( " ", $prevrule["Params"] );
+	//			
+	//			$display[] = $tmp;
+	//			unset ( $tmp );
+	//		}
+	//		$prevrule = $rule;
+	//	}
 		return $display;
 	}
 
