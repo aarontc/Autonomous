@@ -170,7 +170,7 @@
 							<span style="font-size:6px"><br /></span>
 							<div align="center">
 								<?php
-									foreach ( GenerateDisplayArray ( $_SESSION["Rules"] ) as $rule ) {
+									foreach ( $_SESSION["Rules"] as $rule ) {
 								?>
 								<table cellpadding='0' cellspacing='0' width='90%'>
 									<tr>
@@ -179,12 +179,12 @@
 												<tr>
 													<td width='95%'>
 														<span style='padding: 8px;'>
-															<input type='text' class='desc' value='<?= htmlentities ( $rule["Description"] ) ?>' name="Description[<?= $rule["ID"] ?>]" />
+															<input type='text' class='desc' value='<?= htmlentities ( $rule->comment ) ?>' name="Description[<?= $rule->id ?>]" />
 														</span>
 													</td>
 													<td align='right'>
 														<span style='padding-right: 1px; padding-top: 2px;'>
-															<input name="Action[<?= $rule["ID"] ?>]" value="Delete" type='image' src='delete-15x15.png' class='delimg' title='Remove' alt='Remove' />
+															<input name="Action[<?= $rule->id ?>]" value="Delete" type='image' src='delete-15x15.png' class='delimg' title='Remove' alt='Remove' />
 														</span>
 													</td>
 												</tr>
@@ -204,26 +204,26 @@
 															<table cellpadding='3' cellspacing='0' border='0'>
 																<tr>
 																	<th align='right'>LAN Computer IP</th>
-																	<td><input type='text' name="LAN IP[<?= $rule["ID"] ?>]" value="<?= htmlentities ( $rule["LAN IP"] ) ?>" size='15' /></td>
+																	<td><input type='text' name="LAN IP[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination[1] ) ?>" size='15' /></td>
 																	<td width='20' rowspan='2'></td><!-- separator -->
 																	<th align='right'>Protocol</th>
 																	<td>
-																		<select name="Protocol[<?= $rule["ID"] ?>]">
-																		<option value="tcp" <?php echo ( $rule["Protocol"] == "tcp" ? "selected" : "" ); ?>>TCP</option>
-																		<option value="udp" <?php echo ( $rule["Protocol"] == "udp" ? "selected" : "" ); ?>>UDP</option>
+																		<select name="Protocol[<?= $rule->id ?>]">
+																		<option value="tcp" <?php echo ( $rule->protocol == "tcp" ? "selected" : "" ); ?>>TCP</option>
+																		<option value="udp" <?php echo ( $rule->protocol == "udp" ? "selected" : "" ); ?>>UDP</option>
 																		</select>
 																	</td>
 																</tr>
 																<tr>
 																	<th align='right'>LAN Port</th>
 																	<td colspan='1'>
-																		<input type='text' name="LAN Port Start[<?= $rule["ID"] ?>]" value="<?= htmlentities ( $rule["LAN Port Start"] ) ?>" size='5' />
-																		<input type='text' name="LAN Port End[<?= $rule["ID"] ?>]" value="<?= htmlentities ( $rule["LAN Port End"] ) ?>" size='5' />
+																		<input type='text' name="LAN Port Start[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination[2] ) ?>" size='5' />
+																		<input type='text' name="LAN Port End[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination[3] ) ?>" size='5' />
 																	</td>
 																	<th align='right'>Internet Port</th>
 																	<td colspan='1' align='left'>
-																		<input type='text' name="WAN Port Start[<?= $rule["ID"] ?>]" value="<?= htmlentities ( $rule["WAN Port Start"] ) ?>" size='5' />
-																		<input type='text' name="WAN Port End[<?= $rule["ID"] ?>]" value="<?= htmlentities ( $rule["WAN Port End"] ) ?>" size='5' />
+																		<input type='text' name="WAN Port Start[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination_ports[0] ) ?>" size='5' />
+																		<input type='text' name="WAN Port End[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination_ports[1] ) ?>" size='5' />
 																	</td>
 																</tr>
 															</table>

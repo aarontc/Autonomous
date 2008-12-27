@@ -7,6 +7,7 @@
 	ob_start ();
 	
 	class Rule {
+		var $id;
 		var $type;
 		var $source;
 		var $destination;
@@ -102,6 +103,7 @@
 			
 			$tokens = stringTokenize ( $lines[$i], " \t" );
 			$rule = new Rule;
+			$rule->id = $i;
 			$rule->type = $tokens[0];
 			//$entry["Action"] = $tokens[0];
 
@@ -121,12 +123,14 @@
 					if ( $i > 0 )
 						if ( substr ( $lines[$i-1], 0, 1 ) == "#" )
 							$rule->comment = $lines[$i-1];
+					
+					$rules[] = $rule;
 					break;
 				default:
-					array_shift ( $tokens );
-					$rule->comment = $tokens;
+				//	array_shift ( $tokens );
+				//	$rule->comment = $tokens;
 			}	
-			$rules[] = $rule;
+			//$rules[] = $rule;
 		}
 		print_r ( $rules );
 		return $rules;
