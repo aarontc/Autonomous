@@ -55,7 +55,8 @@
 			}
 			elseif($user === $row[0] && $pass != $row[1])
 			{
-				$good = -1;
+				//$good = -1;
+				break;
 			}
 		}
 		

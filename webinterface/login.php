@@ -32,12 +32,13 @@
 
 	else
 	{	
-		$good = isgoodsession();
+		//$good = isgoodsession();
+		//if($good == 0 || $good == -1)
 
-		if($good == 0 || $good == -1)
+		if(!isgoodsession())
 		{
 
-			echo "no session"."<br />";
+			//echo "no session"."<br />";
 
 			//encrypt password
 			$pass = hash('sha512',$_POST['pass']);
@@ -52,6 +53,7 @@
 				$_SESSION['Login']['Pass'] = $pass;
 				
 				//change where it goes
+				header("Location: rules.php");
 			}
 			elseif($login == 0)
 			{
@@ -64,8 +66,9 @@
 		}
 		else
 		{
-			echo "session"."<br />";
+			//echo "session"."<br />";
 			//change where it goes
+			header("Location: rules.php");
 		}
 	}
 ?>
