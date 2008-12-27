@@ -1,0 +1,42 @@
+* { font-family: arial; }
+body { font-size: 12px; }
+input, select { margin: 3px; }
+input[type="text"], select { background-color: rgb(249,249,249); border: 1px solid rgb(204, 204, 204); color: rgb(153, 153, 153); }
+input[type="submit"], input[type="button"] { border: 0pt none ; padding: 0pt; background-color: rgb(133, 195, 41); color: rgb(255, 255, 255); font-weight: bold; }
+p { padding: 0px; margin: 0px; }
+a { text-decoration: none; }
+
+.area:after {content:"."; display:block; line-height:0px; font-size:0px; visibility:hidden; clear:both;}
+.green { color: rgb(133, 195, 41); }
+.ltgrey { color: rgb(204, 204, 204); }
+.dkgrey { color: rgb(170, 170, 170); }
+.bgcolor { color: rgb(255, 255, 255); }
+
+#header { width: 100%; }
+#hleft { width: 50%; text-align: left; float: left; margin: 0px -10px 0px 10px; }
+#hright { width: 50%; text-align: right; float: right; margin: 0px 10px 0px -10px; }
+.headerlg { font-size: 28px; }
+.headermed { font-size: 20px; }
+
+#spacer { width: 99%; height: 1px; background-color: rgb(204, 204, 204); margin: 10px auto 10px auto; }
+
+#main { width: 100%; }
+
+#sidebar { width: 18%; float: left; border-right: 1px solid rgb(204, 204, 204); border-collapse: collapse; margin-right: -1px; }
+#menuitem { width: 140px; margin: 0px auto 0px auto; padding-top: 6px; }
+#mititle a { color: rgb(133,195,41); font-size: 16px; }
+#mititle a:hover { text-decoration: underline; }
+#midesc { color: rgb(170, 170, 170); }
+
+#content { width: 82%; float: left; border-left: 1px solid rgb(204, 204, 204); border-collapse: collapse; margin-right: -1px; }
+#rules { width: 90%; margin: 0px auto 0px auto; }
+#rule { border: 1px solid rgb(170, 170, 170); }
+#ruletitle { background-color: rgb(249,249,249); border-bottom: 1px solid rgb(170, 170, 170); height: 27px; }
+#ruletitle input[type="text"] { border: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 100%; font-size: 15px; font-weight: bold; color: rgb(133, 195, 41); background-color: rgb(249,249,249); float: left; }
+#ruletitle input[type="image"] { width: 15px; height: 15px; padding: 2px 2px 0px 0px; border: none; float: right; }
+#rulebody { color: rgb(170, 170, 170); font-weight: bold; padding: 12px; }
+#rulebody p { width:235px; float: left; }
+#rulebody p label { width: 8em; float: left; text-align: right; margin-top: 6px; display: block; }
+#rulebody p input { }
+
+#footer { text-align: right; }
