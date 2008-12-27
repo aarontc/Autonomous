@@ -1,6 +1,11 @@
-<?php require("autonomous.inc.php"); include("checkuser.php");
+<?php require("autonomous.inc.php"); include("checkuser.php"); include("utility.php");
 
 	session_start();
+
+	if(IsDBEmpty())
+	{
+		header("Location: ius.php");
+	}
 
 	if((!isset($_SESSION['Login']['User']) || !isset($_SESSION['Login']['Pass'])) && ($_POST['user'] == null || $_POST['pass'] == null))
 	{	
@@ -9,7 +14,7 @@
 		<html>
 		<head>
 			<title>
-				Linux session_start();Router Login
+				Router Login
 			</title>
 		</head>
 		<BODY>
