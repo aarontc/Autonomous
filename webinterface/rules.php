@@ -178,7 +178,7 @@
 											<table cellpadding='0' cellspacing='0' width='100%'>
 												<tr>
 													<td width='95%'>
-														<span style='padding: 8px;'>
+														<span style='padding-left: 3px;'>
 															<input type='text' class='desc' value='<?= htmlentities ( $rule->comment ) ?>' name="Description[<?= $rule->id ?>]" />
 														</span>
 													</td>
