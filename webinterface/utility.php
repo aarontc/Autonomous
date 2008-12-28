@@ -51,7 +51,7 @@ function CreateUser($user, $pass, $privliages)
 					//add to the database		
 					//get user ID
 					$q = "SELECT UID FROM logins WHERE User='$user';";
-					echo $q;
+					//secho $q;
 					$sql = sqlite_exec($dbhandle, $q, $error);
 					
 					if (!$query) {

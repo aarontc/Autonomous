@@ -124,12 +124,12 @@ function validate_variable ( $variable, $value, $validation_struct ) {
 				CreateUser($_POST['nuser'],$_POST['npass'], $privliages);
 
 				//add Session data
-				//$_SESSION['Login']['User'] = $_POST['nuser'];
-				//$_SESSION['Login']['Pass'] = hash('sha512',$_POST['npass']);
+				$_SESSION['Login']['User'] = $_POST['nuser'];
+				$_SESSION['Login']['Pass'] = hash('sha512',$_POST['npass']);
 				
 				
 
-				//header('LOCATION: login.php');
+				header('LOCATION: login.php');
 			}
 		}
 
