@@ -1,6 +1,7 @@
 <?php require('utility.php');
 
 ob_start();
+session_start();
 
 
 if(!IsDBEmpty())
@@ -109,8 +110,10 @@ function validate_variable ( $variable, $value, $validation_struct ) {
 				CreateUser($_POST['nuser'],$_POST['npass']);
 
 				//add Session data
-				$_SESSION['Login']['User'] = $user;
+				$_SESSION['Login']['User'] = $_POST['nuser'];
 				$_SESSION['Login']['Pass'] = hash('sha512',$_POST['npass']);
+				
+				
 
 				header('LOCATION: login.php');
 			}
