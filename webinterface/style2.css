@@ -32,12 +32,12 @@ a { text-decoration: none; }
 
 #content { width: 82%; float: left; border-left: 1px solid rgb(204, 204, 204); border-collapse: collapse; margin-right: -1px; }
 #rules { width: 90%; margin: 0px auto 0px auto; }
-.ruleshadow { background-color: rgb(240, 246, 240); padding: 1px 10px 10px 1px; position: relative; }
-.rule { background-color: rgb(244, 255, 244); margin: -5px; vertical-align: bottom; position: relative; }
+.ruleshadow { background-color: rgb(240, 246, 240); padding: 1px 6px 6px 1px; position: relative; }
+.rule { background-color: rgb(244, 255, 244); margin: -5px 0px 0px -5px; vertical-align: bottom; position: relative; }
 .ruletitle { background-color: rgb(207,240,191); height: 27px; border: 1px solid rgb(170, 170, 170); border-collapse: collapse; }
 .ruletitle input.text { border: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 97%; font-size: 15px; font-weight: bold; color: rgb(87, 128, 27); background-color: transparent; float: left; }
 .ruletitle input.image { width: 15px; height: 15px; padding: 2px 2px 0px 0px; border: none; float: right; }
-.rulebody { color: rgb(44,102,21); font-weight: bold; padding: 12px; border-left: 1px solid rgb(170, 170, 170); border-bottom: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); /*clear: both;*/ }
+.rulebody { color: rgb(44,102,21); width: auto; font-weight: bold; padding: 12px; border-left: 1px solid rgb(170, 170, 170); border-bottom: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); overflow: auto; }
 .rulebody div { clear: both; }
 .rulebody p { width:235px; float: left; }
 .rulebody p label { width: 8em; float: left; text-align: right; margin-top: 6px; display: block; }
