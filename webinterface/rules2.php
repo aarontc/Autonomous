@@ -39,6 +39,7 @@
 				<?php
 					foreach ( $_SESSION['Rules'] as $rule ) {
 				?>
+				<div class='rulespacer'></div>
 				<!-- rule <?= $rule->id ?> starts here -->
 				<div class='ruleshadow'>
 				<div class='rule'>

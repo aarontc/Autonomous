@@ -20,7 +20,7 @@ a { text-decoration: none; }
 .headermed { font-size: 20px; }
 
 .divider { width: 99%; height: 1px; margin: 10px auto 10px auto; background-color: rgb(204, 204, 204); }
-.rulespacer { width: 100%; height: 20px; }
+.rulespacer { width: 100%; height: 10px; }
 
 #main { width: 100%; }
 
