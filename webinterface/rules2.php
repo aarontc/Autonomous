@@ -1,11 +1,6 @@
 <?php
 	require ('autonomous.inc.php'); 
-	
-	// Get file mtime and cache rules
-	clearstatcache ();
-	$_SESSION["RulesFile"]["path"] = SHOREWALL_RULES_FILE;
-	$_SESSION["RulesFile"]["mtime"] = filemtime ( SHOREWALL_RULES_FILE );
-	$_SESSION["Rules"] = ShorewallGetRules ( SHOREWALL_RULES_FILE );
+
 
 	?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
