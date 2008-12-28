@@ -26,12 +26,12 @@
 			<div class='dkgrey'>Search for Term:<input type='text' class='text' /><input type='submit' class='button' value='GO' /></div>
 		</div>
 	</div>
-	<div id='divider'><!-- comment for IE --></div>
+	<div class='divider'><!-- comment for IE --></div>
 	<div id='main' class='area'>
 		<div id='sidebar'>
-			<div id='menuitem'>
-				<div id='mititle'><a href='#'>Port Forwarding</a></div>
-				<div id='midesc'>Forward ports to LAN machines.</div>
+			<div class='menuitem'>
+				<div class='mititle'><a href='#'>Port Forwarding</a></div>
+				<div class='midesc'>Forward ports to LAN machines.</div>
 			</div>
 		</div>
 		<div id='content'>
@@ -40,13 +40,13 @@
 					foreach ( $_SESSION['Rules'] as $rule ) {
 				?>
 				<!-- rule <?= $rule->id ?> starts here -->
-				<div id='ruleshadow'>
-				<div id='rule'>
-					<div id='ruletitle'>
+				<div class='ruleshadow'>
+				<div class='rule'>
+					<div class='ruletitle'>
 						<input type='text' class='text' value='Rule <?= $rule->id ?>: <?= htmlentities ( $rule->comment ) ?>' />
 						<input type='image' class='image' title='Delete' alt='Delete' value='Delete' src='delete-15x15.png' />
 					</div>
-					<div id='rulebody'>
+					<div class='rulebody'>
 						<div class='area'>
 							<p>
 								<label>LAN Computer IP</label>
@@ -76,14 +76,14 @@
 				</div>
 				</div>
 				<!-- rule ends here -->
-				<div id='rulespacer'></div>
+				<div class='rulespacer'></div>
 				<?php
 					}
 				?>
 			</div>
 		</div>
 	</div>
-	<div id='divider'><!-- comment for IE --></div>
+	<div class='divider'><!-- comment for IE --></div>
 	<div id='footer' class='dkgrey'>
 		Copyright &copy; 2008, Scott Deutsch, Ben Mann, Aaron Ten Clay. All Rights Reserved.
 	</div>

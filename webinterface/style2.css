@@ -19,27 +19,28 @@ a { text-decoration: none; }
 .headerlg { font-size: 28px; }
 .headermed { font-size: 20px; }
 
-#divider { width: 99%; height: 1px; margin: 10px auto 10px auto; background-color: rgb(204, 204, 204); }
-#rulespacer { width: 100%; height: 20px; }
+.divider { width: 99%; height: 1px; margin: 10px auto 10px auto; background-color: rgb(204, 204, 204); }
+.rulespacer { width: 100%; height: 20px; }
 
 #main { width: 100%; }
 
 #sidebar { width: 18%; float: left; border-right: 1px solid rgb(204, 204, 204); border-collapse: collapse; margin-right: -1px; }
-#menuitem { width: 140px; margin: 0px auto 0px auto; padding-top: 6px; }
-#mititle a { color: rgb(133,195,41); font-size: 16px; }
-#mititle a:hover { text-decoration: underline; }
-#midesc { color: rgb(170, 170, 170); }
+.menuitem { width: 140px; margin: 0px auto 0px auto; padding-top: 6px; }
+.mititle a { color: rgb(133,195,41); font-size: 16px; }
+.mititle a:hover { text-decoration: underline; }
+.midesc { color: rgb(170, 170, 170); }
 
 #content { width: 82%; float: left; border-left: 1px solid rgb(204, 204, 204); border-collapse: collapse; margin-right: -1px; }
 #rules { width: 90%; margin: 0px auto 0px auto; }
-#rule { width: 99%; /*border: 1px solid rgb(170, 170, 170); margin: 10px 0px 10px 0px;*/ }
-#ruletitle { background-color: rgb(249,249,249); height: 27px; border: 1px solid rgb(170, 170, 170); border-collapse: collapse; }
-#ruletitle input.text { border: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 97%; font-size: 15px; font-weight: bold; color: rgb(133, 195, 41); background-color: rgb(249,249,249); float: left; }
-#ruletitle input.image { width: 15px; height: 15px; padding: 2px 2px 0px 0px; border: none; float: right; }
-#rulebody { color: rgb(170, 170, 170); font-weight: bold; padding: 12px; border-left: 1px solid rgb(170, 170, 170); border-bottom: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); /*clear: both;*/ }
-#rulebody div { clear: both; }
-#rulebody p { width:235px; float: left; }
-#rulebody p label { width: 8em; float: left; text-align: right; margin-top: 6px; display: block; }
-#rulebody p input { }
+.ruleshadow { background-color: rgb(240, 240, 240); padding: 1px 10px 10px 1px; position: relative; }
+.rule { background-color: rgb(255, 255, 255); margin: -5px; vertical-align: bottom; position: relative; }
+.ruletitle { background-color: rgb(249,249,249); height: 27px; border: 1px solid rgb(170, 170, 170); border-collapse: collapse; }
+.ruletitle input.text { border: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 97%; font-size: 15px; font-weight: bold; color: rgb(133, 195, 41); background-color: rgb(249,249,249); float: left; }
+.ruletitle input.image { width: 15px; height: 15px; padding: 2px 2px 0px 0px; border: none; float: right; }
+.rulebody { color: rgb(170, 170, 170); font-weight: bold; padding: 12px; border-left: 1px solid rgb(170, 170, 170); border-bottom: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); /*clear: both;*/ }
+.rulebody div { clear: both; }
+.rulebody p { width:235px; float: left; }
+.rulebody p label { width: 8em; float: left; text-align: right; margin-top: 6px; display: block; }
+.rulebody p input { }
 
 #footer { text-align: right; }
