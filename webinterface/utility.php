@@ -28,68 +28,44 @@ function CreateUser($user, $pass, $privliages)
 	$q =  "INSERT INTO logins VALUES(null, '$user','$np');";
 	//create user
 	$query = sqlite_exec($dbhandle, $q, $error);
-
+	
+	$query = true;
 	if (!$query) {
     		exit("Error in query: '$error'");
 	} else {
 		
 		//add privliages to the user
-		$q = "SELECT RID FROM roles;";
-		$query = sqlite_exec($dbhandle, $q, $error);
+
+		//first gather priv. info
+		$q = "SELECT * FROM roles;";
+		$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
 		
 		if (!$query) {
     			exit("Error in query: '$error'");
 		} else {
-			//$_SESSION['flash'] = $query;
-		`	print_r($query);
 			//add the user to the role, if in privlages array says so
-			foreach($query as $rid)
+			foreach($query as $entry)
 			{
-				switch($rid)
+				if($privliages[$entry['Description']])
 				{
-				case '1':
-					if($privlages['port'])
-					{
-						//add to the database
-						
-						//get user ID
-						$q = "SELECT UID FROM logins WHERE User='$user';";
+					//add to the database		
+					//get user ID
+					$q = "SELECT UID FROM logins WHERE User='$user';";
+					echo $q;
+					$sql = sqlite_exec($dbhandle, $q, $error);
+					
+					if (!$query) {
+						exit("Error in query: '$error'");
+					} else {
+						//store privliage
+						$rid = $entry['RID'];
+						$q = "INSERT INTO logins_roles VALUES($sql,$rid);";
 						$sql = sqlite_exec($dbhandle, $q, $error);
-						
-						if (!$query) {
-    							exit("Error in query: '$error'");
-						} else {
-							//store privliage
-							$q = "INSERT INTO logins_roles VALUES($sql,$rid);";
-							$sql = sqlite_exec($dbhandle, $q, $error);
 
-							if (!$sql) {
-    								exit("Error in query: '$error'");
-							}
+						if (!$sql) {
+							exit("Error in query: '$error'");
 						}
 					}
-					break;
-				case '2':
-					if($privlages['user_man'])
-					{
-						//add to the database
-						//get user ID
-						$q = "SELECT UID FROM logins WHERE User='$user';";
-						$sql = sqlite_exec($dbhandle, $q, $error);
-						
-						if (!$query) {
-    							exit("Error in query: '$error'");
-						} else {
-							//store privliage
-							$q = "INSERT INTO logins_roles VALUES($sql,$rid);";
-							$sql = sqlite_exec($dbhandle, $q, $error);
-
-							if (!$sql) {
-    								exit("Error in query: '$error'");
-							}
-						}
-					}
-					break;
 				}
 			}
 		}
