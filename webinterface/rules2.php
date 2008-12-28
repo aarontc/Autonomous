@@ -46,7 +46,7 @@
 				<!-- rule ends here -->
 				<div id='rulespacer'></div>
 				<!-- rule starts here -->
-				<div id='rule' style='float: left;'>
+				<div id='rule'>
 					<div id='ruletitle'>
 						<input type='text' class='text' />
 						<input type='image' class='image' title='Delete' alt='Delete' value='Delete' src='delete-15x15.png' />
