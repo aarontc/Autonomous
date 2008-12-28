@@ -105,7 +105,6 @@
 			$rule = new Rule;
 			$rule->id = $i;
 			$rule->type = $tokens[0];
-			//$entry["Action"] = $tokens[0];
 
 			switch ( $rule->type ) {
 				case "DNAT":
@@ -127,34 +126,10 @@
 					$rules[] = $rule;
 					break;
 				default:
-				//	array_shift ( $tokens );
-				//	$rule->comment = $tokens;
+
 			}	
-			//$rules[] = $rule;
 		}
-		print_r ( $rules );
 		return $rules;
-	}
-	
-	function GenerateDisplayArray ( $rules ) {
-	//	foreach ( $rules as $id => $rule ) {
-	//		if ( $rule["Action"] == "DNAT" && $rule["Params"]["Dest"][0] == "loc" ) {
-	//			$tmp["ID"] = $id;
-	//			$tmp["LAN IP"] = $rule["Params"]["Dest"][1];
-	//			$tmp["LAN Port Start"] = $rule["Params"]["Dest"][2];
-	//			$tmp["LAN Port End"] = $rule["Params"]["Dest"][3];
-	//			$tmp["WAN Port Start"] = $rule["Params"]["DestPorts"][0];
-	//			$tmp["WAN Port End"] = $rule["Params"]["DestPorts"][1];
-	//			$tmp["Protocol"] = $rule["Params"]["Proto"];
-	//			if ( $prevrule["Action"] == "#" )
-	//				$tmp["Description"] = implode ( " ", $prevrule["Params"] );
-	//			
-	//			$display[] = $tmp;
-	//			unset ( $tmp );
-	//		}
-	//		$prevrule = $rule;
-	//	}
-		return $display;
 	}
 
 ?>
