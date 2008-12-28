@@ -10,15 +10,14 @@
 	
 		
 	// Get file mtime and cache rules
-			clearstatcache ();
+	clearstatcache ();
 	$_SESSION["RulesFile"]["path"] = SHOREWALL_RULES_FILE;
 	$_SESSION["RulesFile"]["mtime"] = filemtime ( SHOREWALL_RULES_FILE );
 	$_SESSION["Rules"] = ShorewallGetRules ( SHOREWALL_RULES_FILE );
 	
-	ShorewallPutRules ( $_SESSION["Rules"] );
+//	ShorewallPutRules ( $_SESSION["Rules"] );
 	
 	class Rule {
-		var $id;
 		var $action;
 		var $source;
 		var $destination;
@@ -34,7 +33,6 @@
 		protected $comment;
 		
 		function ParseLine ( $line ) {
-			echo "PARSING $line";
 			$tokens = stringTokenize ( $line, " \t" );
 			
 			$this->action = $tokens[0];
@@ -55,6 +53,9 @@
 		function SetComment( $text ) {
 			$text = str_replace ( "\n", "", $text );
 			$this->comment = str_replace ( "\r", "", $text );
+		}
+		function GetComment () {
+			return $this->comment;
 		}
 		
 		function ToText() {
@@ -97,9 +98,10 @@
 		
 	function stringTokenize ( $sBuffer, $sSplit ) {
 			$iCount = 0;
+			$aTokens = array ();
 		
 			if ( strlen ( $sBuffer ) == 0)
-				return;
+				return $aTokens;
 		
 			$sToken = strtok ( $sBuffer, $sSplit );
 			$aTokens[$iCount] = $sToken;
@@ -120,6 +122,7 @@
 	*/
 	function ShorewallGetRules ( $file = SHOREWALL_RULES_FILE ) {
 		$rules = array();
+		$rulecount = 0;
 		if ( ! $fp = fopen ( $file, "r" ) )
 			die ( "Unable to access rules file." );
 		
@@ -127,28 +130,25 @@
 		$lines = array ();
 		while ( $line = fgets ( $fp ) )
 			$lines[] = trim ( $line );
-		
-		print_r ( $lines );
-		
+
 		for ( $i = 0; $i < count ( $lines ); ++$i ) {
 			// If this is a comment line, skip it
 			if ( substr ( $lines[$i], 0, 1 ) == "#" )
 				continue;
+			if ( strlen ( $lines[$i] ) < 2 )
+				continue;
 			
 			$rule = new Rule;
-			$rule->id = $i;
-			echo $lines[$i];
 			$rule->ParseLine ( $lines[$i] );
 			$rule->SetComment ( "Unnamed Rule" );
-			echo $lines[$i];
-			
+
 			if ( $i > 0 )
 				if ( substr ( $lines[$i-1], 0, 1 ) == "#" )
 					$rule->SetComment ( substr($lines[$i-1], 1) );
 
-			$rules[] = $rule;
+			$rules[$rulecount++] = $rule;
 		}
-		print_r ( $rules );
+		//print_r ( $rules );
 		return $rules;
 	}
 
@@ -161,6 +161,18 @@
 		}
 
 		fclose ( $fp );
+	}
+	
+	function ShorewallDeleteRule ( $ruleid ) {
+		array_splice ( $_SESSION["Rules"], $ruleid, 1 );
+	}
+	
+	function UpdateRules () {
+		print_r ( $_POST );
+		foreach ( $_POST['delete'] as $delete => $dummy ) {
+			ShorewallDeleteRule ( $delete );
+		}
+		ShorewallPutRules ( $_SESSION["Rules"] );
 	}
 
 ?>

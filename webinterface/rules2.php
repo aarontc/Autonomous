@@ -1,8 +1,8 @@
 <?php
 	require ('autonomous.inc.php'); 
-
-
-	?>
+	if ( $_SERVER['REQUEST_METHOD'] == "POST" )
+		UpdateRules();
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -31,26 +31,29 @@
 		</div>
 		<div id='content'>
 			<div id='rules' class='area'>
+				<form method="POST">
 				<?php
-					foreach ( $_SESSION['Rules'] as $rule ) {
+					foreach ( $_SESSION['Rules'] as $ruleid => $rule ) {
+						if ( $rule->action != "DNAT" )
+							continue; 
 				?>
 				<div class='rulespacer'></div>
-				<!-- rule <?= $rule->id ?> starts here -->
+				<!-- rule <?= $ruleid ?> starts here -->
 				<div class='ruleshadow'>
 				<div class='rule'>
 					<div class='ruletitle'>
-						<input type='text' class='text' value='Rule <?= $rule->id ?>: <?= htmlentities ( $rule->comment ) ?>' />
-						<input type='image' class='image' title='Delete' alt='Delete' value='Delete' src='delete-15x15.png' />
+						<input type='text' class='text' value='Rule <?= $ruleid ?>: <?= htmlentities ( $rule->GetComment() ) ?>' />
+						<input type='image' class='image' title='Delete' alt='Delete' value='Delete' src='delete-15x15.png' name='delete[<?= $ruleid ?>]' id='delete[<?= $ruleid ?>]' />
 					</div>
 					<div class='rulebody'>
 						<div class='area'>
 							<p>
-								<label>LAN Computer IP</label>
-								<input type='text' class='text' style='width:120px;' value='<?= $rule->destination[1] ?>' />
+								<label for='destination_ip[<?= $ruleid ?>]'>LAN Computer IP</label>
+								<input type='text' class='text' style='width:120px;' value='<?= $rule->destination[1] ?>' name='destination_ip[<?= $ruleid ?>]' id='destination_ip[<?= $ruleid ?>]' />
 							</p>
 							<p>
-								<label>Protocol</label>
-								<select>
+								<label for='protocol[<?= $ruleid ?>]'>Protocol</label>
+								<select name='protocol[<?= $ruleid ?>]' id='protocol[<?= $ruleid ?>]'>
 									<option value='tcp'<?= ($rule->protocol=="tcp" ? " selected" : "") ?>>TCP</option>
 									<option value='udp'<?= ($rule->protocol=="udp" ? " selected" : "") ?>>UDP</option>
 								</select>
@@ -58,14 +61,14 @@
 						</div>
 						<div class='area'>
 							<p>
-								<label>LAN Port</label>
-								<input type='text' class='text' style='width:40px;' value='<?= $rule->destination[2] ?>' />
-								<input type='text' class='text' style='width:40px;' value='<?= $rule->destination[3] ?>' />
+								<label for='destination_port_start[<?= $ruleid ?>]'>LAN Port</label>
+								<input type='text' class='text' style='width:40px;' value='<?= $rule->destination[2] ?>' name='destination_port_start[<?= $ruleid ?>]' id='destination_port_start[<?= $ruleid ?>]' />
+								<input type='text' class='text' style='width:40px;' value='<?= $rule->destination[3] ?>' name='destination_port_end[<?= $ruleid ?>]' id='destination_port_end[<?= $ruleid ?>]' />
 							</p>
 							<p>
-								<label>Internet Port</label>
-								<input type='text' class='text' style='width:40px;' value='<?= $rule->destination_ports[0] ?>' />
-								<input type='text' class='text' style='width:40px;' value='<?= $rule->destination_ports[1] ?>' />
+								<label for='wan_port_start[<?= $ruleid ?>]'>Internet Port</label>
+								<input type='text' class='text' style='width:40px;' value='<?= $rule->destination_ports[0] ?>' name='wan_port_start[<?= $ruleid ?>]' id='wan_port_start[<?= $ruleid ?>]' />
+								<input type='text' class='text' style='width:40px;' value='<?= $rule->destination_ports[1] ?>' name='wan_port_end[<?= $ruleid ?>]' id='wan_port_end[<?= $ruleid ?>]' />
 							</p>
 						</div>
 					</div>
@@ -76,6 +79,7 @@
 				<?php
 					}
 				?>
+				</form>
 			</div>
 		</div>
 	</div>
