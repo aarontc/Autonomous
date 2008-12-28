@@ -69,17 +69,28 @@ function validate_variable ( $variable, $value, $validation_struct ) {
 		<br>
 		<br>
 		<?php 
-		echo "New User Name: <INPUT maxlength=\"100\" name=\"nuser\" type=\"text\" value=\""; echo $_POST['user']; echo "\">";
+		echo "New User Name: <INPUT maxlength=\"100\" name=\"nuser\" type=\"text\" value=\""; echo $_POST['nuser']; echo "\">";
 
 		if(isset($_POST['nuser']))
 		{
-			if (!validate_variable("user",$_POST['nuser'],$validation_struct)) echo '<span style="color:red">INVALID USER NAME</span>'; 
+			if (!validate_variable("user",$_POST['nuser'],$validation_struct))
+			{
+				echo '<span style="color:red">INVALID USER NAME</span>'; 
+			}
+			else
+			{
+				if(!CheckUserString($_POST['nuser']))
+				{
+					echo '<span style="color:red">INVALID USER NAME- Bad Character</span>'; 
+					$counter--;
+				}
+			}
 		}
 		?>
 		<br>
 		<br>
 		<?php
-		echo "New Password: <INPUT maxlength=\"100\" name=\"npass\" type=\"text\" value=\""; echo $_POST['pass']; echo "\">";
+		echo "New Password: <INPUT maxlength=\"100\" name=\"npass\" type=\"text\" value=\""; echo $_POST['npass']; echo "\">";
 		
 		 
 		if(isset($_POST['npass']))
@@ -106,8 +117,11 @@ function validate_variable ( $variable, $value, $validation_struct ) {
 			}
 			else
 			{
+				$privliages['port'] = true;
+				$privliages['user_man'] = true;
+
 				//create the database
-				CreateUser($_POST['nuser'],$_POST['npass']);
+				CreateUser($_POST['nuser'],$_POST['npass'], $privliages);
 
 				//add Session data
 				$_SESSION['Login']['User'] = $_POST['nuser'];
