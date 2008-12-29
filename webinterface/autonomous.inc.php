@@ -268,7 +268,9 @@
 		
 		$nr = new Rule;
 		$nr->action = "DNAT";
+		$nr->source[0] = "net";
 		$nr->protocol = "tcp";
+		$nr->destination[0] = "loc";
 		$newrule = false;
 		// CHECK FOR A NEW RULE
 		if ( isset ( $_POST['comment'] ) ) {
@@ -285,7 +287,6 @@
 			if ( isset ( $_POST['destination_ip']['new'] ) ) {
 				if ( strcmp ( $_POST['destination_ip']['new'], "" ) != 0 ) {
 					$newrule = true;
-					$nr->destination[0] = "loc";
 					$nr->destination[1] = $_POST['destination_ip']['new'];
 					echo "newdestination";
 				}
@@ -338,8 +339,8 @@
 		}
 
 		if ( $newrule === true ) {
-			if ( strcmp ( $nr->GetComment(), "New Rule Description" ) == 0 )
-				$nr->SetComment( "UNTITLED RULE PLEASE GIVE ME A NAME" );
+			//if ( strcmp ( $nr->GetComment(), "New Rule Description" ) == 0 )
+			//	$nr->SetComment( "UNTITLED RULE PLEASE GIVE ME A NAME" );
 			$_SESSION["Rules"][] = $nr;
 		}
 
