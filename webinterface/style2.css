@@ -6,12 +6,13 @@ input.button { border: 0pt none ; padding: 0pt; background-color: rgb(133, 195, 
 p { padding: 0px; margin: 0px; }
 a { text-decoration: none; }
 
-.area { overflow: visible; width: 100%; /* this is for IE */ }
-.area:after { content:"."; display:block; line-height:0px; font-size:0px; visibility:hidden; clear:both; /* this is for firefox */ }
+.area { overflow: visible; width: 100%; } /* this is for IE */
+.area:after { content:"."; display:block; line-height:0px; font-size:0px; visibility:hidden; clear:both; } /* this is for firefox */
 .green { color: rgb(125, 183, 38); }
 .ltgrey { color: rgb(204, 204, 204); }
 .dkgrey { color: rgb(85, 85, 85); }
 .bgcolor { color: rgb(255, 255, 255); }
+.nodisplay { display:none; }
 
 #header { width: 100%; }
 #hleft { width: 45%; text-align: left; float: left; margin: 0px -10px 0px 10px; }
@@ -33,11 +34,18 @@ a { text-decoration: none; }
 #content { width: 82%; float: left; border-left: 1px solid rgb(204, 204, 204); border-collapse: collapse; margin-right: -1px; }
 #rules { width: 90%; margin: 0px auto 0px auto; }
 .ruleshadow { background-color: rgb(240, 246, 240); padding: 1px 6px 6px 1px; position: relative; }
-.rule { background-color: rgb(244, 255, 244); margin: -5px 0px 0px -5px; vertical-align: bottom; position: relative; }
+.trcornershadow { position: absolute; top: 0px; right: 0px; width: 10px; height: 10px; background: transparent url('trcornershadow.png') no-repeat scroll 0 0; }
+.blcornershadow { position: absolute; bottom: 0px; left: 0px; width: 10px; height: 10px; background: transparent url('blcornershadow.png') no-repeat scroll 0 0; }
+.brcornershadow { position: absolute; bottom: 0px; right: 0px; width: 10px; height: 10px; background: transparent url('brcornershadow.png') no-repeat scroll 0 0; }
+.rule { background-color: rgb(244, 255, 244); margin: -5px 0px 0px -5px; vertical-align: bottom; position: relative; border-bottom: 1px solid rgb(170, 170, 170); }
+.tlcorner { position: absolute; top: 0px; left: 0px; width: 10px; height: 10px; background: transparent url('tlcorner.png') no-repeat scroll 0 0; }
+.trcorner { position: absolute; top: 0px; right: 0px; width: 10px; height: 10px; background: transparent url('trcorner.png') no-repeat scroll 0 0; }
+.blcorner { position: absolute; bottom: -1px; left: 0px; width: 10px; height: 10px; background: transparent url('blcorner.png') no-repeat scroll 0 0; }
+.brcorner { position: absolute; bottom: -1px; right: 0px; width: 10px; height: 10px; background: transparent url('brcorner.png') no-repeat scroll 0 0; }
 .ruletitle { background-color: rgb(207,240,191); height: 27px; border: 1px solid rgb(170, 170, 170); border-collapse: collapse; }
 .ruletitle input.text { border: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 97%; font-size: 15px; font-weight: bold; color: rgb(87, 128, 27); background-color: transparent; float: left; }
 .ruletitle input.image { width: 15px; height: 15px; padding: 2px 2px 0px 0px; border: none; float: right; }
-.rulebody { color: rgb(44,102,21); width: auto; font-weight: bold; padding: 12px; border-left: 1px solid rgb(170, 170, 170); border-bottom: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); overflow: auto; }
+.rulebody { color: rgb(44,102,21); width: auto; font-weight: bold; padding: 12px; border-left: 1px solid rgb(170, 170, 170); border-right: 1px solid rgb(170, 170, 170); /*border-bottom: 1px solid rgb(170, 170, 170);*/ overflow: auto; }
 .rulebody div { clear: both; }
 .rulebody p { width:235px; float: left; }
 .rulebody p label { width: 8em; float: left; text-align: right; margin-top: 6px; display: block; }
