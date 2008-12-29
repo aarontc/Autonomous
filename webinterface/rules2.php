@@ -89,7 +89,14 @@
 					?>
 					<!-- rule NEWRULEFORTEHLOVEOFALLTHATISPACKETY starts here -->
 					<div class='ruleshadow'>
+						<span class='trcornershadow'></span>
+						<span class='blcornershadow'></span>
+						<span class='brcornershadow'></span>
 						<div class='rule'>
+							<span class='tlcorner'></span>
+							<span class='trcorner'></span>
+							<span class='blcorner'></span>
+							<span class='brcorner'></span>
 							<div class='ruletitle'>
 								<input type='text' class='text' value='New Rule Description' name='comment[new]' id='comment[new]' />
 							</div>
