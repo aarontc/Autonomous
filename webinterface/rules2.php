@@ -40,10 +40,12 @@
 					?>
 					<div class='rulespacer'></div>
 					<!-- rule <?= $ruleid ?> starts here -->
-					<div class='ruleshadow'>
-						<span class='trcornershadow'></span>
-						<span class='blcornershadow'></span>
-						<span class='brcornershadow'></span>
+					<div class='rulecontainer'>
+						<div class='ruleshadow'>
+							<span class='trcornershadow'></span>
+							<span class='blcornershadow'></span>
+							<span class='brcornershadow'></span>
+						</div>
 						<div class='rule'>
 							<span class='tlcorner'></span>
 							<span class='trcorner'></span>
@@ -88,10 +90,12 @@
 						}
 					?>
 					<!-- rule NEWRULEFORTEHLOVEOFALLTHATISPACKETY starts here -->
-					<div class='ruleshadow'>
-						<span class='trcornershadow'></span>
-						<span class='blcornershadow'></span>
-						<span class='brcornershadow'></span>
+					<div class='rulecontainer'>
+						<div class='ruleshadow'>
+							<span class='trcornershadow'></span>
+							<span class='blcornershadow'></span>
+							<span class='brcornershadow'></span>
+						</div>
 						<div class='rule'>
 							<span class='tlcorner'></span>
 							<span class='trcorner'></span>
