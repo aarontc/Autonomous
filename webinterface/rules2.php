@@ -32,6 +32,7 @@
 		<div id='content'>
 			<div id='rules' class='area'>
 				<form method="POST">
+				<input type="submit" name="submit" value="SUBMIT IT BIZOTCH" />
 				<?php
 					foreach ( $_SESSION['Rules'] as $ruleid => $rule ) {
 						if ( $rule->action != "DNAT" )
@@ -42,7 +43,7 @@
 				<div class='ruleshadow'>
 				<div class='rule'>
 					<div class='ruletitle'>
-						<input type='text' class='text' value='Rule <?= $ruleid ?>: <?= htmlentities ( $rule->GetComment() ) ?>' />
+						<input type='text' class='text' value='<?= htmlentities ( $rule->GetComment() ) ?>' name='comment[<?= $ruleid ?>]' id='comment[<?= $ruleid ?>]' />
 						<input type='image' class='image' title='Delete' alt='Delete' value='Delete' src='delete-15x15.png' name='delete[<?= $ruleid ?>]' id='delete[<?= $ruleid ?>]' />
 					</div>
 					<div class='rulebody'>
@@ -79,6 +80,44 @@
 				<?php
 					}
 				?>
+						<!-- rule NEWRULEFORTEHLOVEOFALLTHATISPACKETY starts here -->
+						<div class='ruleshadow'>
+						<div class='rule'>
+						<div class='ruletitle'>
+						<input type='text' class='text' value='New Rule Description' name='comment[new]' id='comment[new]' />
+						
+						</div>
+						<div class='rulebody'>
+						<div class='area'>
+						<p>
+						<label for='destination_ip[new]'>LAN Computer IP</label>
+						<input type='text' class='text' style='width:120px;' value='' name='destination_ip[new]' id='destination_ip[new]' />
+						</p>
+						<p>
+						<label for='protocol[new]'>Protocol</label>
+						<select name='protocol[new]' id='protocol[new]'>
+						<option value='tcp' selected>TCP</option>
+						<option value='udp'>UDP</option>
+						</select>
+						</p>
+						</div>
+						<div class='area'>
+						<p>
+						<label for='destination_port_start[new]'>LAN Port</label>
+						<input type='text' class='text' style='width:40px;' value='' name='destination_port_start[new]' id='destination_port_start[new]' />
+						<input type='text' class='text' style='width:40px;' value='' name='destination_port_end[new]' id='destination_port_end[new]' />
+						</p>
+						<p>
+						<label for='wan_port_start[new]'>Internet Port</label>
+						<input type='text' class='text' style='width:40px;' value='' name='wan_port_start[new]' id='wan_port_start[new]' />
+						<input type='text' class='text' style='width:40px;' value='' name='wan_port_end[new]' id='wan_port_end[new]' />
+						</p>
+						</div>
+						</div>
+						</div>
+						</div>
+						<!-- rule ends here -->
+						<input type="submit" />
 				</form>
 			</div>
 		</div>
