@@ -86,4 +86,62 @@ function CheckUserString($user)
 	return true;
 }
 
+function ChangePassword($user,$newPass)
+{
+	//connect to the database
+	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+
+	//hash the password
+	$np = hash('sha512',$newPass);
+
+	$q =  "UPDATE logins SET Password=$np WHERE User='$user';";
+
+	//change password
+	$query = sqlite_exec($dbhandle, $q, $error);
+
+	if(!$query){
+		exit("Error in Query: '$error'");
+		return false;
+	}
+
+	//close the datapase
+	sqlite_close($dbhandle);
+
+	return true;
+}
+
+function IsRightPassword($user,$pass)
+{
+	//test me..................
+	$good = false;
+	//connect to the database
+	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+
+	//hash the password
+	$np = hash('sha512',$newPass);
+
+	$q =  "SELECT * FROM logins WHERE Password=$np";
+
+	//change password
+	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
+
+	if(!$query){
+		exit("Error in Query: '$error'");
+	}
+
+	foreach($query as $entry)
+	{
+		if($entry['User']===$user)
+		{
+			$good = true;
+			break;
+		}
+	}
+
+	//close the datapase
+	sqlite_close($dbhandle);
+
+	return $good;
+}
+	
 ?>

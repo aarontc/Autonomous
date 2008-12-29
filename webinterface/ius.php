@@ -1,4 +1,4 @@
-<?php require('utility.php');
+<?php include('utility.php');
 
 ob_start();
 session_start();

@@ -1,4 +1,4 @@
-<?php require("autonomous.inc.php"); include("checkuser.php"); include("utility.php");
+<?php include("checkuser.php"); include("utility.php");
 
 	session_start();
 
