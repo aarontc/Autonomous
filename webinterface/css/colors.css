@@ -1,0 +1,22 @@
+input[type='text'], select {  border-color: rgb(204, 204, 204); color: rgb(85, 85, 85); }
+input[type='button'], input[type='submit'] {  background-color: rgb(133, 195, 41); color: rgb(255, 255, 255); }
+
+.green { color: rgb(125, 183, 38); }
+.ltgrey { color: rgb(204, 204, 204); }
+.dkgrey { color: rgb(85, 85, 85); }
+.bgcolor { color: rgb(255, 255, 255); }
+.divider { border-left-color: rgb(204, 204, 204); background-color: rgb(204, 204, 204); }
+
+#sidebar { border-right-color: rgb(204, 204, 204); }
+.mititle a { color: rgb(133,195,41); }
+.midesc { color: rgb(112, 112, 112); }
+
+#content{ border-left-color: rgb(204, 204, 204); }
+.ruleshadow { background-color: rgb(240, 246, 240); }
+.rule { background-color: rgb(244, 255, 244); border-color: rgb(170, 170, 170); }
+.ruletitle { background-color: rgb(207,240,191); border-bottom-color: rgb(170, 170, 170); }
+.ruletitle input[type='text'] { color: rgb(87, 128, 27); background-color: transparent; }
+.rulebody { color: rgb(44,102,21); }
+.rulebody .roundinput { background-color: rgb(255, 255, 255);  border-color: rgb(204, 204, 204);}
+
+#footer { color: rgb(187, 187, 187); }

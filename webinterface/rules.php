@@ -13,7 +13,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>autonomous</title>
-		<link rel="STYLESHEET" href="style.css" type="text/css" />
+		<link rel="STYLESHEET" href="css/style.css" type="text/css" />
 	</head>
 	<body bgcolor="FFFFFF">
 		<form action="test.php" method="post">
@@ -184,7 +184,7 @@
 													</td>
 													<td align='right'>
 														<span style='padding-right: 1px; padding-top: 2px;'>
-															<input name="Action[<?= $rule->id ?>]" value="Delete" type='image' src='delete-15x15.png' class='delimg' title='Remove' alt='Remove' />
+															<input name="Action[<?= $rule->id ?>]" value="Delete" type='image' src='images/delete-15x15.png' class='delimg' title='Remove' alt='Remove' />
 														</span>
 													</td>
 												</tr>

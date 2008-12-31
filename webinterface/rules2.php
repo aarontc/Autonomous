@@ -8,7 +8,8 @@
 	<head>
 		<title>Autonomous</title>
 		<meta content="">
-		<link href='style2.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+		<link href='css/style2.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+		<link href='css/colors.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
 	</head>
 	<body>
 	<div id='header' class='area'>
@@ -53,32 +54,68 @@
 							<span class='brcorner'></span>
 							<div class='ruletitle'>
 								<input type='text' class='text' value='<?= htmlentities ( $rule->GetComment() ) ?>' name='comment[<?= $ruleid ?>]' id='comment[<?= $ruleid ?>]' />
-								<input type='image' class='image' title='Delete' alt='Delete' value='Delete' src='delete-15x15.png' name='delete[<?= $ruleid ?>]' id='delete[<?= $ruleid ?>]' />
+								<input type='image' class='image' title='Delete' alt='Delete' value='Delete' src='images/delete-15x15.png' name='delete[<?= $ruleid ?>]' id='delete[<?= $ruleid ?>]' />
 							</div>
 							<div class='rulebody'>
 								<div class='area'>
 									<p>
-										<label for='destination_ip[<?= $ruleid ?>]'>LAN Computer IP</label>
-										<input type='text' class='text' style='width:120px;' value='<?= $rule->destination[1] ?>' name='destination_ip[<?= $ruleid ?>]' id='destination_ip[<?= $ruleid ?>]' />
+										<label for='destination_ip[<?= $ruleid ?>]'>LAN Computer IP:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:120px;' value='<?= $rule->destination[1] ?>' name='destination_ip[<?= $ruleid ?>]' id='destination_ip[<?= $ruleid ?>]' />
+										</span>
 									</p>
 									<p>
-										<label for='protocol[<?= $ruleid ?>]'>Protocol</label>
-										<select name='protocol[<?= $ruleid ?>]' id='protocol[<?= $ruleid ?>]'>
-											<option value='tcp'<?= ($rule->protocol=="tcp" ? " selected" : "") ?>>TCP</option>
-											<option value='udp'<?= ($rule->protocol=="udp" ? " selected" : "") ?>>UDP</option>
-										</select>
+										<label for='protocol[<?= $ruleid ?>]'>Protocol:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<select name='protocol[<?= $ruleid ?>]' id='protocol[<?= $ruleid ?>]'>
+												<option value='tcp'<?= ($rule->protocol=="tcp" ? " selected" : "") ?>>TCP</option>
+												<option value='udp'<?= ($rule->protocol=="udp" ? " selected" : "") ?>>UDP</option>
+											</select>
+										</span>
 									</p>
 								</div>
 								<div class='area'>
 									<p>
-										<label for='destination_port_start[<?= $ruleid ?>]'>LAN Port</label>
-										<input type='text' class='text' style='width:40px;' value='<?= $rule->destination[2] ?>' name='destination_port_start[<?= $ruleid ?>]' id='destination_port_start[<?= $ruleid ?>]' />
-										<input type='text' class='text' style='width:40px;' value='<?= $rule->destination[3] ?>' name='destination_port_end[<?= $ruleid ?>]' id='destination_port_end[<?= $ruleid ?>]' />
+										<label for='destination_port_start[<?= $ruleid ?>]'>LAN Port:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:40px;' value='<?= $rule->destination[2] ?>' name='destination_port_start[<?= $ruleid ?>]' id='destination_port_start[<?= $ruleid ?>]' />
+										</span>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:40px;' value='<?= $rule->destination[3] ?>' name='destination_port_end[<?= $ruleid ?>]' id='destination_port_end[<?= $ruleid ?>]' />
+										</span>
 									</p>
 									<p>
-										<label for='wan_port_start[<?= $ruleid ?>]'>Internet Port</label>
-										<input type='text' class='text' style='width:40px;' value='<?= $rule->destination_ports[0] ?>' name='wan_port_start[<?= $ruleid ?>]' id='wan_port_start[<?= $ruleid ?>]' />
-										<input type='text' class='text' style='width:40px;' value='<?= $rule->destination_ports[1] ?>' name='wan_port_end[<?= $ruleid ?>]' id='wan_port_end[<?= $ruleid ?>]' />
+										<label for='wan_port_start[<?= $ruleid ?>]'>Internet Port:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:40px;' value='<?= $rule->destination_ports[0] ?>' name='wan_port_start[<?= $ruleid ?>]' id='wan_port_start[<?= $ruleid ?>]' />
+										</span>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:40px;' value='<?= $rule->destination_ports[1] ?>' name='wan_port_end[<?= $ruleid ?>]' id='wan_port_end[<?= $ruleid ?>]' />
+										</span>
 									</p>
 								</div>
 							</div>
@@ -107,27 +144,63 @@
 							<div class='rulebody'>
 								<div class='area'>
 									<p>
-										<label for='destination_ip[new]'>LAN Computer IP</label>
-										<input type='text' class='text' style='width:120px;' value='' name='destination_ip[new]' id='destination_ip[new]' />
+										<label for='destination_ip[new]'>LAN Computer IP:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:120px;' value='' name='destination_ip[new]' id='destination_ip[new]' />
+										</span>
 									</p>
 									<p>
-										<label for='protocol[new]'>Protocol</label>
-										<select name='protocol[new]' id='protocol[new]'>
-											<option value='tcp' selected>TCP</option>
-											<option value='udp'>UDP</option>
-										</select>
+										<label for='protocol[new]'>Protocol:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<select name='protocol[new]' id='protocol[new]'>
+												<option value='tcp' selected>TCP</option>
+												<option value='udp'>UDP</option>
+											</select>
+										</span>
 									</p>
 								</div>
 								<div class='area'>
 									<p>
-										<label for='destination_port_start[new]'>LAN Port</label>
-										<input type='text' class='text' style='width:40px;' value='' name='destination_port_start[new]' id='destination_port_start[new]' />
-										<input type='text' class='text' style='width:40px;' value='' name='destination_port_end[new]' id='destination_port_end[new]' />
+										<label for='destination_port_start[new]'>LAN Port:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:40px;' value='' name='destination_port_start[new]' id='destination_port_start[new]' />
+										</span>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:40px;' value='' name='destination_port_end[new]' id='destination_port_end[new]' />
+										</span>
 									</p>
 									<p>
-										<label for='wan_port_start[new]'>Internet Port</label>
-										<input type='text' class='text' style='width:40px;' value='' name='wan_port_start[new]' id='wan_port_start[new]' />
-										<input type='text' class='text' style='width:40px;' value='' name='wan_port_end[new]' id='wan_port_end[new]' />
+										<label for='wan_port_start[new]'>Internet Port:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:40px;' value='' name='wan_port_start[new]' id='wan_port_start[new]' />
+										</span>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='text' style='width:40px;' value='' name='wan_port_end[new]' id='wan_port_end[new]' />
+										</span>
 									</p>
 								</div>
 							</div>
