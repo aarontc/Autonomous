@@ -45,7 +45,7 @@ input.port { width: 40px; }
 .ruletitle { height: 23px; border-bottom-width: 1px; border-bottom-style: solid; border-collapse: collapse; }
 .ruletitle input[type='text'] { border: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 97%; font-size: 15px; font-weight: bold; float: left; }
 .ruletitle input[type='image'] { width: 15px; height: 15px; padding: 2px 2px 0px 0px; border: none; float: right; }
-.rulebody { width: auto; font-weight: bold; padding: 12px; overflow: auto; }
+.rulebody { width: auto; font-weight: bold; padding: 12px; }
 .rulebody div { clear: both; }
 .rulebody p { width: 245px; float: left; }
 .rulebody p label { width: 8.6em; float: left; text-align: right; margin-top: 6px; display: block; }
