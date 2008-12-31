@@ -89,9 +89,13 @@
 					<form action="login.php" method="POST">
 						<span style="font-weight: bold">Autonomous Router Login Page</span><br />
 						<br />
-						<span style="font-weight: bold">User Name: </span><INPUT type="text" name="user"><br />
+						<?php
+						echo '<span style="font-weight: bold">User Name: </span><INPUT type="text" name="user" value='.$_POST['user'].'><br />';
+						?>
 						<br />
-						<span style="font-weight: bold">Password: </span><INPUT type="password" name="pass"><br />
+						<?php
+						echo '<span style="font-weight: bold">Password: </span><INPUT type="password" name="pass"value='.$_POST['pass'].'><br />';
+						?>
 						<br />
 						<?php
 						echo $msg['error'];

@@ -31,7 +31,7 @@
 				$user = $_SESSION['Login']['User'];
 				if(isset($_POST['ppass']))
 				{
-					if (!QuickFindUserFromPass($user,$_POST['ppass']))
+					if (!QuickFindUserFromPass($user,$_POST['ppass'],true))
 					{
 						$error['curpass'] = '<span style="color:red">Incorrect Password</span>'; 
 					}

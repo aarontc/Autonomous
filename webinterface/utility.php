@@ -110,7 +110,7 @@ function ChangePassword($user,$newPass)
 	return true;
 }
 
-function QuickFindUserFromPass($user,$pass)
+function QuickFindUserFromPass($user,$pass,$hashit=false)
 {
 	//test me..................
 	$good = false;
@@ -118,9 +118,15 @@ function QuickFindUserFromPass($user,$pass)
 	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
 
 	//hash the password
-	$np = hash('sha512',$pass);
-
-	$q =  "SELECT User FROM logins WHERE Password='$np'";
+	if($hashit)
+	{
+		$np = hash('sha512',$pass);
+		$q =  "SELECT User FROM logins WHERE Password='$np'";
+	}
+	else
+	{
+		$q =  "SELECT User FROM logins WHERE Password='$pass'";
+	}
 
 	//change password
 	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
