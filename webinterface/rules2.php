@@ -18,7 +18,7 @@
 		</div>
 		<div id='hright'>
 			<div class='bgcolor headerlg'>&nbsp;</div>
-			<div class='dkgrey'>Search for Term:<input type='text' class='text' /><input type='submit' class='button' value='GO' /></div>
+			<div class='dkgrey nodisplay'>Search for Term:<input type='text' class='text' /><input type='submit' class='button' value='GO' /></div>
 		</div>
 	</div>
 	<div class='divider'><!-- comment for IE --></div>
