@@ -9,8 +9,7 @@
 	}
 	else
 	{
-
-		if(!isset($_SESSION['Login']['User']))
+		if(!IsGoodSession())
 		{
 			header('Location: login.php');
 		}
@@ -32,7 +31,7 @@
 				$user = $_SESSION['Login']['User'];
 				if(isset($_POST['ppass']))
 				{
-					if (!IsRightPassword($user,$_POST['ppass']))
+					if (!QuickFindUserFromPass($user,$_POST['ppass']))
 					{
 						$error['curpass'] = '<span style="color:red">Incorrect Password</span>'; 
 					}
