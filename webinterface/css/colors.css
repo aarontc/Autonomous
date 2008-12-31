@@ -1,5 +1,9 @@
+/*	The element background images have been put in this file along with the colors
+		becuase they are directly related to the element colors */
 input[type='text'], select {  border-color: rgb(204, 204, 204); color: rgb(85, 85, 85); }
-input[type='button'], input[type='submit'] {  background-color: rgb(133, 195, 41); color: rgb(255, 255, 255); }
+input[type='button'], input[type='submit'] {  background-color: rgb(133, 195, 41); color: rgb(255, 255, 255); background-image: url('../images/button_bg.png'); }
+input[type='button']:hover, input[type='submit']:hover { background-color: rgb(154, 225, 47); }
+input[type='button']:active, input[type='submit']:active { background-image: url('../images/button_bg_active.png'); }
 
 .green { color: rgb(125, 183, 38); }
 .ltgrey { color: rgb(204, 204, 204); }
@@ -13,10 +17,24 @@ input[type='button'], input[type='submit'] {  background-color: rgb(133, 195, 41
 
 #content{ border-left-color: rgb(204, 204, 204); }
 .ruleshadow { background-color: rgb(240, 246, 240); }
+.trcornershadow, .blcornershadow, .brcornershadow { background-color: transparent; }
+.trcornershadow { background-image: url('../images/trcornershadow.png'); }
+.blcornershadow { background-image: url('../images/blcornershadow.png'); }
+.brcornershadow { background-image: url('../images/brcornershadow.png'); }
 .rule { background-color: rgb(244, 255, 244); border-color: rgb(170, 170, 170); }
+.tlcorner, .trcorner, .blcorner, .brcorner { background-color: transparent; }
+.tlcorner { background-image: url('../images/tlcorner.png'); }
+.trcorner { background-image: url('../images/trcorner.png'); }
+.blcorner { background-image: url('../images/blcorner.png'); }
+.brcorner { background-image: url('../images/brcorner.png'); }
 .ruletitle { background-color: rgb(207,240,191); border-bottom-color: rgb(170, 170, 170); }
 .ruletitle input[type='text'] { color: rgb(87, 128, 27); background-color: transparent; }
 .rulebody { color: rgb(44,102,21); }
 .rulebody .roundinput { background-color: rgb(255, 255, 255);  border-color: rgb(204, 204, 204);}
+.rulebody .roundinput .tl, .rulebody .roundinput .tr, .rulebody .roundinput .bl, .rulebody .roundinput .br { background-color: transparent; }
+.rulebody .roundinput .tl { background-image: url('../images/tlcorner1.png'); }
+.rulebody .roundinput .tr { background-image: url('../images/trcorner1.png'); }
+.rulebody .roundinput .bl { background-image: url('../images/blcorner1.png'); }
+.rulebody .roundinput .br { background-image: url('../images/brcorner1.png'); }
 
 #footer { color: rgb(187, 187, 187); }
