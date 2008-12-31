@@ -2,7 +2,7 @@
 body { font-size: 12px; }
 input, select { margin: 3px; }
 input[type='text'], select { border-width: 1px; border-style: solid; }
-input[type='button'], input[type='submit'] { line-height: 16px; overflow: visible; letter-spacing: normal; border: 0pt none ; padding: 0px 2px; font-weight: bold; cursor: pointer; }
+input[type='button'], input[type='submit'] { line-height: 16px; overflow: visible; letter-spacing: normal; border: 0pt none ; padding: 0px 2px; font-weight: bold; cursor: pointer; background-image: url('../images/button_bg.png'); }
 p { padding: 0px; margin: 0px; }
 a { text-decoration: none; }
 
