@@ -94,7 +94,7 @@ function ChangePassword($user,$newPass)
 	//hash the password
 	$np = hash('sha512',$newPass);
 
-	$q =  "UPDATE logins SET Password=$np WHERE User='$user';";
+	$q =  "UPDATE logins SET Password='$np' WHERE User='$user';";
 
 	//change password
 	$query = sqlite_exec($dbhandle, $q, $error);
@@ -118,23 +118,22 @@ function IsRightPassword($user,$pass)
 	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
 
 	//hash the password
-	$np = hash('sha512',$newPass);
+	$np = hash('sha512',$pass);
 
-	$q =  "SELECT * FROM logins WHERE Password=$np";
+	$q =  "SELECT User FROM logins WHERE Password='$np'";
 
 	//change password
 	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
 
-	if(!$query){
-		exit("Error in Query: '$error'");
-	}
-
-	foreach($query as $entry)
-	{
-		if($entry['User']===$user)
+	if($query){
+		//exit("Error in Query: '$error'");
+		foreach($query as $entry)
 		{
-			$good = true;
-			break;
+			if(strcmp($entry['User'],$user)==0)
+			{
+				$good = true;
+				break;
+			}
 		}
 	}
 
@@ -143,5 +142,39 @@ function IsRightPassword($user,$pass)
 
 	return $good;
 }
+
+$validation_struct = array (
+	"user" => array(
+		"minimum_length" => 5,
+		"maximum_length" => 100
+		),
+	"password" => array(
+		"minimum_length" => 5,
+		"maximum_length" => -1
+	)
+);
+
+function validate_variable ( $variable, $value, $validation_struct ) {
 	
+	if (array_key_exists ($variable, $validation_struct  ) ) {
+		foreach ( $validation_struct[$variable] as $validate => $requirement ) {
+			switch ( $validate ) {
+				case "minimum_length":
+					if ( strlen ( $value ) < $requirement )
+						return false;
+					break;
+				case "maximum_length":
+					if ($requirement != -1 && strlen ( $value ) > $requirement)
+						return false;
+					break;
+			}
+		}
+	}
+	else{
+		return false;
+	}
+
+	return true;
+				
+}
 ?>
