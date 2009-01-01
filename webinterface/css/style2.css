@@ -34,16 +34,16 @@ input.port { width: 40px; }
 .rulecontainer { width: 100%; height: 110px; position: relative; }
 .ruleshadow, .rule { width: 99%; height: 102px; position: absolute; }
 .ruleshadow { bottom: 0px; right: 0px; }
-.trcornershadow, .blcornershadow, .brcornershadow { position: absolute; height: 10px; width: 10px; background-repeat: no-repeat; background-attachment: scroll; background-position: 0 0; }
-.trcornershadow { top: 0px; right: 0px; }
-.blcornershadow {bottom: 0px; left: 0px; }
-.brcornershadow { bottom: 0px; right: 0px; }
+.trcornershadow, .blcornershadow, .brcornershadow { position: absolute; height: 5px; width: 5px; background-repeat: no-repeat; background-attachment: scroll; }
+.trcornershadow { top: 0px; right: 0px; background-position: top right; }
+.blcornershadow {bottom: 0px; left: 0px; background-position: bottom left; }
+.brcornershadow { bottom: 0px; right: 0px; background-position: bottom right; }
 .rule { top: 0px; left: 0px; border-width: 1px; border-style: solid; }
-.tlcorner, .trcorner, .blcorner, .brcorner { position: absolute; width: 10px; height: 10px; background-repeat: no-repeat; background-attachment: scroll; background-position: 0 0; }
-.tlcorner { top: -1px; left: -1px; }
-.trcorner { top: -1px; right: -1px; }
-.blcorner { bottom: -1px; left: -1px; }
-.brcorner { bottom: -1px; right: -1px; }
+.tlcorner, .trcorner, .blcorner, .brcorner { position: absolute; width: 5px; height: 5px; background-repeat: no-repeat; background-attachment: scroll; }
+.tlcorner { top: -1px; left: -1px; background-position: top left; }
+.trcorner { top: -1px; right: -1px; background-position: top right; }
+.blcorner { bottom: -1px; left: -1px; background-position: bottom left; }
+.brcorner { bottom: -1px; right: -1px; background-position: bottom right; }
 .ruletitle { height: 23px; border-bottom-width: 1px; border-bottom-style: solid; border-collapse: collapse; }
 .ruletitle input[type='text'] { border: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 97%; font-size: 15px; font-weight: bold; float: left; }
 .ruletitle input[type='image'] { width: 15px; height: 15px; padding: 2px 2px 0px 0px; border: none; float: right; }
@@ -53,11 +53,11 @@ input.port { width: 40px; }
 .rulebody p label { width: 8.6em; float: left; text-align: right; margin-top: 6px; display: block; }
 .rulebody p input {  }
 .rulebody .roundinput { position: relative; display: block; float: left; margin: 3px; padding: 1px 0px; border-width: 1px; border-style: solid; }
-.rulebody .roundinput .tl, .rulebody .roundinput .tr, .rulebody .roundinput .bl, .rulebody .roundinput .br { position: absolute; width: 5px; height: 5px; background-repeat: no-repeat; background-attachment: scroll; background-position: 0 0; }
-.rulebody .roundinput .tl { top: -1px; left: -1px; background: transparent url('../images/tlcorner1.png') no-repeat scroll 0 0; }
-.rulebody .roundinput .tr { top: -1px; right: -1px; background: transparent url('../images/trcorner1.png') no-repeat scroll 0 0; }
-.rulebody .roundinput .bl { bottom: -1px; left: -1px; background: transparent url('../images/blcorner1.png') no-repeat scroll 0 0; }
-.rulebody .roundinput .br { bottom: -1px; right: -1px; background: transparent url('../images/brcorner1.png') no-repeat scroll 0 0; }
+.rulebody .roundinput .tl, .rulebody .roundinput .tr, .rulebody .roundinput .bl, .rulebody .roundinput .br { position: absolute; width: 5px; height: 5px; background-repeat: no-repeat; background-attachment: scroll; }
+.rulebody .roundinput .tl { top: -1px; left: -1px; background-position: top left; }
+.rulebody .roundinput .tr { top: -1px; right: -1px; background-position: top right; }
+.rulebody .roundinput .bl { bottom: -1px; left: -1px; background-position: bottom left; }
+.rulebody .roundinput .br { bottom: -1px; right: -1px; background-position: bottom right; }
 .rulebody .roundinput input[type='text'] { border: none; padding: 0px; margin: 0px 2px; }
 .rulebody .roundinput select { border: none; padding: 0px; margin: 0px 4px 0px 2px; }
 
