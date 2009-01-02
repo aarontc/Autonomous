@@ -49,13 +49,15 @@
 		<div id='content'>
 			<div id='rules' class='area'>
 				<form method="POST">
-					<span class='roundbutton'>
-						<span class='tl'></span>
-						<span class='tr'></span>
-						<span class='bl'></span>
-						<span class='br'></span>
-						<input type="submit" name="submit" value="SUBMIT IT BIZOTCH" title='Update all rules' />
-					</span>
+					<div class='center'>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type="submit" name="submit" value="SUBMIT IT BIZOTCH" title='Update all rules' />
+						</span>
+					</div>
 					<?php
 						foreach ( $_SESSION['Rules'] as $ruleid => $rule ) {
 							if ( $rule->action != "DNAT" )
@@ -231,13 +233,15 @@
 					</div>
 					<!-- rule ends here -->
 					<div class='rulespacer'></div>
-					<span class='roundbutton'>
-						<span class='tl'></span>
-						<span class='tr'></span>
-						<span class='bl'></span>
-						<span class='br'></span>
-						<input type="submit" name="submit" value="Submit" title='Update all rules' />
-					</span>
+					<div class='center'>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type="submit" name="submit" value="Submit" title='Update all rules' />
+						</span>
+					</div>
 				</form>
 			</div>
 		</div>

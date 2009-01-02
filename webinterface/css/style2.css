@@ -21,6 +21,7 @@ input.port { width: 40px; }
 .area { overflow: visible; width: 100%; } /* this is for IE */
 .area:after { content:"."; display:block; line-height:0px; font-size:0px; visibility:hidden; clear:both; } /* this is for firefox */
 .nodisplay { display:none; }
+div.center { text-align: center; }
 
 #header { width: 100%; }
 #hleft { width: 45%; text-align: left; float: left; margin: 0px -10px 0px 10px; }
@@ -34,7 +35,7 @@ input.port { width: 40px; }
 #main { width: 100%; }
 
 #sidebar { width: 18%; float: left; border-right-width: 1px; border-right-style: solid; border-collapse: collapse; margin-right: -1px; }
-.menuitem { width: 140px; margin: 0px auto 0px auto; padding-top: 6px; }
+.menuitem { width: 140px; margin: 0px auto 0px auto; padding-top: 6px; padding-left: 10px; }
 .mititle a { font-size: 16px; font-weight: bold; }
 .mititle a:hover { text-decoration: underline; }
 
