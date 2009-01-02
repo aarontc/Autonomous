@@ -230,6 +230,7 @@
 						</div>
 					</div>
 					<!-- rule ends here -->
+					<div class='rulespacer'></div>
 					<span class='roundbutton'>
 						<span class='tl'></span>
 						<span class='tr'></span>

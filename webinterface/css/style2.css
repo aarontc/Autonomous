@@ -10,6 +10,7 @@
 * { font-family: arial; }
 body { font-size: 12px; }
 input[type='text'], select { border-width: 1px; border-style: solid; }
+input[type='button'], input[type='submit'] { font-weight: bold; }
 /*input[type='button'], input[type='submit'] { line-height: 16px; overflow: visible; letter-spacing: normal; border: 0pt none ; padding: 0px 2px; font-weight: bold; cursor: pointer; }*/
 p { padding: 0px; margin: 0px; }
 a { text-decoration: none; }
@@ -54,7 +55,7 @@ input.port { width: 40px; }
 .rulebr { bottom: -1px; right: -1px; background-position: bottom right; }
 .ruletitle { height: 23px; border-bottom-width: 1px; border-bottom-style: solid; border-collapse: collapse; }
 .ruletitle input[type='text'] { border: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 97%; font-size: 15px; font-weight: bold; float: left; }
-.ruletitle input[type='image'] { width: 15px; height: 15px; padding: 2px 2px 0px 0px; border: none; float: right; }
+.ruletitle input[type='image'] { width: 15px; height: 15px; padding: 4px 5px 0px 0px; border: none; float: right; }
 .rulebody { width: auto; font-weight: bold; padding: 12px; }
 .rulebody div { clear: both; }
 .rulebody p { width: 245px; float: left; }
