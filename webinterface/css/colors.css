@@ -1,9 +1,17 @@
+/*	This css was tested in the following versions of the following browsers:
+		Firefox 3.0.5 (linux and windows)
+		Google Chrome 1.0.154.36
+		Internet Explorer 7.0.5730.13
+		Safari 3.2.1 (525.27.1) (windows)
+		
+		Note: The windows test machine was running Windows XP Pro SP3 on VirtualBox
+*/
 /*	The element background images have been put in this file along with the colors
-		becuase they are directly related to the element colors */
+		becuase they are directly related to the element colors
+*/
 input[type='text'], select {  border-color: rgb(204, 204, 204); color: rgb(85, 85, 85); }
-input[type='button'], input[type='submit'] {  background-color: rgb(133, 195, 41); color: rgb(255, 255, 255); background-image: url('../images/button_bg.png'); }
+input[type='button'], input[type='submit'] { background-color: rgb(133, 195, 41); color: rgb(255, 255, 255); }
 input[type='button']:hover, input[type='submit']:hover { background-color: rgb(154, 225, 47); }
-input[type='button']:active, input[type='submit']:active { background-image: url('../images/button_bg_active.png'); }
 
 .green { color: rgb(125, 183, 38); }
 .ltgrey { color: rgb(204, 204, 204); }
@@ -11,19 +19,27 @@ input[type='button']:active, input[type='submit']:active { background-image: url
 .bgcolor { color: rgb(255, 255, 255); }
 .divider { border-left-color: rgb(204, 204, 204); background-color: rgb(204, 204, 204); }
 
+.roundbutton { background-color: rgb(133, 195, 41); background-image: url('../images/button_bg.png'); } /* for Safari; it doesn't look perfect, but it's close */
+.roundbutton input[type='button'], .roundbutton input[type='submit'] { background-color: rgb(133, 195, 41); background-image: url('../images/button_bg.png'); }
+.roundbutton input[type='button']:hover, .roundbutton input[type='submit']:hover { background-color: rgb(154, 225, 47); }
+.roundbutton input[type='button']:active, .roundbutton input[type='submit']:active { background-image: url('../images/button_bg_active.png'); }
+.roundbutton .tl, .roundbutton .tr, .roundbutton .bl, .roundbutton .br { background-image: url('../images/button_corner.png'); }
+
+.roundinput { background-color: rgb(255, 255, 255);  border-color: rgb(204, 204, 204);}
+.roundinput .tl, .roundinput .tr, .roundinput .bl, .roundinput .br { background-color: transparent; background-image: url('../images/text_corner.png'); }
+
 #sidebar { border-right-color: rgb(204, 204, 204); }
 .mititle a { color: rgb(133,195,41); }
 .midesc { color: rgb(112, 112, 112); }
 
 #content{ border-left-color: rgb(204, 204, 204); }
 .ruleshadow { background-color: rgb(240, 246, 240); }
-.trcornershadow, .blcornershadow, .brcornershadow { background-color: transparent; background-image: url('../images/shadow_corner.png'); }
+.ruleshadow .tr, .ruleshadow .bl, .ruleshadow .br { background-color: transparent; background-image: url('../images/shadow_corner.png'); }
 .rule { background-color: rgb(244, 255, 244); border-color: rgb(170, 170, 170); }
-.tlcorner, .trcorner, .blcorner, .brcorner { background-color: transparent; background-image: url('../images/rule_corner.png'); }
+.ruletl, .ruletr, .rulebl, .rulebr { background-color: transparent; background-image: url('../images/rule_corner.png'); }
 .ruletitle { background-color: rgb(207,240,191); border-bottom-color: rgb(170, 170, 170); }
 .ruletitle input[type='text'] { color: rgb(87, 128, 27); background-color: transparent; }
 .rulebody { color: rgb(44,102,21); }
-.rulebody .roundinput { background-color: rgb(255, 255, 255);  border-color: rgb(204, 204, 204);}
-.rulebody .roundinput .tl, .rulebody .roundinput .tr, .rulebody .roundinput .bl, .rulebody .roundinput .br { background-color: transparent; background-image: url('../images/text_corner.png'); }
+.rulebody .roundinput .tl, .rulebody .roundinput .tr, .rulebody .roundinput .bl, .rulebody .roundinput .br { background-color: transparent; background-image: url('../images/rule_text_corner.png'); }
 
 #footer { color: rgb(187, 187, 187); }
