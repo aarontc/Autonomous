@@ -55,7 +55,7 @@
 							<span class='tr'></span>
 							<span class='bl'></span>
 							<span class='br'></span>
-							<input type="submit" name="submit" value="SUBMIT IT BIZOTCH" title='Update all rules' />
+							<input type="submit" name="submit" value="Submit" title='Update all rules' />
 						</span>
 					</div>
 					<?php
