@@ -6,12 +6,14 @@
 	if(IsDBEmpty())
 	{
 		header('Location: ius.php');
+		exit;
 	}
 	else
 	{
 		if(!IsGoodSession())
 		{
 			header('Location: login.php');
+			exit;
 		}
 		else
 		{
@@ -20,9 +22,7 @@
 		
 			if(isset($_SESSION['CP']))
 			{
-				//echo 'yay';
 				$counter = $_SESSION['CP'];
-				//echo $counter;
 			}
 
 			if($counter != 4)
@@ -93,70 +93,183 @@
 				if(!$stop)
 				{
 ?>
-					<html>
-					<head>
-						<title>
-						Change Password
-						</title>
-					</head>
-					<body>
-						<div align="center">
-						<form action="cp.php" method="POST">
-							<div align="center">
-							Change Password
-							<br>
-							<br>
-							<?php 
-							echo "User: $user <br><br>";
-							echo 'Previous Password: <INPUT maxlength="100" name="ppass" type="text" value='.$_POST['ppass'].'>';
-							echo $error['curpass'];
-							?>
-							<br>
-							<br>
-							<?php 
-							echo 'New Password: <INPUT maxlength="100" name="newpass" type="text" value='.$_POST['newpass'].'>';		
-							echo $error['newerpass'];
-							?>
-							<br>
-							<br>
-							<?php 
-							echo 'Confirm Password: <INPUT maxlength="100" name="conpass" type="text" value='.$_POST['conpass'].'>';
-							echo $error['confpass'];
-							echo $error['mismatch'];
-							?>
-							<br>
-							<br>
-							<INPUT type="submit" value="submit">
-							</form>
-						</div>
-					</body>
-					</html>
-				<?php
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Change Password</title>
+		<link href='css/style.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+		<link href='css/colors.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+	</head>
+	<body>
+		<div id='header'>
+			<div class='area'>
+				<div id='hleft'>
+					<div class='green headerlg'>Autonomous</div>
+				</div>
+				<div id='hright'>
+					<div class='login'>
+						<?= "Welcome ".$_SESSION['Login']['User']." | " ?>
+						<a href='login.php?action=logout'>logout</a>
+					</div>
+				</div>
+			</div>
+			<div class='area'>
+				<div id='hleft'>
+					<div class='ltgrey headermed'>Self-Governing Routing</div>
+				</div>
+				<div id='hright'>
+					<div class='dkgrey nodisplay'>
+						Search for Term:
+						<span class='roundinput'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type='text' />
+						</span>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type='submit' value='GO' />
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='divider'><!-- comment for IE --></div>
+		<form action="cp.php" method="POST">
+			<div id="loginform">
+				<p class='loginformhead'>Change Password for <?= $_SESSION['Login']['User'] ?></p>
+				<div class='loginformdiv'><!-- comment for IE --></div>
+				<p class='area'>
+					<label for='ppass'>Previous Password:</label>
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input maxlength="100" name="ppass" id="ppass" type="password" value='<?= $_POST['ppass'] ?>' />
+					</span>
+					<span class='error'><?= $error['curpass'] ?></span>
+				</p>
+				<p class='area'>
+					<label for='ppass'>New Password:</label>
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input maxlength="100" name="newpass" type="password" value='<?= $_POST['newpass'] ?>' />
+					</span>
+					<span class='error'><?= $error['newerpass']; ?></span>
+				</p>
+				<p class='area'>
+					<label for='ppass'>Confirm Password:</label>
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input maxlength="100" name="conpass" type="password" value='<?= $_POST['conpass'] ?>' />
+					</span>
+					<span class='error'>
+						<?= $error['confpass'] ?>
+						<?= $error['mismatch'] ?>
+					</span>
+				</p>
+				<div class='loginformspacer'></div>
+				<p>
+					<span class='roundbutton'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input type="submit" value="Update">
+					</span>
+				</p>
+		</form>
+		<div class='divider'><!-- comment for IE --></div>
+		<div id='footer'>
+			Copyright &copy; 2008, Scott Deutsch, Ben Mann, Aaron Ten Clay. All Rights Reserved.
+		</div>
+	</body>
+</html>
+<?php
 				}
 			}
 			else
 			{
-				?>
-				<html>
-					<head>
-						<title>
-						Successfully Change Password
-						</title>
-					</head>
-					<body>
-						<div align="center">
-						Password was successfuly changed<br>
-						<FORM action=rules.php>
-						<INPUT type="SUBMIT" value="Done">
-						</FORM>
-						<?php
-						unset($_SESSION['CP']);
-						?>
-						</div>
-					</body>
-					</html>
-				
-				<?php
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Password Updated Successfully</title>
+		<link href='css/style.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+		<link href='css/colors.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+	</head>
+	<body>
+		<div id='header'>
+			<div class='area'>
+				<div id='hleft'>
+					<div class='green headerlg'>Autonomous</div>
+				</div>
+				<div id='hright'>
+					<div class='login'>
+						<?= "Welcome ".$_SESSION['Login']['User']." | " ?>
+						<a href='login.php?action=logout'>logout</a>
+					</div>
+				</div>
+			</div>
+			<div class='area'>
+				<div id='hleft'>
+					<div class='ltgrey headermed'>Self-Governing Routing</div>
+				</div>
+				<div id='hright'>
+					<div class='dkgrey nodisplay'>
+						Search for Term:
+						<span class='roundinput'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type='text' />
+						</span>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type='submit' value='GO' />
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='divider'><!-- comment for IE --></div>
+		<form action='rules.php'>
+			<div id="loginform">
+				<p class='loginformhead'>Password was successfully changed for <?= $_SESSION['Login']['User'] ?></p>
+				<div class='loginformdiv'><!-- comment for IE --></div>
+				<p>
+					<span class='roundbutton'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input type="SUBMIT" value="OK" />
+					</span>
+				</p>
+			</form>
+		<div class='divider'><!-- comment for IE --></div>
+		<div id='footer'>
+			Copyright &copy; 2008, Scott Deutsch, Ben Mann, Aaron Ten Clay. All Rights Reserved.
+		</div>
+		<?php unset($_SESSION['CP']); ?>
+	</body>
+</html>
+<?php
 			}
 		}
 	}
