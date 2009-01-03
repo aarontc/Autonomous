@@ -9,7 +9,7 @@
 	else
 	{
 		//logout if they are trying to logout
-		if(strcmp($_GET['action'],"logout") && isset($_SESSION['Login']['User']))
+		if(strcmp($_GET['action'],"logout")==0 && isset($_SESSION['Login']['User']))
 		{
 			unset($_SESSION['Login']['User']);
 			unset($_SESSION['Login']['Pass']);

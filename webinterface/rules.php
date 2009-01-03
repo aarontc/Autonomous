@@ -1,4 +1,18 @@
-<?php require ('autonomous.inc.php'); ?>
+<?php require ('autonomous.inc.php'); include ('utility.php');
+
+if(IsDBEmpty())
+{
+	header('Location: ius.php');
+	exit;
+}
+
+if(!IsGoodSession())
+{
+	header('Location: login.php');
+	exit;
+}
+
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -18,7 +32,10 @@
 				<div class='green headerlg'>Autonomous</div>
 			</div>
 			<div id='hright'>
-				<div class='login nodisplay'>
+				<div class='login'>
+					<?php
+					echo "Welcome ".$_SESSION['Login']['User']." | ";
+					?>
 					<a href='login.php?action=logout'>logout</a>
 				</div>
 			</div>
