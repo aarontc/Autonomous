@@ -12,29 +12,39 @@
 	if ( $_SERVER['REQUEST_METHOD'] == "POST" )
 		UpdateRules();
 	?>
-	<div id='header' class='area'>
-		<div id='hleft'>
-			<div class='green headerlg'>Autonomous</div>
-			<div class='ltgrey headermed'>Self-Governing Routing</div>
+	<div id='header'>
+		<div class='area'>
+			<div id='hleft'>
+				<div class='green headerlg'>Autonomous</div>
+			</div>
+			<div id='hright'>
+				<div class='login nodisplay'>
+					<a href='login.php?action=logout'>logout</a>
+				</div>
+			</div>
 		</div>
-		<div id='hright'>
-			<div class='bgcolor headerlg'>&nbsp;</div>
-			<div class='dkgrey nodisplay'>
-				Search for Term:
-				<span class='roundinput'>
-					<span class='tl'></span>
-					<span class='tr'></span>
-					<span class='bl'></span>
-					<span class='br'></span>
-					<input type='text' />
-				</span>
-				<span class='roundbutton'>
-					<span class='tl'></span>
-					<span class='tr'></span>
-					<span class='bl'></span>
-					<span class='br'></span>
-					<input type='submit' value='GO' />
-				</span>
+		<div class='area'>
+			<div id='hleft'>
+				<div class='ltgrey headermed'>Self-Governing Routing</div>
+			</div>
+			<div id='hright'>
+				<div class='dkgrey nodisplay'>
+					Search for Term:
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input type='text' />
+					</span>
+					<span class='roundbutton'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input type='submit' value='GO' />
+					</span>
+				</div>
 			</div>
 		</div>
 	</div>
