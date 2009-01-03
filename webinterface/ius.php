@@ -27,6 +27,11 @@ else
 				$error['user'] = '<span style="color:red">INVALID USER NAME- Bad Character</span>'; 
 				$counter--;
 			}
+			else if(DoesUserExist($_POST['nuser']))
+			{
+				$error['user'] = '<span style="color:red">USER NAME Already Exists</span>'; 
+				$counter--;
+			}
 		}
 	}
 

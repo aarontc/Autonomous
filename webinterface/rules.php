@@ -1,271 +1,254 @@
-<?php
-
-	require ('autonomous.inc.php'); 
-	
-	// Get file mtime and cache rules
-	clearstatcache ();
-	$_SESSION["RulesFile"]["path"] = SHOREWALL_RULES_FILE;
-	$_SESSION["RulesFile"]["mtime"] = filemtime ( SHOREWALL_RULES_FILE );
-	$_SESSION["Rules"] = ShorewallGetRules ( SHOREWALL_RULES_FILE );
-
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html lang="en">
+<?php require ('autonomous.inc.php'); ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>autonomous</title>
-		<link rel="STYLESHEET" href="css/style.css" type="text/css" />
+		<title>Autonomous</title>
+		<meta content="">
+		<link href='css/style2.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+		<link href='css/colors.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
 	</head>
-	<body bgcolor="FFFFFF">
-		<form action="test.php" method="post">
-			<div align="center">
-				<table width="100%" border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td colspan="3" width="100%">
-							<table width="100%" border="0" cellpadding="0" cellspacing="0">
-								<tr>
-									<td width="100%" colspan="3">
-									<span style="font-size:28px;color:85C329">
-										Autonomous
-									</span>
-									</td>
-								</tr>
-								<tr>
-									<td width="50%">
-										<span style="font-size:20px;color:CCCCCC">
-											Self-Governing Routing
-										</span>
-									</td>
-									<td width="50%" align="right">
-										<table width="100%" border="0" cellpadding="0" cellspacing="0">
-											<tr>
-												<td align="right" height="20">
-													<span style="color:AAAAAA">
-														search for term&nbsp;
-													</span>
-													<input type="text" onFocus="this.style.background='FFFFFF';" onBlur="this.style.background='F9F9F9';">&nbsp;
-													<input type="submit" style="padding:0;background-color:85C329;border:0;color:FFFFFF;width:25;font-weight:bold" value="GO">
-												</td>
-											</tr>
-										</table>
-									</td>
-									<td width="20"></td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="3" height="15" bgcolor="FFFFFF"></td>
-					</tr>
-					<tr>
-						<td colspan="3" height="1" class="hsep"></td>
-					</tr>
-					<tr>
-						<td colspan="3" height="10" bgcolor="FFFFFF"></td>
-					</tr>
-					<tr>
-						<td width="170" bgcolor="FFFFFF" valign="top">
-							<span style="font-size:6px"><br /></span>
-							<div align="center">
-								<table width="140" border="0" cellpadding="0" cellspacing="0">
-									<tr>
-										<td><a href="rules.php">Port Forwarding</a></td>
-									</tr>
-									<tr>
-										<td>Forward ports to LAN machines</td>
-									</tr>
-									<tr>
-										<td height="5" bgcolor="FFFFFF"></td>
-									</tr>
-									<!--<tr>
-										<td><a href="#">company overview</a></td>
-									</tr>
-									<tr>
-										<td>about our company</td>
-									</tr>
-									<tr>
-										<td height="5" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td><a href="#">services &amp; products</a></td>
-									</tr>
-									<tr>
-										<td>what we provide</td>
-									</tr>
-									<tr>
-										<td height="5" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td><a href="#">partnerships</a></td>
-									</tr>
-									<tr>
-										<td>look at all our partners</td>
-									</tr>
-									<tr>
-										<td height="5" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td><a href="#">online portfolio</a></td>
-									</tr>
-									<tr>
-										<td>see all of our clients</td>
-									</tr>
-									<tr>
-										<td height="5" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td><a href="#">registration</a></td>
-									</tr>
-									<tr>
-										<td>how you can register</td>
-									</tr>
-									<tr>
-										<td height="5" bgcolor="FFFFFF"></td>
-									</tr>
-									<tr>
-										<td><a href="#">contacting us</a></td>
-									</tr>
-									<tr>
-										<td>how you can reach us</td>
-									</tr>-->
-								</table>
-								<!--<br /><span style="font-size:6px"><br /></span>
-								<table width="140" border="0" cellpadding="0" cellspacing="0">
-									<tr>
-										<td colspan="3" height="1" bgcolor="AAAAAA"></td>
-									</tr>
-									<tr>
-										<td width="1" bgcolor="AAAAAA" rowspan="5"></td>
-										<td width="138" height="26" bgcolor="F9F9F9" style="color:85C329;font-size:14px">
-											&nbsp;&nbsp;announcements
-										</td>
-										<td width="1" bgcolor="AAAAAA" rowspan="5"></td>
-									</tr>
-									<tr>
-										<td height="1" bgcolor="AAAAAA"></td>
-									</tr>
-									<tr>
-										<td bgcolor="FFFFFF">
-											<table width="138" border="0" cellpadding="7" cellspacing="0">
-												<tr>
-													<td style="color:AAAAAA">
-														4/30 - idea spawned
-														<br /><span style="font-size:6px"><br /></span>
-														5/1 - design created
-														<br /><span style="font-size:6px"><br /></span>
-														5/1 - design submitted to OSWD for approval
-													</td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-									<tr>
-										<td height="1" bgcolor="AAAAAA"></td>
-									</tr>
-								</table>
-								<span style="font-size:6px"><br /></span>-->
-							</div>
-						</td>
-						<td width="1" class='vsep'></td>
-						<td width="83%" valign="top">
-							<span style="font-size:6px"><br /></span>
-							<div align="center">
-								<?php
-									foreach ( $_SESSION["Rules"] as $rule ) {
-								?>
-								<table cellpadding='0' cellspacing='0' width='90%'>
-									<tr>
-										<td rowspan='2' colspan='2' class='rulehead'>
-											<table cellpadding='0' cellspacing='0' width='100%'>
-												<tr>
-													<td width='95%'>
-														<span style='padding-left: 3px;'>
-															<input type='text' class='desc' value='<?= htmlentities ( $rule->comment ) ?>' name="Description[<?= $rule->id ?>]" />
-														</span>
-													</td>
-													<td align='right'>
-														<span style='padding-right: 1px; padding-top: 2px;'>
-															<input name="Action[<?= $rule->id ?>]" value="Delete" type='image' src='images/delete-15x15.png' class='delimg' title='Remove' alt='Remove' />
-														</span>
-													</td>
-												</tr>
-											</table>
-										</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td class='shadow' width='5'></td>
-									</tr>
-									<tr>
-										<td colspan='2' class='rulebody'>
-											<table width="80%" border="0" cellpadding="17" cellspacing="0">
-												<tr>
-													<td style="padding:12px">
-														<div align="justify">
-															<table cellpadding='3' cellspacing='0' border='0'>
-																<tr>
-																	<th align='right'>LAN Computer IP</th>
-																	<td><input type='text' name="LAN IP[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination[1] ) ?>" size='15' /></td>
-																	<td width='20' rowspan='2'></td><!-- separator -->
-																	<th align='right'>Protocol</th>
-																	<td>
-																		<select name="Protocol[<?= $rule->id ?>]">
-																		<option value="tcp" <?php echo ( $rule->protocol == "tcp" ? "selected" : "" ); ?>>TCP</option>
-																		<option value="udp" <?php echo ( $rule->protocol == "udp" ? "selected" : "" ); ?>>UDP</option>
-																		</select>
-																	</td>
-																</tr>
-																<tr>
-																	<th align='right'>LAN Port</th>
-																	<td colspan='1'>
-																		<input type='text' name="LAN Port Start[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination[2] ) ?>" size='5' />
-																		<input type='text' name="LAN Port End[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination[3] ) ?>" size='5' />
-																	</td>
-																	<th align='right'>Internet Port</th>
-																	<td colspan='1' align='left'>
-																		<input type='text' name="WAN Port Start[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination_ports[0] ) ?>" size='5' />
-																		<input type='text' name="WAN Port End[<?= $rule->id ?>]" value="<?= htmlentities ( $rule->destination_ports[1] ) ?>" size='5' />
-																	</td>
-																</tr>
-															</table>
-														</div>
-													</td>
-												</tr>
-											</table>
-										</td>
-										<td class='shadow'></td>
-									</tr>
-									<tr>
-										<td width='4' height='5'></td>
-										<td class='shadow' width='99%'></td>
-										<td class='shadow'></td>
-									<tr>
-									</tr>
-								</table>
-								<br />
-								<?php
-								}
-								?>
-								<span style="font-size:6px"><br /></span>
-								<input type='submit' value='Update' />&nbsp;&nbsp;<input type='reset' name='reset' value='Retry' />
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="3" height="10" bgcolor="FFFFFF"></td>
-					</tr>
-					<tr>
-						<td colspan="3" height="1" class="hsep"></td>
-					</tr>
-					<tr>
-						<td colspan="3" height="5" bgcolor="FFFFFF"></td>
-					</tr>
-					<tr>
-						<td colspan="3" bgcolor="FFFFFF" align="right">
-							Copyright &#0169; 2008, <a href="http://www.principleofdesign.com" style="font-size:12px;color:AAAAAA">Scott Deutsch, Ben Mann, Aaron Ten Clay</a>. All Rights Reserved.
-						</td>
-					</tr>
-				</table>
+	<body>
+	<?php
+	if ( $_SERVER['REQUEST_METHOD'] == "POST" )
+		UpdateRules();
+	?>
+	<div id='header' class='area'>
+		<div id='hleft'>
+			<div class='green headerlg'>Autonomous</div>
+			<div class='ltgrey headermed'>Self-Governing Routing</div>
+		</div>
+		<div id='hright'>
+			<div class='bgcolor headerlg'>&nbsp;</div>
+			<div class='dkgrey nodisplay'>
+				Search for Term:
+				<span class='roundinput'>
+					<span class='tl'></span>
+					<span class='tr'></span>
+					<span class='bl'></span>
+					<span class='br'></span>
+					<input type='text' />
+				</span>
+				<span class='roundbutton'>
+					<span class='tl'></span>
+					<span class='tr'></span>
+					<span class='bl'></span>
+					<span class='br'></span>
+					<input type='submit' value='GO' />
+				</span>
 			</div>
-		</form>
+		</div>
+	</div>
+	<div class='divider'><!-- comment for IE --></div>
+	<div id='main' class='area'>
+		<div id='sidebar'>
+			<div class='menuitem'>
+				<div class='mititle'><a href='#'>Port Forwarding</a></div>
+				<div class='midesc'>Forward ports to LAN machines.</div>
+			</div>
+		</div>
+		<div id='content'>
+			<div id='rules' class='area'>
+				<form method="POST">
+					<div class='center'>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type="submit" name="submit" value="Submit" title='Update all rules' />
+						</span>
+					</div>
+					<?php
+						foreach ( $_SESSION['Rules'] as $ruleid => $rule ) {
+							if ( $rule->action != "DNAT" )
+								continue; 
+					?>
+					<div class='rulespacer'></div>
+					<!-- rule <?= $ruleid ?> starts here -->
+					<div class='rulecontainer'>
+						<div class='ruleshadow'>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+						</div>
+						<div class='rule'>
+							<span class='ruletl'></span>
+							<span class='ruletr'></span>
+							<span class='rulebl'></span>
+							<span class='rulebr'></span>
+							<div class='ruletitle'>
+								<input type='text' value='<?= htmlentities ( $rule->GetComment() ) ?>' name='comment[<?= $ruleid ?>]' id='comment[<?= $ruleid ?>]' title='Rule description goes here.' />
+								<input type='image' title='Delete this rule' alt='Delete' value='Delete' src='images/delete-15x15.png' name='delete[<?= $ruleid ?>]' id='delete[<?= $ruleid ?>]' />
+							</div>
+							<div class='rulebody'>
+								<div class='area'>
+									<p>
+										<label for='destination_ip[<?= $ruleid ?>]'>LAN Computer IP:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='ip' value='<?= $rule->destination[1] ?>' name='destination_ip[<?= $ruleid ?>]' id='destination_ip[<?= $ruleid ?>]' title='*REQUIRED* LAN Computers IP Address.' />
+										</span>
+									</p>
+									<p>
+										<label for='protocol[<?= $ruleid ?>]'>Protocol:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<select name='protocol[<?= $ruleid ?>]' id='protocol[<?= $ruleid ?>]' title='Select the protocol.'>
+												<option value='tcp'<?= ($rule->protocol=="tcp" ? " selected" : "") ?>>TCP</option>
+												<option value='udp'<?= ($rule->protocol=="udp" ? " selected" : "") ?>>UDP</option>
+											</select>
+										</span>
+									</p>
+								</div>
+								<div class='area'>
+									<p>
+										<label for='destination_port_start[<?= $ruleid ?>]'>LAN Port:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='port' value='<?= $rule->destination[2] ?>' name='destination_port_start[<?= $ruleid ?>]' id='destination_port_start[<?= $ruleid ?>]' title='*OPTIONAL* LAN Computers Destination Port. If there is a range, this is the starting port.' />
+										</span>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='port' value='<?= $rule->destination[3] ?>' name='destination_port_end[<?= $ruleid ?>]' id='destination_port_end[<?= $ruleid ?>]' title='*OPTIONAL* If there is a range of ports for the LAN Computers Destination Port, this is the ending port.' />
+										</span>
+									</p>
+									<p>
+										<label for='wan_port_start[<?= $ruleid ?>]'>Internet Port:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='port' value='<?= $rule->destination_ports[0] ?>' name='wan_port_start[<?= $ruleid ?>]' id='wan_port_start[<?= $ruleid ?>]' title='*REQUIRED* Internet port. If there is a range, this is the starting port.' />
+										</span>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='port' value='<?= $rule->destination_ports[1] ?>' name='wan_port_end[<?= $ruleid ?>]' id='wan_port_end[<?= $ruleid ?>]' title='*OPTIONAL* If there is a range for Internet ports, then this is the end port.' />
+										</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- rule ends here -->
+					<div class='rulespacer'></div>
+					<?php
+						}
+					?>
+					<div class='rulespacer'></div>
+					<!-- rule NEWRULEFORTEHLOVEOFALLTHATISPACKETY starts here -->
+					<div class='rulecontainer'>
+						<div class='ruleshadow'>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+						</div>
+						<div class='rule'>
+							<span class='ruletl'></span>
+							<span class='ruletr'></span>
+							<span class='rulebl'></span>
+							<span class='rulebr'></span>
+							<div class='ruletitle'>
+								<input type='text' value='New Rule Description' name='comment[new]' id='comment[new]' title='Rule description goes here.' />
+							</div>
+							<div class='rulebody'>
+								<div class='area'>
+									<p>
+										<label for='destination_ip[new]'>LAN Computer IP:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='ip' value='' name='destination_ip[new]' id='destination_ip[new]' title='*REQUIRED* LAN Computers IP Address.' />
+										</span>
+									</p>
+									<p>
+										<label for='protocol[new]'>Protocol:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<select name='protocol[new]' id='protocol[new]' title='Select the protocol.'>
+												<option value='tcp' selected>TCP</option>
+												<option value='udp'>UDP</option>
+											</select>
+										</span>
+									</p>
+								</div>
+								<div class='area'>
+									<p>
+										<label for='destination_port_start[new]'>LAN Port:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='port' value='' name='destination_port_start[new]' id='destination_port_start[new]' title='*OPTIONAL* LAN Computers Destination Port. If there is a range, this is the starting port.' />
+										</span>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='port' value='' name='destination_port_end[new]' id='destination_port_end[new]' title='*OPTIONAL* If there is a range of ports for the LAN Computers Destination Port, this is the ending port.' />
+										</span>
+									</p>
+									<p>
+										<label for='wan_port_start[new]'>Internet Port:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='port' value='' name='wan_port_start[new]' id='wan_port_start[new]' title='*REQUIRED* Internet port. If there is a range, this is the starting port.' />
+										</span>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='port' value='' name='wan_port_end[new]' id='wan_port_end[new]' title='*OPTIONAL* If there is a range for Internet ports, then this is the end port.' />
+										</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- rule ends here -->
+					<div class='rulespacer'></div>
+					<div class='center'>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type="submit" name="submit" value="Submit" title='Update all rules' />
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class='divider'><!-- comment for IE --></div>
+	<div id='footer'>
+		Copyright &copy; 2008, Scott Deutsch, Ben Mann, Aaron Ten Clay. All Rights Reserved.
+	</div>
 	</body>
 </html>

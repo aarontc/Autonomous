@@ -186,6 +186,34 @@ function IsGoodSession()
 	return QuickFindUserFromPass($_SESSION['Login']['User'],$_SESSION['Login']['Pass']);
 }
 
+function DoesUserExist($user)
+{
+	$de = false;
+
+	//connect to database
+	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	//grab login table
+	$q = sqlite_query($dbhandle, "SELECT User FROM logins WHERE User='$user';",$error) or die ("Cannout use login table");
+
+	if(!$q){
+		exit("Error in Query: '$error'");
+		$de = false;
+	}
+
+	if(strcmp($q,$user)==0)
+		$de = true;
+
+	//close the sql database
+	sqlite_close($dbhandle);
+
+	return $de;
+}
+
+function GetPrivFromUser($user)
+{
+
+}
+
 $validation_struct = array (
 	"user" => array(
 		"minimum_length" => 5,
