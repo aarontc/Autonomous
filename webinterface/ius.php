@@ -132,7 +132,7 @@ else
 		<div class='divider'><!-- comment for IE --></div>
 		<form action="ius.php" method="POST">
 			<div id="loginform">
-				<p class='loginformhead'>Initial User Setup For Autonomous Router </p>
+				<p class='loginformhead'>Initial User Setup for Autonomous Router </p>
 				<div class='loginformdiv'><!-- comment for IE --></div>
 				<p class='area'>
 					<label for='nuser'>New User Name:</label>
