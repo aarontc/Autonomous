@@ -7,6 +7,7 @@ session_start();
 if(!IsDBEmpty())
 {
 	header('Location: login.php');
+	exit;
 }
 else
 {
@@ -17,19 +18,19 @@ else
 	{
 		if (!validate_variable("user",$_POST['nuser'],$validation_struct))
 		{
-			$error['user'] = '<span style="color:red">INVALID USER NAME</span>'; 
+			$error['user'] = 'INVALID USER NAME'; 
 		}
 		else
 		{
 			$counter++;
 			if(!CheckUserString($_POST['nuser']))
 			{
-				$error['user'] = '<span style="color:red">INVALID USER NAME- Bad Character</span>'; 
+				$error['user'] = 'INVALID USER NAME- Bad Character'; 
 				$counter--;
 			}
 			else if(DoesUserExist($_POST['nuser']))
 			{
-				$error['user'] = '<span style="color:red">USER NAME Already Exists</span>'; 
+				$error['user'] = 'USER NAME Already Exists'; 
 				$counter--;
 			}
 		}
@@ -39,7 +40,7 @@ else
 	{
 		if (!validate_variable("password",$_POST['npass'],$validation_struct)) 
 		{
-			$error['pass'] = '<span style="color:red">INVALID password</span>'; 
+			$error['pass'] = 'INVALID password'; 
 		}
 		else
 		{
@@ -51,7 +52,7 @@ else
 	{
 		if (!validate_variable("password",$_POST['cp'],$validation_struct))
 		{
-			$error['cpass'] = '<span style="color:red">INVALID password</span>'; 
+			$error['cpass'] = 'INVALID password'; 
 		}
 		else
 		{
@@ -63,7 +64,7 @@ else
 	{
 		if(strcmp($_POST['cp'],$_POST['npass'])!=0)
 		{
-			$error['mismatch'] = '<span style="color:red">PASSWORD MISMATCH</span>'; 
+			$error['mismatch'] = 'PASSWORD MISMATCH'; 
 		}
 		else
 		{
@@ -88,45 +89,109 @@ else
 	{
 
 ?>
-	
-		<html>
-		<head>
-			<title>
-			IUS
-			</title>
-		</head>
-		<body>
-			<div align="center">
-			<form action="ius.php" method="POST">
-				<div align="center">
-				Initial User Setup For Autonomous Router 
-				<br>
-				<br>
-				<?php 
-				echo 'New User Name: <INPUT maxlength="100" name="nuser" type="text" value='.$_POST['nuser'].'>';
-				echo $error['user'];
-				?>
-				<br>
-				<br>
-				<?php
-				echo 'New Password: <INPUT maxlength="100" name="npass" type="text" value='.$_POST['npass'].'>';
-				echo $error['pass'];
-				?>
-				<br>
-				<br>
-				<?php
-				echo 'Confirm Password: <INPUT maxlength="100" name="cp" type="text" value='.$_POST['cp'].'>';
-				echo $error['cpass'];
-				echo $error['mismatch'];
-				?>
-				<br>
-				<br>
-				<INPUT type="submit" value="submit">
-				<br>
-			</form>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Autonomous - Initial User Setup</title>
+		<link href='css/style.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+		<link href='css/colors.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+	</head>
+	<body>
+		<div id='header'>
+			<div class='area'>
+				<div id='hleft'>
+					<div class='green headerlg'>Autonomous</div>
+				</div>
+				<div id='hright'>&nbsp;</div>
 			</div>
-		</body>
-		</html>
+			<div class='area'>
+				<div id='hleft'>
+					<div class='ltgrey headermed'>Self-Governing Routing</div>
+				</div>
+				<div id='hright'>
+					<div class='dkgrey nodisplay'>
+						Search for Term:
+						<span class='roundinput'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type='text' />
+						</span>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type='submit' value='GO' />
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='divider'><!-- comment for IE --></div>
+		<form action="ius.php" method="POST">
+			<div id="loginform">
+				<p class='loginformhead'>Initial User Setup For Autonomous Router </p>
+				<div class='loginformdiv'><!-- comment for IE --></div>
+				<p class='area'>
+					<label for='nuser'>New User Name:</label>
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input maxlength="100" name="nuser" id="nuser" type="text" value='<?= $_POST['nuser'] ?>'>
+					</span>
+					<span class='error'>
+						<?= $error['user'] ?>
+					</span>
+				</p>
+				<p class='area'>
+					<label for='npass'>New Password:</label>
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input maxlength="100" name="npass" id="npass" type="password" value='<?= $_POST['npass'] ?>'>
+					</span>
+					<span class='error'>
+						<?= $error['pass'] ?>
+					</span>
+				</p>
+				<p class='area'>
+					<label for='cp'>Confirm Password:</label>
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input maxlength="100" name="cp" id="cp" type="password" value='<?= $_POST['cp'] ?>'>
+					</span>
+					<span class='error'>
+						<?= $error['cpass'] ?>
+						<?= $error['mismatch'] ?>
+					</span>
+				</p>
+				<div class='loginformspacer'></div>
+				<p>
+					<span class='roundbutton'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input type="submit" value="Create User">
+					</span>
+				</p>
+			</div>
+		</form>
+		<div class='divider'><!-- comment for IE --></div>
+		<div id='footer'>
+			Copyright &copy; 2008, Scott Deutsch, Ben Mann, Aaron Ten Clay. All Rights Reserved.
+		</div>
+	</body>
+</html>
 	<?php
 	}
  }

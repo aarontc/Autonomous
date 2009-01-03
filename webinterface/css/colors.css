@@ -9,7 +9,7 @@
 /*	The element background images have been put in this file along with the colors
 		becuase they are directly related to the element colors
 */
-input[type='text'], select {  border-color: rgb(204, 204, 204); color: rgb(85, 85, 85); }
+input[type='text'], input[type='password'], select {  border-color: rgb(204, 204, 204); color: rgb(85, 85, 85); }
 input[type='button'], input[type='submit'] { background-color: rgb(133, 195, 41); color: rgb(255, 255, 255); }
 input[type='button']:hover, input[type='submit']:hover { background-color: rgb(154, 225, 47); }
 
@@ -17,7 +17,7 @@ input[type='button']:hover, input[type='submit']:hover { background-color: rgb(1
 .ltgrey { color: rgb(204, 204, 204); }
 .dkgrey { color: rgb(85, 85, 85); }
 .bgcolor { color: rgb(255, 255, 255); }
-.divider { border-left-color: rgb(204, 204, 204); background-color: rgb(204, 204, 204); }
+.divider { border-bottom-color: rgb(204, 204, 204); background-color: rgb(204, 204, 204); }
 
 .roundbutton { background-color: rgb(133, 195, 41); background-image: url('../images/button_bg.png'); } /* for Safari; it doesn't look perfect, but it's close */
 .roundbutton input[type='button'], .roundbutton input[type='submit'] { background-color: rgb(133, 195, 41); background-image: url('../images/button_bg.png'); }
@@ -27,6 +27,10 @@ input[type='button']:hover, input[type='submit']:hover { background-color: rgb(1
 
 .roundinput { background-color: rgb(255, 255, 255);  border-color: rgb(204, 204, 204);}
 .roundinput .tl, .roundinput .tr, .roundinput .bl, .roundinput .br { background-color: transparent; background-image: url('../images/text_corner.png'); }
+
+#loginform { color: rgb(44,64,13); }
+.loginformdiv { border-bottom-color: rgb(204, 204, 204); }
+.loginformhead { color: rgb(66,96,20); }
 
 #sidebar { border-right-color: rgb(204, 204, 204); }
 .mititle a { color: rgb(133,195,41); }
