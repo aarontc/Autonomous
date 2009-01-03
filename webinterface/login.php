@@ -8,6 +8,13 @@
 	}
 	else
 	{
+		//logout if they are trying to logout
+		if(strcmp($_GET['action'],"logout") && isset($_SESSION['Login']['User']))
+		{
+			unset($_SESSION['Login']['User']);
+			unset($_SESSION['Login']['Pass']);
+		}
+
 		if((!isset($_SESSION['Login']['User']) || !isset($_SESSION['Login']['Pass'])) && ($_POST['user'] == null || $_POST['pass'] == null))
 		{	
 ?>
