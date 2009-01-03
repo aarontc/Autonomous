@@ -3,11 +3,20 @@
 function IsDBEmpty()
 {
 	//connect to database
-	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
 
 	//checks how many rows there are in the databasae
-	$q = sqlite_query($dbhandle, 'SELECT * FROM logins') or die ("Cannout use login table");
-	$num = sqlite_num_rows($q);
+	@$q = sqlite_query($dbhandle, 'SELECT * FROM logins');
+
+	if(!$q)
+	{
+		CreateSqliteFile();	
+		$num = 0;
+	}
+	else
+	{
+		@$num = sqlite_num_rows($q);
+	}
 
 	//close it
 	sqlite_close($dbhandle);
@@ -20,7 +29,7 @@ function CreateUser($user, $pass, $privliages)
 {
 	//echo $user." ".$pass;
 	//connect to database
-	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
 
 	//sha512 the password
 	$np = hash('sha512',$pass);	
@@ -50,9 +59,11 @@ function CreateUser($user, $pass, $privliages)
 				{
 					//add to the database		
 					//get user ID
+					//echo $user;
 					$q = "SELECT UID FROM logins WHERE User='$user';";
-					//secho $q;
+					//echo $q;
 					$sql = sqlite_exec($dbhandle, $q, $error);
+					//echo $sql;
 					
 					if (!$query) {
 						exit("Error in query: '$error'");
@@ -60,6 +71,7 @@ function CreateUser($user, $pass, $privliages)
 						//store privliage
 						$rid = $entry['RID'];
 						$q = "INSERT INTO logins_roles VALUES($sql,$rid);";
+						//echo $q;
 						$sql = sqlite_exec($dbhandle, $q, $error);
 
 						if (!$sql) {
@@ -89,7 +101,7 @@ function CheckUserString($user)
 function ChangePassword($user,$newPass)
 {
 	//connect to the database
-	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
 
 	//hash the password
 	$np = hash('sha512',$newPass);
@@ -115,7 +127,7 @@ function QuickFindUserFromPass($user,$pass,$hashit=false)
 	//test me..................
 	$good = false;
 	//connect to the database
-	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
 
 	//hash the password
 	if($hashit)
@@ -151,12 +163,12 @@ function QuickFindUserFromPass($user,$pass,$hashit=false)
 
 function GoodUserPass($user,$pass)
 {
-	$good=0;
+	/*$good=0;
 
 	//connect to database
-	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
 	//grab login table
-	$q = sqlite_query($dbhandle, 'SELECT * FROM logins') or die ("Cannout use login table");
+	@$q = sqlite_query($dbhandle, 'SELECT * FROM logins') or die ("Cannout use login table");
 	$result = sqlite_fetch_all($q,SQLITE_ASSOC);
 	foreach ($result as $entry)
 	{
@@ -177,7 +189,9 @@ function GoodUserPass($user,$pass)
 	//close the sql database
 	sqlite_close($dbhandle);	
 	
-	return $good;
+	return $good;*/
+
+	return QuickFindUserFromPass($user,$pass);
 }
 
 function IsGoodSession()
@@ -191,9 +205,9 @@ function DoesUserExist($user)
 	$de = false;
 
 	//connect to database
-	$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
 	//grab login table
-	$q = sqlite_query($dbhandle, "SELECT User FROM logins WHERE User='$user';",$error) or die ("Cannout use login table");
+	@$q = sqlite_query($dbhandle, "SELECT User FROM logins WHERE User='$user';",$error) or die ("Cannout use login table");
 
 	if(!$q){
 		exit("Error in Query: '$error'");
@@ -214,9 +228,60 @@ function GetPrivFromUser($user)
 
 }
 
+function CreateSqliteFile()
+{
+
+	//connect to database
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+
+	//create file
+	$q = "CREATE table logins (UID integer primary key, User varchar(100), Password varchar(128));";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+
+	if(!$exec)
+	{
+		exit("Could not create logins table");
+	}
+
+	$q = "create table logins_roles (UID integer references logins(uid) on delete cascade, RID integer references roles(rid) on delete cascade, constraint pk primary key (UID, RID));";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+
+	if(!$exec)
+	{
+		exit("Could not create logins_roles table");
+	}
+
+	$q = "CREATE table roles (RID integer primary key, Description text);";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+
+	if(!$exec)
+	{
+		exit("Could not create roles table");
+	}
+
+	$q = "INSERT INTO roles VALUES(1,'port forwarding');";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+
+	if(!$exec)
+	{
+		exit("Could not insert into roles table");
+	}
+
+	$q = "INSERT INTO roles VALUES(2,'user managment');";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+
+	if(!$exec)
+	{
+		exit("Could not insert into roles table");
+	}
+
+	//close the sql database
+	sqlite_close($dbhandle);
+}
+
 $validation_struct = array (
 	"user" => array(
-		"minimum_length" => 5,
+		"minimum_length" => 2,
 		"maximum_length" => 100
 		),
 	"password" => array(
