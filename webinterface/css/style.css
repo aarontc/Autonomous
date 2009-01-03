@@ -36,7 +36,7 @@ div.center { text-align: center; }
 .loginformspacer { width: 100%; height: 5px; }
 .loginformhead { font-size: 1.5em; }
 #loginform p { width: 100%; vertical-align: middle; }
-#loginform p label { display: block; width: 47%; text-align: right; float: left; margin-top: 6px; }
+#loginform p label { display: block; width: 45%; text-align: right; float: left; margin-top: 6px; }
 #loginform p .roundinput { float: left; }
 
 #main { width: 100%; }

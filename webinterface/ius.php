@@ -141,11 +141,9 @@ else
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input maxlength="100" name="nuser" id="nuser" type="text" value='<?= $_POST['nuser'] ?>'>
+						<input maxlength="100" name="nuser" id="nuser" type="text" value='<?= $_POST['nuser'] ?>' />
 					</span>
-					<span class='error'>
-						<?= $error['user'] ?>
-					</span>
+					<span class='error'><?= $error['user'] ?></span>
 				</p>
 				<p class='area'>
 					<label for='npass'>New Password:</label>
@@ -154,11 +152,9 @@ else
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input maxlength="100" name="npass" id="npass" type="password" value='<?= $_POST['npass'] ?>'>
+						<input maxlength="100" name="npass" id="npass" type="password" value='<?= $_POST['npass'] ?>' />
 					</span>
-					<span class='error'>
-						<?= $error['pass'] ?>
-					</span>
+					<span class='error'><?= $error['pass'] ?></span>
 				</p>
 				<p class='area'>
 					<label for='cp'>Confirm Password:</label>
@@ -167,7 +163,7 @@ else
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input maxlength="100" name="cp" id="cp" type="password" value='<?= $_POST['cp'] ?>'>
+						<input maxlength="100" name="cp" id="cp" type="password" value='<?= $_POST['cp'] ?>' />
 					</span>
 					<span class='error'>
 						<?= $error['cpass'] ?>
@@ -181,7 +177,7 @@ else
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input type="submit" value="Create User">
+						<input type="submit" value="Create User" />
 					</span>
 				</p>
 			</div>
