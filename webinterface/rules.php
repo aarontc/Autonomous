@@ -4,7 +4,7 @@
 	<head>
 		<title>Autonomous</title>
 		<meta content="">
-		<link href='css/style2.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+		<link href='css/style.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
 		<link href='css/colors.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
 	</head>
 	<body>
