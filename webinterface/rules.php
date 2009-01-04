@@ -29,7 +29,7 @@ if(!IsGoodSession())
 		<div id='header'>
 			<div class='area'>
 				<div id='hleft'>
-					<div class='green headerlg'>Autonomous</div>
+					<div><a href='index.php' class='green headerlg'>Autonomous</a></div>
 				</div>
 				<div id='hright'>
 					<div class='login'>
