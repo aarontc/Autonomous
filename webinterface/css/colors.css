@@ -10,19 +10,22 @@
 		becuase they are directly related to the element colors
 */
 input[type='text'], input[type='password'], select {  border-color: rgb(204, 204, 204); color: rgb(85, 85, 85); }
-input[type='button'], input[type='submit'] { background-color: rgb(133, 195, 41); color: rgb(255, 255, 255); }
-input[type='button']:hover, input[type='submit']:hover { background-color: rgb(154, 225, 47); }
+input[type='button'], input[type='submit'], a.button { background-color: rgb(133, 195, 41); color: rgb(255, 255, 255); }
+input[type='button']:hover, input[type='submit']:hover, a.button:hover { background-color: rgb(154, 225, 47); }
 
 .green { color: rgb(125, 183, 38); }
 .ltgrey { color: rgb(204, 204, 204); }
 .dkgrey { color: rgb(85, 85, 85); }
+.error { color: rgb(240, 0, 0); }
 .bgcolor { color: rgb(255, 255, 255); }
+.login a.loggedinuser { color: rgb(80, 118, 24); }
+.login a.loggedinuser:hover { color: rgb(112, 164, 34); }
 .divider { border-bottom-color: rgb(204, 204, 204); background-color: rgb(204, 204, 204); }
 
 .roundbutton { background-color: rgb(133, 195, 41); background-image: url('../images/button_bg.png'); } /* for Safari; it doesn't look perfect, but it's close */
-.roundbutton input[type='button'], .roundbutton input[type='submit'] { background-color: rgb(133, 195, 41); background-image: url('../images/button_bg.png'); }
-.roundbutton input[type='button']:hover, .roundbutton input[type='submit']:hover { background-color: rgb(154, 225, 47); }
-.roundbutton input[type='button']:active, .roundbutton input[type='submit']:active { background-image: url('../images/button_bg_active.png'); }
+.roundbutton input[type='button'], .roundbutton input[type='submit'], .roundbutton a.button { background-color: rgb(133, 195, 41); background-image: url('../images/button_bg.png'); }
+.roundbutton input[type='button']:hover, .roundbutton input[type='submit']:hover, .roundbutton a.button:hover { background-color: rgb(154, 225, 47); }
+.roundbutton input[type='button']:active, .roundbutton input[type='submit']:active, .roundbutton a.button:active { background-image: url('../images/button_bg_active.png'); }
 .roundbutton .tl, .roundbutton .tr, .roundbutton .bl, .roundbutton .br { background-image: url('../images/button_corner.png'); }
 
 .roundinput { background-color: rgb(255, 255, 255);  border-color: rgb(204, 204, 204);}

@@ -12,6 +12,7 @@ body { font-size: 12px; }
 input[type='button'], input[type='submit'] { font-weight: bold; }
 p { padding: 0px; margin: 0px; }
 a { text-decoration: none; }
+a.button { padding: 0px 10px; }
 
 input.ip { width: 120px; }
 input.port { width: 40px; }
@@ -26,7 +27,9 @@ div.center { text-align: center; }
 #hright { width:45%; text-align: right; float: right; margin: 0px 10px 0px -10px; }
 .headerlg { font-size: 28px; font-weight: bold; }
 .headermed { font-size: 20px; }
+.error { float: left; margin-top: 6px; }
 .login { position: absolute; top: 5px; right: 15px; }
+.login a.loggedinuser { font-weight: bold; }
 
 .divider { width: 99%; height: 1px; margin: 10px auto 10px auto; border-bottom-width: 1px; border-bottom-style: solid; }
 .rulespacer { width: 100%; height: 10px; }
@@ -71,8 +74,8 @@ div.center { text-align: center; }
 .rulebody p input { float: left; }
 
 .roundbutton { position: relative; display: inline-block; }
-.roundbutton input[type='button'], .roundbutton input[type='submit'] { border:none; background-repeat: repeat-x; background-position: bottom center; }
-.roundbutton input[type='button']:hover, .roundbutton input[type='submit']:hover { cursor: pointer; }
+.roundbutton input[type='button'], .roundbutton input[type='submit'], .roundbutton a.button { border:none; background-repeat: repeat-x; background-position: bottom center; }
+.roundbutton input[type='button']:hover, .roundbutton input[type='submit']:hover, .roundbutton a.button:hover { cursor: pointer; }
 .roundbutton .tl, .roundbutton .tr, .roundbutton .bl, .roundbutton .br { position: absolute; width: 5px; height: 5px; }
 .roundbutton .tl { top: 0px; left: 0px; background-position: top left; }
 .roundbutton .tr { top: 0px; right: 0px; background-position: top right; }

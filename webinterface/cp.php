@@ -33,7 +33,7 @@
 				{
 					if (!QuickFindUserFromPass($user,$_POST['ppass'],true))
 					{
-						$error['curpass'] = '<span style="color:red">Incorrect Password</span>'; 
+						$error['curpass'] = 'Incorrect Password'; 
 					}
 					else
 					{
@@ -45,7 +45,7 @@
 				{
 					if (!validate_variable("password",$_POST['newpass'],$validation_struct)) 
 					{
-						$error['newerpass'] = '<span style="color:red">INVALID password</span>'; 
+						$error['newerpass'] = 'INVALID password'; 
 					}
 					else
 					{
@@ -57,7 +57,7 @@
 				{
 					if (!validate_variable("password",$_POST['conpass'],$validation_struct)) 
 					{
-						$error['confpass'] = '<span style="color:red">INVALID password</span>'; 
+						$error['confpass'] = 'INVALID password'; 
 					}
 					else
 					{
@@ -69,7 +69,7 @@
 				{
 					if(strcmp($_POST['conpass'],$_POST['newpass'])!=0)
 					{
-						$error['mismatch'] = '<span style="color:red">Password MISTMATCH</span>'; 
+						$error['mismatch'] = 'Password MISTMATCH'; 
 						$counter=0;
 					}
 					else
@@ -108,8 +108,14 @@
 				</div>
 				<div id='hright'>
 					<div class='login'>
-						<?= "Welcome ".$_SESSION['Login']['User']." | " ?>
-						<a href='login.php?action=logout'>logout</a>
+						Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User'] ?></a>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<a href='login.php?action=logout' class='button'>logout</a>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -217,8 +223,14 @@
 				</div>
 				<div id='hright'>
 					<div class='login'>
-						<?= "Welcome ".$_SESSION['Login']['User']." | " ?>
-						<a href='login.php?action=logout'>logout</a>
+						Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User'] ?></a>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<a href='login.php?action=logout' class='button'>logout</a>
+						</span>
 					</div>
 				</div>
 			</div>

@@ -33,8 +33,14 @@ if(!IsGoodSession())
 				</div>
 				<div id='hright'>
 					<div class='login'>
-						<?= "Welcome ".$_SESSION['Login']['User']." | " ?>
-						<a href='login.php?action=logout'>logout</a>
+						Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User'] ?></a>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<a href='login.php?action=logout' class='button'>logout</a>
+						</span>
 					</div>
 				</div>
 			</div>
