@@ -18,7 +18,7 @@ else
 	{
 		if (!validate_variable("user",$_POST['nuser'],$validation_struct))
 		{
-			$error['user'] = 'INVALID USER NAME'; 
+			$error['user'] = 'User Name---2 chars min/100 chars max'; 
 		}
 		else
 		{
@@ -40,7 +40,7 @@ else
 	{
 		if (!validate_variable("password",$_POST['npass'],$validation_struct)) 
 		{
-			$error['pass'] = 'INVALID password'; 
+			$error['pass'] = 'Password minimum length is 5 characters'; 
 		}
 		else
 		{
@@ -52,7 +52,7 @@ else
 	{
 		if (!validate_variable("password",$_POST['cp'],$validation_struct))
 		{
-			$error['cpass'] = 'INVALID password'; 
+			$error['cpass'] = 'Password minimum length is 5 characters'; 
 		}
 		else
 		{
@@ -68,8 +68,8 @@ else
 		}
 		else
 		{
-			$privliages['port forwarding'] = true;
-			$privliages['user managment'] = true;
+			$privileges['port forwarding'] = true;
+			$privileges['user managment'] = true;
 
 			//create the database
 			CreateUser($_POST['nuser'],$_POST['npass'], $privliages);

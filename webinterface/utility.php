@@ -25,7 +25,7 @@ function IsDBEmpty()
 }
 
 
-function CreateUser($user, $pass, $privliages)
+function CreateUser($user, $pass, $privileges)
 {
 	//echo $user." ".$pass;
 	//connect to database
@@ -35,6 +35,7 @@ function CreateUser($user, $pass, $privliages)
 	$np = hash('sha512',$pass);	
 
 	$q =  "INSERT INTO logins VALUES(null, '$user','$np');";
+
 	//create user
 	$query = sqlite_exec($dbhandle, $q, $error);
 	
@@ -42,38 +43,39 @@ function CreateUser($user, $pass, $privliages)
 	if (!$query) {
     		exit("Error in query: '$error'");
 	} else {
-		
-		//add privliages to the user
 
-		//first gather priv. info
-		$q = "SELECT * FROM roles;";
+		//get user ID
+		//echo $user;
+		$q = "SELECT UID FROM logins WHERE User='$user' LIMIT 1;";
 		$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
-		
 		if (!$query) {
-    			exit("Error in query: '$error'");
+			exit("Error in query: Cannot select UID from logins table");
 		} else {
-			//add the user to the role, if in privlages array says so
-			foreach($query as $entry)
-			{
-				if($privliages[$entry['Description']])
+			$UID = $query[0]['UID'];
+			//echo $UID;
+			//add privliages to the user
+
+			//first gather priv. info
+			$q = "SELECT * FROM roles;";
+			$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
+			
+			if (!$query) {
+				exit("Error in query: '$error'");
+			} else {
+				//add the user to the role, if in privlages array says so
+				//echo "yay";
+				foreach($query as $entry)
 				{
-					//add to the database		
-					//get user ID
-					//echo $user;
-					$q = "SELECT UID FROM logins WHERE User='$user';";
-					//echo $q;
-					$sql = sqlite_exec($dbhandle, $q, $error);
-					//echo $sql;
-					
-					if (!$query) {
-						exit("Error in query: '$error'");
-					} else {
+					if($privileges[$entry['Description']])
+					{
+						//add to the database		
 						//store privliage
 						$rid = $entry['RID'];
-						$q = "INSERT INTO logins_roles VALUES($sql,$rid);";
+						//echo $rid;
+						$q = "INSERT INTO logins_roles VALUES($UID,$rid);";
 						//echo $q;
 						$sql = sqlite_exec($dbhandle, $q, $error);
-
+	
 						if (!$sql) {
 							exit("Error in query: '$error'");
 						}
@@ -214,7 +216,11 @@ function DoesUserExist($user)
 		$de = false;
 	}
 
-	if(strcmp($q,$user)==0)
+	//if(strcmp($q,$user)==0)
+	//	$de = true;
+
+	$num = sqlite_num_rows($q);
+	if($num > 0)
 		$de = true;
 
 	//close the sql database
@@ -223,9 +229,185 @@ function DoesUserExist($user)
 	return $de;
 }
 
+function RemoveUser($user)
+{
+	//connect to database
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+
+	$q = "SELECT UID FROM logins WHERE User='$user' LIMIT 1;";
+	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
+	if (!$query) {
+		exit("Error in query: Cannot find UID from logins table");
+	} 
+
+	$UID = $query[0]['UID'];
+
+	$q = "DELETE from logins Where UID=".$UID.";";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+	if(!$exec)
+	{
+		exit("Could not delete from logins table");
+	}
+
+	$q = "DELETE from logins_roles Where UID=".$UID.";";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+	if(!$exec)
+	{
+		exit("Could not delete from logins_roles table");
+	}
+
+	//close the sql database
+	sqlite_close($dbhandle);
+}
+
 function GetPrivFromUser($user)
 {
+	$privs = 0;
 
+	//add this function later
+	//connect to database
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+
+	$q = "SELECT UID FROM logins WHERE User='$user' LIMIT 1;";
+	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
+	if (!$query) {
+		exit("Error in query: Cannot Select UID from logins table");
+	}
+
+	$UID = $query[0]['UID'];
+	$q = "SELECT RID FROM logins_roles WHERE UID=$UID;";
+
+	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
+	if (!$query) {
+		exit("Error in query: Cannot Select RID from logins_roles table");
+	} 
+
+	foreach($query as $entry)
+	{
+		$privs |= $entry['RID'];
+	}
+
+	//close the sql database
+	sqlite_close($dbhandle);
+
+
+	return $privs;
+}
+
+function HowManyUsers()
+{
+	//connect to database
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	//grab login table
+	@$q = sqlite_query($dbhandle, "SELECT User FROM logins;",$error) or die ("Cannout use login table");
+
+	if(!$q){
+		exit("Error in Query: '$error'");
+		$de = false;
+	}
+
+	$num = sqlite_num_rows($q);
+
+	//close the sql database
+	sqlite_close($dbhandle);
+
+	return $num;
+}
+
+function ChangePriv($user, $priv)
+{
+	//connect to database
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+
+	$q = "SELECT UID FROM logins WHERE User='$user' LIMIT 1;";
+	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
+	if (!$query) {
+		exit("Error in query: Cannot Select UID from logins table");
+	} 
+
+	$UID = $query[0]['UID'];
+
+	//delete the users roles
+	$q = "DELETE FROM logins_roles WHERE UID=$UID;";
+	$sql = sqlite_exec($dbhandle, $q, $error);
+	if (!$sql) {
+		exit("Error in query: '$error'");
+	}
+
+	//first gather priv. info
+	$q = "SELECT * FROM roles;";
+	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
+	
+	if (!$query) {
+		exit("Error in query: Cannot Select * from roles table");
+	} else {
+		//add the user to the role, if in privlages array says so
+		//echo "yay";
+		foreach($query as $entry)
+		{
+			$rid = $entry['RID'];
+
+			if($priv[$entry['Description']])
+			{
+				//add to the database		
+				$q = "INSERT INTO logins_roles VALUES($UID,$rid);";
+				$sql = sqlite_exec($dbhandle, $q, $error);
+				if (!$sql) {
+					exit("Error in query: '$error'");
+				}
+			}
+		}
+	}
+
+	//close the sql database
+	sqlite_close($dbhandle);
+}
+
+function GetAllUsersInfo()
+{
+	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+
+	//grab login table
+	$q = sqlite_array_query($dbhandle, "SELECT * FROM logins;",SQLITE_ASSOC);
+
+	if(!$q){
+		exit("Error in Query: cannot use logins");
+	}
+	
+	$id = 0;
+
+	foreach($q as $entry)
+	{
+		$ui[$id]['User'] = $entry['User'];
+		$ui[$id]['UID'] = $entry['UID'];
+		$id++;
+	}
+
+	//get roles
+	$q = sqlite_array_query($dbhandle, "SELECT * FROM logins_roles;",SQLITE_ASSOC);
+
+	if(!$q){
+		exit("Error in Query: cannot use logins");
+	}
+
+	foreach($q as $entry)
+	{
+		for($i=0; $i<$id; $i++)
+		{
+			if($ui[$i]['UID'] == $entry['UID'])
+			{
+			    $ui[$i]['RID'] |= $entry['RID'];
+			     break;
+			}
+		}
+	}
+
+	//print_r($ui);
+
+	//close the sql database
+	sqlite_close($dbhandle);
+
+	return $ui;
 }
 
 function CreateSqliteFile()
@@ -313,4 +495,31 @@ function validate_variable ( $variable, $value, $validation_struct ) {
 	return true;
 				
 }
+
+function rev_strstr($string, $search)
+{
+	$len = strlen($search);
+
+	$j=0;
+
+	for($i=strlen($string); $i>0; $i--)
+	{
+		if($search[$len] === $string[$i])
+		{
+			$count = 0;
+			$id = $len;
+			
+			for($j=$i; $string[$j] == $search[$id] && $j>0 && $id>0; $count++,$id--,$j--);
+
+			if($count==$len)
+			{
+				//we got a hit
+				return $j;
+			}
+		}
+	}
+
+	return -1;
+}
+
 ?>
