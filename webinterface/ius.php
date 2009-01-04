@@ -72,7 +72,7 @@ else
 			$privileges['user managment'] = true;
 
 			//create the database
-			CreateUser($_POST['nuser'],$_POST['npass'], $privliages);
+			CreateUser($_POST['nuser'],$_POST['npass'], $privileges);
 
 			//add Session data
 			$_SESSION['Login']['User'] = $_POST['nuser'];
