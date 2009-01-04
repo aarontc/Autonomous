@@ -1,9 +1,6 @@
 <?php include('utility.php');
+
 session_start();
-
-
-define("PortF",3);
-define("UserMan",2);
 
 if(IsDBEmpty())
 {
@@ -17,7 +14,7 @@ if(!IsGoodSession())
 	exit;
 }
 
-if(((GetPrivFromUser($_SESSION['Login']['User']) & UserMan)>>1) != true)
+if(!IsUserAdmin($_SESSION['Login']['User']))
 {
 	//header('Location: rules.php');
 	echo "ACCESS DENIED---You Do Not Have The Privilege To Have Access To This Page!<br>";

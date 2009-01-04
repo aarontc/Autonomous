@@ -1,5 +1,8 @@
 <?php
 
+define("PortF",3);
+define("UserMan",2);
+
 function IsDBEmpty()
 {
 	//connect to database
@@ -408,6 +411,11 @@ function GetAllUsersInfo()
 	sqlite_close($dbhandle);
 
 	return $ui;
+}
+
+function IsUserAdmin($user)
+{
+	return ((GetPrivFromUser($user) & UserMan) >> 1);
 }
 
 function CreateSqliteFile()
