@@ -67,7 +67,7 @@ div.center { float: none; text-align: center; }
 .rulebr, .userbr { bottom: -1px; right: -1px; background-position: bottom right; }
 .ruletitle, .usertitle { height: 23px; border-bottom-width: 1px; border-bottom-style: solid; border-collapse: collapse; }
 .ruletitle input[type='text'], .usertitle input[type='text'] { border-width: 0px; border-style: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 97%; font-size: 15px; font-weight: bold; float: left; }
-.ruletitle input[type='image'], .usertitle input[type='image'] { width: 15px; height: 15px; padding: 4px 5px 0px 0px; border: none; float: right; }
+.ruletitle input[type='image'], .usertitle input[type='image'], .ruletitle img, .usertitle img { width: 15px; height: 15px; padding: 4px 5px 0px 0px; border: none; float: right; }
 .rulebody, .userbody { width: auto; font-weight: bold; padding: 12px; }
 .rulebody div, .userbody div { clear: both; }
 .rulebody p { width: 245px; float: left; }
