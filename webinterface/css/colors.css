@@ -12,6 +12,7 @@
 input[type='text'], input[type='password'], select {  border-color: rgb(204, 204, 204); color: rgb(85, 85, 85); }
 input[type='button'], input[type='submit'], a.button { background-color: rgb(133, 195, 40); color: rgb(255, 255, 255); }
 input[type='button']:hover, input[type='submit']:hover, a.button:hover { background-color: rgb(154, 225, 47); }
+input[type='checkbox'] { border-color: rgb(204, 204, 204); }
 
 .green { color: rgb(125, 183, 38); }
 .ltgrey { color: rgb(204, 204, 204); }
@@ -40,13 +41,14 @@ input[type='button']:hover, input[type='submit']:hover, a.button:hover { backgro
 .midesc { color: rgb(112, 112, 112); }
 
 #content{ border-left-color: rgb(204, 204, 204); }
-.ruleshadow { background-color: rgb(240, 246, 236); }
-.ruleshadow .tr, .ruleshadow .bl, .ruleshadow .br { background-color: transparent; background-image: url('../images/shadow_corner.png'); }
-.rule { background-color: rgb(244, 255, 236); border-color: rgb(170, 170, 170); }
-.ruletl, .ruletr, .rulebl, .rulebr { background-color: transparent; background-image: url('../images/rule_corner.png'); }
-.ruletitle { background-color: rgb(207,240,167); border-bottom-color: rgb(170, 170, 170); }
-.ruletitle input[type='text'] { color: rgb(87, 128, 27); background-color: transparent; }
-.rulebody { color: rgb(44,102,21); }
-.rulebody .roundinput .tl, .rulebody .roundinput .tr, .rulebody .roundinput .bl, .rulebody .roundinput .br { background-color: transparent; background-image: url('../images/rule_text_corner.png'); }
+.ruleshadow, .usershadow { background-color: rgb(240, 246, 236); }
+.ruleshadow .tr, .ruleshadow .bl, .ruleshadow .br, .usershadow .tr, .usershadow .bl, .usershadow .br { background-color: transparent; background-image: url('../images/shadow_corner.png'); }
+.rule, .user { background-color: rgb(244, 255, 236); border-color: rgb(170, 170, 170); }
+.ruletl, .ruletr, .rulebl, .rulebr, .usertl, .usertr, .userbl, .userbr { background-color: transparent; background-image: url('../images/rule_corner.png'); }
+.ruletitle, .usertitle { background-color: rgb(207,240,167); border-bottom-color: rgb(170, 170, 170); }
+.ruletitle input[type='text'], .usertitle input[type='text'] { color: rgb(87, 128, 27); background-color: transparent; }
+.rulebody, .userbody { color: rgb(44,102,21); }
+.rulebody .roundinput .tl, .rulebody .roundinput .tr, .rulebody .roundinput .bl, .rulebody .roundinput .br, 
+.userbody .roundinput .tl, .userbody .roundinput .tr, .userbody .roundinput .bl, .userbody .roundinput .br { background-color: transparent; background-image: url('../images/rule_text_corner.png'); }
 
 #footer { color: rgb(187, 187, 187); }
