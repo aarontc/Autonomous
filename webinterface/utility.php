@@ -3,13 +3,16 @@
 define("PortF",3);
 define("UserMan",2);
 
+
+define("ROUTER_DB_FILE","/tmp/router.sqlite");
+
 function IsDBEmpty()
 {
 	//connect to database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	//checks how many rows there are in the databasae
-	@$q = sqlite_query($dbhandle, 'SELECT * FROM logins');
+	@$q = sqlite_query($dbhandle, 'SELECT * FROM logins;');
 
 	if(!$q)
 	{
@@ -32,7 +35,7 @@ function CreateUser($user, $pass, $privileges)
 {
 	//echo $user." ".$pass;
 	//connect to database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	//sha512 the password
 	$np = hash('sha512',$pass);	
@@ -92,6 +95,206 @@ function CreateUser($user, $pass, $privileges)
 	sqlite_close($dbhandle);
 }
 
+function IsRulesTableEmpty()
+{
+	$ret = true;
+
+	//connect to the database
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	//checks how many rows there are in the databasae
+	@$q = sqlite_query($dbhandle, 'SELECT * FROM rules;');
+
+	if(q)
+	{
+		if(sqlite_num_rows($q) > 0)
+			$ret = false;
+	}	
+
+	//close the datapase
+	sqlite_close($dbhandle);
+
+	return $ret;
+}
+
+function AddRuleToDB($rule_hash)
+{
+	//connect to the database
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q =  "INSERT into rules VALUES(NULL,'$rule_hash');";
+
+	$query = sqlite_exec($dbhandle, $q, $error);
+
+	if(!$query){
+		exit("Error in Query: '$error'");
+	}
+	
+	//close the datapase
+	sqlite_close($dbhandle);
+}
+
+function ChangeRuleInDB($prev_hash, $new_hash)
+{
+	//connect to the database
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q =  "UPDATE rules SET Hash='$new_hash' WHERE Hash='$prev_hash';";
+
+	$query = sqlite_exec($dbhandle, $q, $error);
+
+	if(!$query){
+		exit("Error in Query: '$error'");
+	}
+	
+	//close the database
+	sqlite_close($dbhandle);
+}
+
+function RemoveRuleInDB($hash)
+{
+	//connect to the database
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q =  "DELETE from rules WHERE Hash='$hash';";
+
+	$query = sqlite_exec($dbhandle, $q, $error);
+
+	if(!$query){
+		exit("Error in Query: '$error'");
+	}
+	
+	//close the database
+	sqlite_close($dbhandle);
+}
+
+function AttachOwnerToRule($user,$rule_hash)
+{
+	//connect to the database
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+
+	if($user != "-1")
+		$q =  "insert into rules_owner VALUES((SELECT UID FROM logins WHERE User='$user' LIMIT 1),(SELECT RUID FROM rules WHERE Hash='$rule_hash' LIMIT 1));";
+	else
+		$q =  "insert into rules_owner VALUES(-1 ,(SELECT RUID FROM rules WHERE Hash='$rule_hash' LIMIT 1));";
+
+	$query = sqlite_exec($dbhandle, $q, $error);
+
+	if(!$query){
+		exit("Error in Query: '$error'");
+	}
+	
+	//close the database
+	sqlite_close($dbhandle);
+}
+
+function RemoveOwnerFromRule($user,$rule_hash)
+{
+	//connect to the database
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q =  "DELETE FROM rules_owner WHERE UID=(SELECT UID FROM logins WHERE User='$user' LIMIT 1) AND RUID=(SELECT RUID FROM rules WHERE Hash='$rule_hash' LIMIT 1);";
+
+	$query = sqlite_exec($dbhandle, $q, $error);
+
+	if(!$query){
+		exit("Error in Query: '$error'");
+	}
+	
+	//close the database
+	sqlite_close($dbhandle);
+}
+
+function GetOwnedRulesFromUser($user)
+{
+	//connect to the database
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	//$ret = array();
+	$retID = 0;
+	
+	if(IsUserAdmin($user))
+	{
+		//return everything
+		$q = "SELECT RUID FROM rules_owner;";
+	}
+	else
+	{
+		//return only things with the users ID and NULL ID's
+		//$q = "SELECT RUID FROM rules_owner WHERE UID=(SELECT UID from logins WHERE User='$user' LIMIT 1) OR UID=-1;";
+		$q = "SELECT RUID FROM rules_owner WHERE UID=(SELECT UID from logins WHERE User='$user' LIMIT 1);";
+	}
+
+	$query = sqlite_array_query($dbhandle,$q,SQLITE_ASSOC);
+
+	if(!$query)
+	{
+		exit('Cannot retrive RUID from rules_owner table');
+	//	return null;
+	}
+
+	foreach($query as $entry)
+	{
+		$ret[$retID++] = $entry['RUID'];
+	}
+
+	//close the database
+	sqlite_close($dbhandle);
+
+	return $ret;
+}
+
+function IsHashInGivenRuleIDs($rules,$hash)
+{
+	if(!isset($hash))
+		return -1;
+
+	$ret = -1;
+	//connect to the database
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q = "SELECT RUID FROM rules WHERE Hash='$hash';";
+	//echo $q."<br>";
+	$query = sqlite_array_query($dbhandle,$q,SQLITE_ASSOC);
+
+	if(!$query)
+	{
+		exit('Cannot retrive RUID from rules table');
+		return -1;
+	}
+
+	$stop = false;
+
+	foreach($query as $item)
+	{
+		$counter = 0;
+		foreach($rules as $r)
+		{
+			//echo $rules[$i]."<br>";
+			//echo $r."<br>";
+			if($r == $item['RUID'])
+			{
+				//echo "yay";
+				$ret = $counter;
+				$stop = true;
+				//echo $counter;
+				break;
+			}
+
+			$counter++;
+		}
+
+		if($stop)
+			break;
+	}
+
+	//close the database
+	sqlite_close($dbhandle);
+	
+	return $ret;
+}
+
 function CheckUserString($user)
 {
 	for($i = 0; $i < strlen($user); $i++)
@@ -106,7 +309,7 @@ function CheckUserString($user)
 function ChangePassword($user,$newPass)
 {
 	//connect to the database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	//hash the password
 	$np = hash('sha512',$newPass);
@@ -121,7 +324,7 @@ function ChangePassword($user,$newPass)
 		return false;
 	}
 
-	//close the datapase
+	//close the database
 	sqlite_close($dbhandle);
 
 	return true;
@@ -132,7 +335,7 @@ function QuickFindUserFromPass($user,$pass,$hashit=false)
 	//test me..................
 	$good = false;
 	//connect to the database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	//hash the password
 	if($hashit)
@@ -160,7 +363,7 @@ function QuickFindUserFromPass($user,$pass,$hashit=false)
 		}
 	}
 
-	//close the datapase
+	//close the database
 	sqlite_close($dbhandle);
 
 	return $good;
@@ -210,7 +413,7 @@ function DoesUserExist($user)
 	$de = false;
 
 	//connect to database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 	//grab login table
 	@$q = sqlite_query($dbhandle, "SELECT User FROM logins WHERE User='$user';",$error) or die ("Cannout use login table");
 
@@ -235,7 +438,7 @@ function DoesUserExist($user)
 function RemoveUser($user)
 {
 	//connect to database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	$q = "SELECT UID FROM logins WHERE User='$user' LIMIT 1;";
 	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
@@ -269,7 +472,7 @@ function GetPrivFromUser($user)
 
 	//add this function later
 	//connect to database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	$q = "SELECT UID FROM logins WHERE User='$user' LIMIT 1;";
 	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
@@ -300,7 +503,7 @@ function GetPrivFromUser($user)
 function HowManyUsers()
 {
 	//connect to database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 	//grab login table
 	@$q = sqlite_query($dbhandle, "SELECT User FROM logins;",$error) or die ("Cannout use login table");
 
@@ -320,7 +523,7 @@ function HowManyUsers()
 function ChangePriv($user, $priv)
 {
 	//connect to database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	$q = "SELECT UID FROM logins WHERE User='$user' LIMIT 1;";
 	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
@@ -368,7 +571,7 @@ function ChangePriv($user, $priv)
 
 function GetAllUsersInfo()
 {
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	//grab login table
 	$q = sqlite_array_query($dbhandle, "SELECT * FROM logins;",SQLITE_ASSOC);
@@ -422,7 +625,7 @@ function CreateSqliteFile()
 {
 
 	//connect to database
-	@$dbhandle = sqlite_open('/tmp/router.sqlite') or die("Connection Failure to Database");
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	//create file
 	$q = "CREATE table logins (UID integer primary key, User varchar(100), Password varchar(128));";
@@ -433,7 +636,7 @@ function CreateSqliteFile()
 		exit("Could not create logins table");
 	}
 
-	$q = "create table logins_roles (UID integer references logins(uid) on delete cascade, RID integer references roles(rid) on delete cascade, constraint pk primary key (UID, RID));";
+	$q = "create table logins_roles (UID integer references logins(UID) on delete cascade, RID integer references roles(RID) on delete cascade, constraint pk primary key (UID, RID));";
 	$exec = sqlite_exec($dbhandle,$q,$error);
 
 	if(!$exec)
@@ -463,6 +666,22 @@ function CreateSqliteFile()
 	if(!$exec)
 	{
 		exit("Could not insert into roles table");
+	}
+
+	$q = "create table rules (RUID integer primary key, Hash varchar(128));";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+
+	if(!$exec)
+	{
+		exit("Could not create rules table");
+	}
+
+	$q = "create table rules_owner (UID integer references logins(UID) on delete cascade, RUID integer references rules(RUID) on delete 	cascade, constraint pk primary key(UID,RUID));";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+
+	if(!$exec)
+	{
+		exit("Could not create rules_owner table");
 	}
 
 	//close the sql database

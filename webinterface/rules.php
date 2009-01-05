@@ -1,4 +1,4 @@
-<?php require ('utility.php'); require ('autonomous.inc.php');
+<?php require ('autonomous.inc.php');
 
 if(IsDBEmpty())
 {
@@ -11,6 +11,33 @@ if(!IsGoodSession())
 	header('Location: login.php');
 	exit;
 }
+
+if(IsRulesTableEmpty())
+{
+	//add initial hashes
+	foreach($_SESSION['Rules'] as $rule)
+	{
+		AddRuleToDB($rule->checkSum);
+		AttachOwnerToRule("-1",$rule->checkSum);
+	}
+}
+
+//if(isset($_SESSION['Login']['User']))
+//{
+	$owned_rules = GetOwnedRulesFromUser($_SESSION['Login']['User']);
+
+	//print_r($owned_rules);
+/*
+	$show = array();
+	$showCount=0;
+	foreach($_SESSION['Rules'] as $index)
+	{
+		if(IsHashInGivenRuleIDs($owned_rules,$index->checkSum) != 0)
+		{
+			$show[$showCount++] = $index;
+		}
+	}*/
+//}
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -93,6 +120,10 @@ if(!IsGoodSession())
 							foreach ( $_SESSION['Rules'] as $ruleid => $rule ) {
 								if ( $rule->action != "DNAT" )
 									continue; 
+								//NEW							
+								if(IsHashInGivenRuleIDs($owned_rules,$rule->checkSum) == -1)
+									continue;
+								//
 						?>
 						<div class='rulespacer'></div>
 						<!-- rule <?= $ruleid ?> starts here -->

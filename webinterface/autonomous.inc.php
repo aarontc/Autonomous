@@ -1,4 +1,4 @@
-<?php
+<?php include('utility.php');
 
 	define ( "SHOREWALL_VERSION", '4.2' );
 
@@ -31,6 +31,10 @@
 		var $connection_limit;
 		var $time;
 		protected $comment;
+
+		//NEW
+		var $checkSum;
+		//
 		
 		function ParseLine ( $line ) {
 			$tokens = stringTokenize ( $line, " \t" );
@@ -129,9 +133,21 @@
 			die ( "Unable to access rules file." );
 		
 		// Read all the lines from the file
-		$lines = array ();
+		$lines = array ();	
+
+		//NEW
+		//$hashs = array();
+		//$hashCount = 0;
+		//
+		
 		while ( $line = fgets ( $fp ) )
+		{
 			$lines[] = trim ( $line );
+			
+			//NEW
+			//$hashs[$hashCount++] = hash('sha512',trim($line));
+			//
+		}
 
 		for ( $i = 0; $i < count ( $lines ); ++$i ) {
 			// If this is a comment line, skip it
@@ -144,12 +160,24 @@
 			$rule->ParseLine ( $lines[$i] );
 			$rule->SetComment ( "Unnamed Rule" );
 
+			//NEW
+			$rule->checkSum = $hashs[$i];
+			//
+
 			if ( $i > 0 )
 				if ( substr ( $lines[$i-1], 0, 1 ) == "#" )
 					$rule->SetComment ( substr($lines[$i-1], 1) );
 
 			$rules[$rulecount++] = $rule;
 		}
+
+		//NEW
+		for( $i = 0; $i < count ( $rules ); $i++)
+		{
+			
+			$rules[$i]->checkSum = hash('sha512',$rules[$i]->ToText());
+		}
+		//
 		//print_r ( $rules );
 		return $rules;
 	}
@@ -158,8 +186,22 @@
 		if ( ! $fp = fopen ( $file, "w" ) )
 			die ( "Unable to access rules file." );
 		
+		//NEW
+		$rules_counter = 0;
+		//
+
 		foreach ( $rules as $rule ) {
 			fputs ( $fp, $rule->ToText() . "\n" );
+			
+			//NEW
+			$tmpHash = $rule->checkSum;
+			//echo $tmpHash;
+
+			$rules[$rules_counter]->checkSum = hash('sha512',$rule->ToText());
+			//echo $rules[$rules_counter++]->checkSum;
+
+			ChangeRuleInDB($tmpHash,$rule->checkSum);
+			//
 		}
 
 		fclose ( $fp );
@@ -174,6 +216,10 @@
 		
 		if ( isset ( $_POST['delete'] ) ) {
 			foreach ( $_POST['delete'] as $delete => $dummy ) {
+				//NEW
+				RemoveRuleInDB($delete->checkSum);
+				RemoveOwnerFromRule($_SESSION['Login']['User'],$delete->checkSum);
+				//
 				ShorewallDeleteRule ( $delete );
 			}
 		} else {
@@ -342,6 +388,15 @@
 			//if ( strcmp ( $nr->GetComment(), "New Rule Description" ) == 0 )
 			//	$nr->SetComment( "UNTITLED RULE PLEASE GIVE ME A NAME" );
 			$_SESSION["Rules"][] = $nr;
+
+			//NEW
+			$nr->checkSum = hash('sha512',$nr->ToText());
+			AddRuleToDB($nr->checkSum);
+			
+			//get current user
+			$user = $_SESSION['Login']['User'];
+			AttachOwnerToRule($user,$nr->checkSum);
+			//
 		}
 
 		echo "<pre>";
