@@ -76,7 +76,14 @@ if(IsRulesTableEmpty())
 								<span class='tr'></span>
 								<span class='bl'></span>
 								<span class='br'></span>
-								<a href='um.php' class='button'>Manage Users</a>
+								<?php if(IsUserAdmin($_SESSION['Login']['User']))
+								{
+								?>
+									<a href='um.php' class='button' >Manage Users</a>
+								<?php
+								}
+								?>
+								
 							</span>
 						</p>
 					</div>

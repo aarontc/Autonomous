@@ -1,8 +1,8 @@
 <?php
 
-define("PortF",3);
+define("PortF",1);
 define("UserMan",2);
-
+define("UserDataOnly",4);
 
 define("ROUTER_DB_FILE","/tmp/router.sqlite");
 
@@ -213,7 +213,8 @@ function GetOwnedRulesFromUser($user)
 
 	//$ret = array();
 	$retID = 0;
-	
+	$q = "";
+
 	if(IsUserAdmin($user))
 	{
 		//return everything
@@ -221,23 +222,41 @@ function GetOwnedRulesFromUser($user)
 	}
 	else
 	{
+		//$q = "SELECT UID from logins WHERE User='$user' LIMIT 1;";
+
+//		$query = sqlite_array_query($dbhandle,$q,SQLITE_ASSOC);
+
+//		$id = $query[0]['UID'];	
+
+		if(!CanUserSeeOwnDataOnly($user))
+		{
 		//return only things with the users ID and NULL ID's
-		//$q = "SELECT RUID FROM rules_owner WHERE UID=(SELECT UID from logins WHERE User='$user' LIMIT 1) OR UID=-1;";
-		$q = "SELECT RUID FROM rules_owner WHERE UID=(SELECT UID from logins WHERE User='$user' LIMIT 1);";
+			$q = "SELECT RUID FROM rules_owner WHERE UID=(SELECT UID from logins WHERE User='$user' LIMIT 1) OR UID=-1;";
+//			$q = "SELECT RUID FROM rules_owner WHERE UID='$id' OR UID=-1;";
+		
+		}
+		else
+		{
+			$q = "SELECT RUID FROM rules_owner WHERE UID=(SELECT UID from logins WHERE User='$user' LIMIT 1);";
+		//	$q = "SELECT RUID FROM rules_owner WHERE UID='$id';";
+		}
 	}
 
 	$query = sqlite_array_query($dbhandle,$q,SQLITE_ASSOC);
 
-	if(!$query)
-	{
-		exit('Cannot retrive RUID from rules_owner table');
+	//if(!$query)
+	//{
+		//exit('Cannot retrive RUID from rules_owner table');
 	//	return null;
-	}
+	//}
 
+	//if($query)
+	//{
 	foreach($query as $entry)
 	{
 		$ret[$retID++] = $entry['RUID'];
 	}
+	//}
 
 	//close the database
 	sqlite_close($dbhandle);
@@ -248,6 +267,9 @@ function GetOwnedRulesFromUser($user)
 function IsHashInGivenRuleIDs($rules,$hash)
 {
 	if(!isset($hash))
+		return -1;
+
+	if(!isset($rules))
 		return -1;
 
 	$ret = -1;
@@ -297,13 +319,10 @@ function IsHashInGivenRuleIDs($rules,$hash)
 
 function CheckUserString($user)
 {
-	for($i = 0; $i < strlen($user); $i++)
-	{
-		if($user[$i] == "'")
-			return false;
-	}
+	if(eregi("^[a-z0-9 ]+$",$user))
+		return true;
 
-	return true;
+	return false;
 }
 
 function ChangePassword($user,$newPass)
@@ -328,6 +347,37 @@ function ChangePassword($user,$newPass)
 	sqlite_close($dbhandle);
 
 	return true;
+}
+
+function ChangeUserName($prev_user, $new_user)
+{
+	//does the username already exist?
+	if(DoesUserExist($new_user))
+		return "User name already exists";
+
+	if(strcmp($prev_user,$new_user)==0)
+		return "No point of setting it the same user name";
+
+	//connect to the database
+	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	//hash the password
+	$np = hash('sha512',$newPass);
+
+	$q =  "UPDATE logins SET User='$new_user' WHERE User='$prev_user';";
+
+	//change password
+	$query = sqlite_exec($dbhandle, $q, $error);
+
+	if(!$query){
+		exit("Error in Query: '$error'");
+		return "";
+	}
+
+	//close the database
+	sqlite_close($dbhandle);
+
+	return "";
 }
 
 function QuickFindUserFromPass($user,$pass,$hashit=false)
@@ -416,7 +466,6 @@ function DoesUserExist($user)
 	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 	//grab login table
 	@$q = sqlite_query($dbhandle, "SELECT User FROM logins WHERE User='$user';",$error) or die ("Cannout use login table");
-
 	if(!$q){
 		exit("Error in Query: '$error'");
 		$de = false;
@@ -621,6 +670,11 @@ function IsUserAdmin($user)
 	return ((GetPrivFromUser($user) & UserMan) >> 1);
 }
 
+function CanUserSeeOwnDataOnly($user)
+{
+	return !((GetPrivFromUser($user) & UserDataOnly) >> 2);
+}
+
 function CreateSqliteFile()
 {
 
@@ -663,6 +717,13 @@ function CreateSqliteFile()
 	$q = "INSERT INTO roles VALUES(2,'user managment');";
 	$exec = sqlite_exec($dbhandle,$q,$error);
 
+	if(!$exec)
+	{
+		exit("Could not insert into roles table");
+	}
+
+	$q = "INSERT INTO roles VALUES(4,'users data only');";
+	$exec = sqlite_exec($dbhandle,$q,$error);
 	if(!$exec)
 	{
 		exit("Could not insert into roles table");

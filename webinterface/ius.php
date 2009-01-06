@@ -70,6 +70,7 @@ else
 		{
 			$privileges['port forwarding'] = true;
 			$privileges['user managment'] = true;
+			$privileges['user data only'] = false; //dont need it....only if your not admin, then you consider it.
 
 			//create the database
 			CreateUser($_POST['nuser'],$_POST['npass'], $privileges);
