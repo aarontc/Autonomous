@@ -22,22 +22,6 @@ if(IsRulesTableEmpty())
 	}
 }
 
-//if(isset($_SESSION['Login']['User']))
-//{
-	$owned_rules = GetOwnedRulesFromUser($_SESSION['Login']['User']);
-
-	//print_r($owned_rules);
-/*
-	$show = array();
-	$showCount=0;
-	foreach($_SESSION['Rules'] as $index)
-	{
-		if(IsHashInGivenRuleIDs($owned_rules,$index->checkSum) != 0)
-		{
-			$show[$showCount++] = $index;
-		}
-	}*/
-//}
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -52,6 +36,9 @@ if(IsRulesTableEmpty())
 		<?php
 		if ( $_SERVER['REQUEST_METHOD'] == "POST" )
 			UpdateRules();
+
+		$owned_rules = GetOwnedRulesFromUser($_SESSION['Login']['User']);
+		//print_r($owned_rules);	
 		?>
 		<div id='header'>
 			<div class='area'>
@@ -139,7 +126,7 @@ if(IsRulesTableEmpty())
 								if ( $rule->action != "DNAT" )
 									continue; 
 								//NEW							
-								if(IsHashInGivenRuleIDs($owned_rules,$rule->checkSum) == -1)
+								if(!IsHashInGivenRuleIDs($owned_rules,$rule->checkSum))
 									continue;
 								//
 						?>

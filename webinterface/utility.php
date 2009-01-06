@@ -240,22 +240,22 @@ function GetOwnedRulesFromUser($user)
 		//return only things with the users ID and NULL ID's
 			$q = "SELECT RUID FROM rules_owner WHERE UID=(SELECT UID from logins WHERE User='$user' LIMIT 1) OR UID=-1;";
 //			$q = "SELECT RUID FROM rules_owner WHERE UID='$id' OR UID=-1;";
-		
 		}
 		else
 		{
 			$q = "SELECT RUID FROM rules_owner WHERE UID=(SELECT UID from logins WHERE User='$user' LIMIT 1);";
 		//	$q = "SELECT RUID FROM rules_owner WHERE UID='$id';";
+
 		}
 	}
 
 	$query = sqlite_array_query($dbhandle,$q,SQLITE_ASSOC);
 
-	//if(!$query)
-	//{
+//	if(!$query)
+//	{
 		//exit('Cannot retrive RUID from rules_owner table');
-	//	return null;
-	//}
+//		return null;
+//	}
 
 	//if($query)
 	//{
@@ -264,6 +264,7 @@ function GetOwnedRulesFromUser($user)
 		$ret[$retID++] = $entry['RUID'];
 	}
 	//}
+
 
 	//close the database
 	sqlite_close($dbhandle);
@@ -274,16 +275,17 @@ function GetOwnedRulesFromUser($user)
 function IsHashInGivenRuleIDs($rules,$hash)
 {
 	if(!isset($hash))
-		return -1;
+		return false;
 
 	if(!isset($rules))
-		return -1;
+		return false;
 
-	$ret = -1;
+	//$ret = -1;
+	$ret = false;
 	//connect to the database
 	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
-	$q = "SELECT RUID FROM rules WHERE Hash='$hash';";
+	$q = "SELECT RUID FROM rules WHERE Hash='$hash' LIMIT 1;";
 	//echo $q."<br>";
 	$query = sqlite_array_query($dbhandle,$q,SQLITE_ASSOC);
 
@@ -295,13 +297,14 @@ function IsHashInGivenRuleIDs($rules,$hash)
 
 	$stop = false;
 
+/*
 	foreach($query as $item)
 	{
 		$counter = 0;
 		foreach($rules as $r)
 		{
 			//echo $rules[$i]."<br>";
-			//echo $r."<br>";
+			echo "r: ".$r." item: ".$item['RUID']."<br>";
 			if($r == $item['RUID'])
 			{
 				//echo "yay";
@@ -317,6 +320,20 @@ function IsHashInGivenRuleIDs($rules,$hash)
 		if($stop)
 			break;
 	}
+*/
+
+	//print_r($rules);
+	//if(array_search($query[0]['RUID'],$rules))
+	if(in_array($query[0]['RUID'],$rules))
+	{
+		//echo "Found key ".$query[0]['RUID'];
+		$ret = true;
+	}
+	else
+	{
+		//echo "Failed";
+	}
+
 
 	//close the database
 	sqlite_close($dbhandle);
@@ -516,6 +533,14 @@ function RemoveUser($user)
 	if(!$exec)
 	{
 		exit("Could not delete from logins_roles table");
+	}
+
+	//$q = "DELETE from rules_owner Where UID=".$UID.";";
+	$q = "UPDATE rules_owner SET UID=-1 WHERE UID=".$UID.";";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+	if(!$exec)
+	{
+		exit("Could not delete from rules_owner table");
 	}
 
 	//close the sql database
