@@ -43,13 +43,16 @@
 
 				if(isset($_POST['newpass']))
 				{
-					if (!validate_variable("password",$_POST['newpass'],$validation_struct)) 
+					if(!validate_variable("password",$_POST['newpass'],$validation_struct))
 					{
 						$error['newerpass'] = 'INVALID password'; 
 					}
 					else
 					{
-						$counter++;
+						if(strcmp($_POST['ppass'],$_POST['newpass'])!=0)
+							$counter++;
+						else
+							$error['newerpass'] = 'New password is the same as previous password'; 
 					}
 				}
 				
