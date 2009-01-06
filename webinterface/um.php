@@ -129,127 +129,138 @@ $users_info = GetAllUsersInfo();
 		$k = array_keys($_POST['delete']);
 		RemoveUser($users_info[$k[0]]['User']);
 	}
-	
-	for($i=0; $i < count($users_info); $i++)
+	else
 	{
-		//change privs
-		$change = 0;
-	
-		if(isset($_POST['admin'][$i]))
+		for($i=0; $i < count($users_info); $i++)
 		{
-			$change |= UserMan;
-		}
+			//change privs
+			$change = 0;
 		
-		if(isset($_POST['nullrules'][$i]))
-		{
-			$change |= UserDataOnly;
-		}
-	
-		$applyChange = false;
-	
-		if(((($users_info[$i]['RID'] & UserDataOnly )>>2) != (($change & UserDataOnly) >> 2)) || ((($users_info[$i]['RID'] & UserMan )>>1) != (($change & UserMan) >> 1)))
-			$applyChange = true;
-	
-		if($applyChange)
-		{
-			//echo "what";
-			$privileges['port forwarding'] = true;
-						
-			if((($change & UserMan) >> 1))
-				$privileges['user management'] = true;
-			else
-				$privileges['user management'] = false;
-		
-			if((($change & UserDataOnly) >> 2))
-				$privileges['users data only'] = true;
-			else
-				$privileges['users data only'] = false;
-	
-	
-			ChangePriv($users_info[$i]['User'],$privileges);
-
-
-//			$users_info[$i]['RID'] = $changes;
-		}
-	
-		//$applyChange = false;
-	
-	
-		//change password
-		//print_r($_POST['password'][$i]);
-		$pass1 = $_POST['password'][$i];
-		//print_r($_POST['confirmpass'][$i]);
-		$pass2 = $_POST['confirmpass'][$i];
-	
-		$pl1 = strlen($pass1);
-		$pl2 = strlen($pass2);
-		
-		//echo $pl1." ".$pl2."<br>";
-	
-		if($pl1>0 || $pl2>0)
-		{
-			if($pl1==0 && $pl2>0)
+			if(isset($_POST['admin'][$i]))
 			{
-				//echo "here1";
-				//error goes here
-				$error[$i]['cpass'] = 'Missing password field'; 
+				$change |= UserMan;
 			}
-			else if($pl1>0 && $pl2==0)
+			
+			if(isset($_POST['nullrules'][$i]))
 			{
-				//echo "here2";
-				//error goes here
-				$error[$i]['pass'] = 'Missing confirm password field'; 
+				$change |= UserDataOnly;
 			}
-			else
+		
+			$applyChange = false;
+		
+			if(((($users_info[$i]['RID'] & UserDataOnly )>>2) != (($change & UserDataOnly) >> 2)) || ((($users_info[$i]['RID'] & UserMan )>>1) != (($change & UserMan) >> 1)))
+				$applyChange = true;
+		
+			if($applyChange)
 			{
-				//good
-				//echo $pl1." ".$pl2;
-	
-				$counter = 1;
-	
-				if (!validate_variable("password",$pass1,$validation_struct)) 
-				{
-					$error[$i]['pass'] = 'Password minimum length is 5 characters'; 
-				}
-				else
-				{
-					$counter++;
-				}
-			
-			
-			
-				if (!validate_variable("password",$pass2,$validation_struct))
-				{
-					$error[$i]['cpass'] = 'Password minimum length is 5 characters'; 
-				}
-				else
-				{
-					$counter++;
-				}
+				//echo "what";
+				$privileges['port forwarding'] = true;
 				
-				if($counter == 3)
+				if(strcmp($users_info[$i]['User'],$_SESSION['Login']['User'])!=0)
 				{
-					if(strcmp($pass2,$pass1)!=0)
+					if((($change & UserMan) >> 1))
+						$privileges['user management'] = true;
+					else
+						$privileges['user management'] = false;
+				}
+				else
+				{
+					$privileges['user management'] = true;
+
+					$error[$i]['doh'] = "Cannot change self as non admin (another admin must do that for you)";
+				}
+			
+				if((($change & UserDataOnly) >> 2))
+					$privileges['users data only'] = true;
+				else
+					$privileges['users data only'] = false;
+		
+		
+				ChangePriv($users_info[$i]['User'],$privileges);
+	
+	
+	//			$users_info[$i]['RID'] = $changes;
+			}
+		
+			//$applyChange = false;
+		
+		
+			//change password
+			//print_r($_POST['password'][$i]);
+			$pass1 = $_POST['password'][$i];
+			//print_r($_POST['confirmpass'][$i]);
+			$pass2 = $_POST['confirmpass'][$i];
+		
+			$pl1 = strlen($pass1);
+			$pl2 = strlen($pass2);
+			
+			//echo $pl1." ".$pl2."<br>";
+		
+			if($pl1>0 || $pl2>0)
+			{
+				if($pl1==0 && $pl2>0)
+				{
+					//echo "here1";
+					//error goes here
+					$error[$i]['cpass'] = 'Missing password field'; 
+				}
+				else if($pl1>0 && $pl2==0)
+				{
+					//echo "here2";
+					//error goes here
+					$error[$i]['pass'] = 'Missing confirm password field'; 
+				}
+				else
+				{
+					//good
+					//echo $pl1." ".$pl2;
+		
+					$counter = 1;
+		
+					if (!validate_variable("password",$pass1,$validation_struct)) 
 					{
-						$error[$i]['mismatch'] = 'PASSWORD MISMATCH'; 
+						$error[$i]['pass'] = 'Password minimum length is 5 characters'; 
 					}
 					else
 					{
-						ChangePassword($users_info[$i]['User'],$pass1);
+						$counter++;
+					}
+				
+				
+				
+					if (!validate_variable("password",$pass2,$validation_struct))
+					{
+						$error[$i]['cpass'] = 'Password minimum length is 5 characters'; 
+					}
+					else
+					{
+						$counter++;
+					}
+					
+					if($counter == 3)
+					{
+						if(strcmp($pass2,$pass1)!=0)
+						{
+							$error[$i]['mismatch'] = 'PASSWORD MISMATCH'; 
+						}
+						else
+						{
+							ChangePassword($users_info[$i]['User'],$pass1);
+						}
 					}
 				}
 			}
-		}
-	
-	
-		//change username
-		if(isset($_POST['username'][$i]))
-		{
-			if(strcmp($_POST['username'][$i],$users_info[$i]['User'])!=0)
+		
+		
+			//change username
+			if(isset($_POST['username'][$i]))
 			{
-				$change = ChangeUserName($users_info[$i]['User'],$_POST['username'][$i]);
-				if(strcmp($change,"")!=0)
-					$error[$i]['un'] = $change;
+				if(strcmp($_POST['username'][$i],$users_info[$i]['User'])!=0)
+				{
+					$change = ChangeUserName($users_info[$i]['User'],$_POST['username'][$i]);
+					if(strcmp($change,"")!=0)
+						$error[$i]['un'] = $change;
+				}
 			}
 		}
 	}
