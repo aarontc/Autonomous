@@ -60,14 +60,25 @@ if(IsRulesTableEmpty())
 				</div>
 				<div id='hright'>
 					<div class='login'>
-						Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User'] ?></a>
-						<span class='roundbutton'>
-							<span class='tl'></span>
-							<span class='tr'></span>
-							<span class='bl'></span>
-							<span class='br'></span>
-							<a href='login.php?action=logout' class='button'>logout</a>
-						</span>
+						<p>
+							Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User'] ?></a>
+							<span class='roundbutton'>
+								<span class='tl'></span>
+								<span class='tr'></span>
+								<span class='bl'></span>
+								<span class='br'></span>
+								<a href='login.php?action=logout' class='button'>logout</a>
+							</span>
+						</p>
+						<p>
+							<span class='roundbutton'>
+								<span class='tl'></span>
+								<span class='tr'></span>
+								<span class='bl'></span>
+								<span class='br'></span>
+								<a href='um.php' class='button'>Manage Users</a>
+							</span>
+						</p>
 					</div>
 				</div>
 			</div>

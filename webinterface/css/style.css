@@ -26,6 +26,7 @@ div.center { float: none; text-align: center; }
 #header { width: 100%; }
 #hleft { width: 45%; text-align: left; float: left; margin: 0px -10px 0px 10px; }
 #hright { width:45%; text-align: right; float: right; margin: 0px 10px 0px -10px; }
+#hright p { margin-bottom: 5px; }
 .headerlg { font-size: 28px; font-weight: bold; }
 .headermed { font-size: 20px; }
 .error { float: left; margin-top: 6px; font-weight: bold; }
