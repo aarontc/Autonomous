@@ -2,6 +2,26 @@
 
 session_start();
 
+if(IsDBEmpty())
+{
+	header('Location: login.php');
+	exit;
+}
+
+if(!IsGoodSession())
+{
+	header('Location: login.php');
+	exit;
+}
+
+if(!IsUserAdmin($_SESSION['Login']['User']))
+{
+	//header('Location: rules.php');
+	echo "ACCESS DENIED---You Do Not Have The Privilege To Have Access To This Page!<br>";
+	exit;
+}
+
+
 // $keys = array_keys($_POST);
 // 
 // foreach($keys as $key)
@@ -10,219 +30,232 @@ session_start();
 // 		echo "yay";
 // }
 
-$users_info = $_SESSION['Users'];//GetAllUsersInfo();
+//print_r($_SERVER);
 
-if(isset($_POST['username']['new']))
+if(strcmp($_SERVER['REQUEST_METHOD'],"POST")==0)
 {
-	$name = trim($_POST['username']['new']);
 
-	if(strcmp($name,"New Users Name")!=0)
-	{
-		$counter = 0;
+$users_info = GetAllUsersInfo();
 
-		if(CheckUserString($name))
-		{
-			if(!DoesUserExist($name))
-			{
-				$counter++;
-				
-				if(isset($_POST['password']['new']))
-				{
-					if (!validate_variable("password",$_POST['password']['new'],$validation_struct)) 
-					{
-						$error['new']['pass'] = 'Password minimum length is 5 characters'; 
-					}
-					else
-					{
-						$counter++;
-					}
-				}
-				
-				if(isset($_POST['confirmpass']['new']))
-				{
-					if (!validate_variable("password",$_POST['confirmpass']['new'],$validation_struct))
-					{
-						$error['new']['cpass'] = 'Password minimum length is 5 characters'; 
-					}
-					else
-					{
-						$counter++;
-					}
-				}
-				
-				if($counter == 3)
-				{
-					if(strcmp($_POST['confirmpass']['new'],$_POST['password']['new'])!=0)
-					{
-						$error['new']['mismatch'] = 'PASSWORD MISMATCH'; 
-					}
-					else
-					{
-						
-						$privileges['port forwarding'] = true;
-				
-						if(strcmp($_POST['admin']['new'],"on")==0)
-							$privileges['user managment'] = true;
-						else
-							$privileges['user managment'] = false;
-			
-						if(strcmp($_POST['nullrules']['new'],"on")==0)
-							$privileges['users data only'] = true;
-						else
-							$privileges['users data only'] = false;
-				
-						//create the database
-						CreateUser($name,$_POST['password']['new'], $privileges);
-					}
-				}
+//if(isset($_SESSION['Users']))
+//{
+	//$users_info = $_SESSION['Users'];//GetAllUsersInfo();
 	
+	if(isset($_POST['username']['new']))
+	{
+		$name = trim($_POST['username']['new']);
+	
+		if(strcmp($name,"New Users Name")!=0)
+		{
+			$counter = 0;
+	
+			if(CheckUserString($name))
+			{
+				if(!DoesUserExist($name))
+				{
+					$counter++;
+					
+					if(isset($_POST['password']['new']))
+					{
+						if (!validate_variable("password",$_POST['password']['new'],$validation_struct)) 
+						{
+							$error['new']['pass'] = 'Password minimum length is 5 characters'; 
+						}
+						else
+						{
+							$counter++;
+						}
+					}
+					
+					if(isset($_POST['confirmpass']['new']))
+					{
+						if (!validate_variable("password",$_POST['confirmpass']['new'],$validation_struct))
+						{
+							$error['new']['cpass'] = 'Password minimum length is 5 characters'; 
+						}
+						else
+						{
+							$counter++;
+						}
+					}
+					
+					if($counter == 3)
+					{
+						if(strcmp($_POST['confirmpass']['new'],$_POST['password']['new'])!=0)
+						{
+							$error['new']['mismatch'] = 'PASSWORD MISMATCH'; 
+						}
+						else
+						{
+							
+							$privileges['port forwarding'] = true;
+					
+							if(strcmp($_POST['admin']['new'],"on")==0)
+								$privileges['user management'] = true;
+							else
+								$privileges['user management'] = false;
+				
+							if(strcmp($_POST['nullrules']['new'],"on")==0)
+								$privileges['users data only'] = true;
+							else
+								$privileges['users data only'] = false;
+					
+							//create the database
+							//echo "Create";
+							CreateUser($name,$_POST['password']['new'], $privileges);
+						}
+					}
+		
+				}
+				else
+				{
+					//error here
+					$error['new']['exists'] = "User already exists";
+				}
 			}
 			else
 			{
 				//error here
-				$error['new']['exists'] = "User already exists";
+				$error['new']['invalid'] = "Only allowed to use letters, numbers, and spaces";
 			}
 		}
-		else
-		{
-			//error here
-			$error['new']['invalid'] = "Only allowed to use letters, numbers, and spaces";
-		}
-	}
-}
-
-
-
-if(isset($_POST['delete']))
-{
-	//echo "being deleted";
-	$k = array_keys($_POST['delete']);
-	RemoveUser($users_info[$k[0]]['User']);
-}
-
-for($i=0; $i < count($users_info); $i++)
-{
-	//change privs
-	$change = 0;
-
-	if(isset($_POST['admin'][$i]))
-	{
-		$change |= UserMan;
 	}
 	
-	if(isset($_POST['nullrules'][$i]))
-	{
-		$change |= UserDataOnly;
-	}
-
-	$applyChange = false;
-
-	if(((($users_info[$i]['RID'] & UserDataOnly )>>2) != (($change & UserDataOnly) >> 2)) || ((($users_info[$i]['RID'] & UserMan )>>1) != (($change & UserMan) >> 1)))
-		$applyChange = true;
-
-	if($applyChange)
-	{
-
-		$privileges['port forwarding'] = true;
-					
-		if((($change & UserMan) >> 1))
-			$privileges['user managment'] = true;
-		else
-			$privileges['user managment'] = false;
 	
-		if((($change & UserDataOnly) >> 2))
-			$privileges['users data only'] = true;
-		else
-			$privileges['users data only'] = false;
-
-
-		ChangePriv($users_info[$i]['User'],$privileges);
-	}
-
-	$applyChange = false;
-
-
-	//change password
-	//print_r($_POST['password'][$i]);
-	$pass1 = $_POST['password'][$i];
-	//print_r($_POST['confirmpass'][$i]);
-	$pass2 = $_POST['confirmpass'][$i];
-
-	$pl1 = strlen($pass1);
-	$pl2 = strlen($pass2);
 	
-	//echo $pl1." ".$pl2."<br>";
-
-	if($pl1>0 || $pl2>0)
+	if(isset($_POST['delete']))
 	{
-		if($pl1==0 && $pl2>0)
+		//echo "being deleted";
+		$k = array_keys($_POST['delete']);
+		RemoveUser($users_info[$k[0]]['User']);
+	}
+	
+	for($i=0; $i < count($users_info); $i++)
+	{
+		//change privs
+		$change = 0;
+	
+		if(isset($_POST['admin'][$i]))
 		{
-			echo "here1";
-			//error goes here
-			$error[$i]['cpass'] = 'Missing password field'; 
+			$change |= UserMan;
 		}
-		else if($pl1>0 && $pl2==0)
+		
+		if(isset($_POST['nullrules'][$i]))
 		{
-			echo "here2";
-			//error goes here
-			$error[$i]['pass'] = 'Missing confirm password field'; 
+			$change |= UserDataOnly;
 		}
-		else
+	
+		$applyChange = false;
+	
+		if(((($users_info[$i]['RID'] & UserDataOnly )>>2) != (($change & UserDataOnly) >> 2)) || ((($users_info[$i]['RID'] & UserMan )>>1) != (($change & UserMan) >> 1)))
+			$applyChange = true;
+	
+		if($applyChange)
 		{
-			//good
-			//echo $pl1." ".$pl2;
+			//echo "what";
+			$privileges['port forwarding'] = true;
+						
+			if((($change & UserMan) >> 1))
+				$privileges['user management'] = true;
+			else
+				$privileges['user management'] = false;
+		
+			if((($change & UserDataOnly) >> 2))
+				$privileges['users data only'] = true;
+			else
+				$privileges['users data only'] = false;
+	
+	
+			ChangePriv($users_info[$i]['User'],$privileges);
 
-			$counter = 1;
 
-			if (!validate_variable("password",$pass1,$validation_struct)) 
+//			$users_info[$i]['RID'] = $changes;
+		}
+	
+		//$applyChange = false;
+	
+	
+		//change password
+		//print_r($_POST['password'][$i]);
+		$pass1 = $_POST['password'][$i];
+		//print_r($_POST['confirmpass'][$i]);
+		$pass2 = $_POST['confirmpass'][$i];
+	
+		$pl1 = strlen($pass1);
+		$pl2 = strlen($pass2);
+		
+		//echo $pl1." ".$pl2."<br>";
+	
+		if($pl1>0 || $pl2>0)
+		{
+			if($pl1==0 && $pl2>0)
 			{
-				$error[$i]['pass'] = 'Password minimum length is 5 characters'; 
+				//echo "here1";
+				//error goes here
+				$error[$i]['cpass'] = 'Missing password field'; 
+			}
+			else if($pl1>0 && $pl2==0)
+			{
+				//echo "here2";
+				//error goes here
+				$error[$i]['pass'] = 'Missing confirm password field'; 
 			}
 			else
 			{
-				$counter++;
-			}
-		
-		
-		
-			if (!validate_variable("password",$pass2,$validation_struct))
-			{
-				$error[$i]['cpass'] = 'Password minimum length is 5 characters'; 
-			}
-			else
-			{
-				$counter++;
-			}
-			
-			if($counter == 3)
-			{
-				if(strcmp($pass2,$pass1)!=0)
+				//good
+				//echo $pl1." ".$pl2;
+	
+				$counter = 1;
+	
+				if (!validate_variable("password",$pass1,$validation_struct)) 
 				{
-					$error[$i]['mismatch'] = 'PASSWORD MISMATCH'; 
+					$error[$i]['pass'] = 'Password minimum length is 5 characters'; 
 				}
 				else
 				{
-					ChangePassword($users_info[$i]['User'],$pass1);
+					$counter++;
+				}
+			
+			
+			
+				if (!validate_variable("password",$pass2,$validation_struct))
+				{
+					$error[$i]['cpass'] = 'Password minimum length is 5 characters'; 
+				}
+				else
+				{
+					$counter++;
+				}
+				
+				if($counter == 3)
+				{
+					if(strcmp($pass2,$pass1)!=0)
+					{
+						$error[$i]['mismatch'] = 'PASSWORD MISMATCH'; 
+					}
+					else
+					{
+						ChangePassword($users_info[$i]['User'],$pass1);
+					}
 				}
 			}
 		}
-	}
-
-
-	//change username
-	if(isset($_POST['username'][$i]))
-	{
-		if(strcmp($_POST['username'][$i],$users_info[$i]['User'])!=0)
+	
+	
+		//change username
+		if(isset($_POST['username'][$i]))
 		{
-			$change = ChangeUserName($users_info[$i]['User'],$_POST['username'][$i]);
-			if(strcmp($change,"")!=0)
-				$error[$i]['un'] = $change;
+			if(strcmp($_POST['username'][$i],$users_info[$i]['User'])!=0)
+			{
+				$change = ChangeUserName($users_info[$i]['User'],$_POST['username'][$i]);
+				if(strcmp($change,"")!=0)
+					$error[$i]['un'] = $change;
+			}
 		}
 	}
 }
 
-
-unset($_SESSION['Users']);
+//unset($_SESSION['Users']);
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -363,7 +396,7 @@ unset($_SESSION['Users']);
 											</span>
 										</p>
 										<p>
-											<input type='checkbox' name='admin[<?=$i?>]' id='admin[<?=$i?>]' title='Is this user an administrator?' <? if ((($users_info[$i]['RID'] & UserMan)>>1)==true) { echo "checked='true'"; } if(strcmp($curUser,$users_info[$i]['User'])==0) echo "disabled='true'"; ?>/>
+											<input type='checkbox' name='admin[<?=$i?>]' id='admin[<?=$i?>]' title='Is this user an administrator?' <? if ((($users_info[$i]['RID'] & UserMan)>>1)==true) { echo "checked='on'"; }  ?>/>
 											<label class='checklabel' for='admin[<?=$i?>]'>Admin</label>
 										</p>
 									</div>
@@ -379,7 +412,7 @@ unset($_SESSION['Users']);
 											</span>
 										</p>
 										<p>
-											<input type='checkbox' name='nullrules[<?=$i?>]' id='nullrules[<?=$i?>]' title='Can this user see rules owned by no one?' <? if ((($users_info[$i]['RID'] & UserDataOnly)>>2)==true) { echo "checked='true'"; } if(strcmp($curUser,$users_info[$i]['User'])==0) echo "disabled='true'"; ?> />
+											<input type='checkbox' name='nullrules[<?=$i?>]' id='nullrules[<?=$i?>]' title='Can this user see rules owned by no one?' <? if ((($users_info[$i]['RID'] & UserDataOnly)>>2)==true) { echo "checked='on'"; } ?> />
 											<label class='checklabel' for='nullrules[<?=$i?>]'>Can see unowned rules.</label>
 										</p>
 									</div>

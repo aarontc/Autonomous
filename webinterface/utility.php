@@ -218,7 +218,14 @@ function GetOwnedRulesFromUser($user)
 	if(IsUserAdmin($user))
 	{
 		//return everything
-		$q = "SELECT RUID FROM rules_owner;";
+		if(!CanUserSeeOwnDataOnly($user)) //all owned files viewable?
+		{
+			$q = "SELECT RUID FROM rules_owner;";
+		}
+		else
+		{
+			$q = "SELECT RUID FROM rules_owner WHERE UID>0;";
+		}
 	}
 	else
 	{
@@ -571,6 +578,7 @@ function HowManyUsers()
 
 function ChangePriv($user, $priv)
 {
+	//print_r($priv);
 	//connect to database
 	@$dbhandle = sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
@@ -714,7 +722,7 @@ function CreateSqliteFile()
 		exit("Could not insert into roles table");
 	}
 
-	$q = "INSERT INTO roles VALUES(2,'user managment');";
+	$q = "INSERT INTO roles VALUES(2,'user management');";
 	$exec = sqlite_exec($dbhandle,$q,$error);
 
 	if(!$exec)
