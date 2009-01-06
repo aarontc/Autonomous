@@ -155,20 +155,25 @@ $users_info = GetAllUsersInfo();
 			{
 				//echo "what";
 				$privileges['port forwarding'] = true;
-				
-				if(strcmp($users_info[$i]['User'],$_SESSION['Login']['User'])!=0)
+
+				if((($change & UserMan) >> 1))
 				{
-					if((($change & UserMan) >> 1))
-						$privileges['user management'] = true;
-					else
-						$privileges['user management'] = false;
+					$privileges['user management'] = true;
 				}
 				else
 				{
-					$privileges['user management'] = true;
-
-					$error[$i]['doh'] = "Cannot change self as non admin (another admin must do that for you)";
+					if(strcmp($users_info[$i]['User'],$_SESSION['Login']['User'])!=0)
+					{
+						$privileges['user management'] = false;
+					}
+					else
+					{
+						$privileges['user management'] = true;
+	
+						$error[$i]['doh'] = "Cannot change self as non admin (another admin must do that for you)";
+					}				
 				}
+				
 			
 				if((($change & UserDataOnly) >> 2))
 					$privileges['users data only'] = true;
