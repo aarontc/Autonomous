@@ -26,8 +26,13 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 			$message = "Hello ".$users_info['User']."\r\n";
 			$message .= "Click this link to change your password (once this link is clicked...it will expire)\r\n";
 			$message .= $linkToSend."\r\n";
+			$message .= "If you dont click this within 7 days, it will expire\r\n";
 
-			if(mail($users_info['Email'],"Forgot User/Pass",$message))
+			//echo "<pre>";
+			//print_r ($message);
+			//echo "</pre>";
+
+			if(mail($_POST['email'],"Forgot User/Pass",$message))
 				echo "Message Sent";
 			else
 				echo "Delivery failed";
