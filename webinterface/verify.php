@@ -1,5 +1,7 @@
 <?php include('utility.php');
 
+session_start();
+
 if(IsDBEmpty())
 {
 	header('Location: ius.php');
@@ -12,46 +14,52 @@ if(IsGoodSession())
 	exit;
 }
 
-if(!isset($_SESSION['verify']))
+//echo "<pre>";
+//print_r($_POST);
+//print_r($_SESSION);
+//echo "</pre>";
+
+if(!isset($_POST['done']))
 {
-	//echo "<pre>";
-	//print_r($_GET);
-	//echo "</pre>";
-	
-	if(isset($_GET['created']) && isset($_GET['stamp']) && isset($_GET['uid']) && isset($_GET['hash']))
-	{
-		if(strlen($_GET['hash'])==128 && strlen($_GET['stamp'])==32)
+	if(!isset($_SESSION['verify']))
+	{	
+		if(isset($_GET['created']) && isset($_GET['stamp']) && isset($_GET['uid']) && isset($_GET['hash']))
 		{
-			//is there even a forgot ticket that is alive in the database
-			$tickets = GetAliveForgets();
-	
-			foreach($tickets as $ticket)
+			if(strlen($_GET['hash'])==128 && strlen($_GET['stamp'])==32)
 			{
-				if($ticket['UID']==$_GET['uid'])
+				//is there even a forgot ticket that is alive in the database
+				$tickets = GetAliveForgets();
+		
+				foreach($tickets as $ticket)
 				{
-					if(strcmp($ticket['Created'],$_GET['created'])==0)
+					if($ticket['UID']==$_GET['uid'])
 					{
-						if(strcmp($ticket['Stamp'],$_GET['stamp'])==0)
+						if(strcmp($ticket['Created'],$_GET['created'])==0)
 						{
-							if(IsPasswordInDB($ticket['UID'],$_GET['hash']))
+							if(strcmp($ticket['Stamp'],$_GET['stamp'])==0)
 							{
-								//check to see if they are using a legit browser
-								$_SESSION['verify'] = true;
+								if(IsPasswordInDB($ticket['UID'],$_GET['hash']))
+								{
+									//check to see if they are using a legit browser
+									$_SESSION['verify'] = true;
+									$_SESSION['UID'] = $ticket['UID'];
+									break;
+								}
 							}
 						}
 					}
 				}
-			}
-		}	
-	}
-
-	if(!isset($_SESSION['verify']))
-	{
-		echo "There is no ticket with those settings or it has already been claimed";
+			}	
+		}
+	
+		if(!isset($_SESSION['verify']))
+		{
+			echo "There is no ticket with those settings or it has already been claimed";
+		}
 	}
 }
 
-if(isset($_SESSION['verify']))
+if(isset($_SESSION['verify']) && $_SESSION['verify'])
 {
 	//check password here
 	//if password is correct..change the ticket to claim
@@ -90,17 +98,23 @@ if(isset($_SESSION['verify']))
 		}
 		else
 		{
-			$info = GetUserFromUID($_GET['uid']);
+			$info = GetInfoFromUID($_SESSION['UID']);
 
-			//change password
-			ChangePassword($info['User'],$_POST['password']);
+			//print_r($info);
+			//print_r($_SESSION);
 
-			//add session data
-			$_SESSION['login']['User'] = $info['User'];
-			$_SESSION['Login']['Pass'] = hash('sha512',$_POST['newpass']);
-			$_SESSION['login']['Email'] = GetEmail($info['User']);
+			if($info!=null)
+			{
+				//change password
+				ChangePassword($info['User'],$_POST['password']);
 
-			$counter=3;
+				//add session data
+				$_SESSION['Login']['User'] = $info['User'];
+				$_SESSION['Login']['Pass'] = hash('sha512',$_POST['password']);
+				$_SESSION['Login']['Email'] = GetEmail($info['User']);
+
+				$counter=3;
+			}
 		}
 	}
 
@@ -118,11 +132,11 @@ if(isset($_SESSION['verify']))
 	<div align="center">
 		<form action="verify.php" method="post">
 			New password:
-			<INPUT type="password" name="password">
+			<INPUT type="password" name="password"> <?=$error['newerpass']?>
 			<br>
 			<br>
 			Confirm password:
-			<INPUT type="password" name="confirmpass">
+			<INPUT type="password" name="confirmpass"> <?=$error['confpass']?><?=$error['mismatch']?>
 			<br>
 			<br>
 			<INPUT type="submit" name="done" value="Change">
@@ -134,7 +148,8 @@ if(isset($_SESSION['verify']))
 	}
 	else
 	{
-
+	unset($_SESSION['verify']);
+	unset($_SESSION['UID']);
 ?>
 
 	<html>
@@ -147,7 +162,7 @@ if(isset($_SESSION['verify']))
 	<div align="center">
 		<form action="rules.php" method="post">
 			Password was successfully set!<br />
-			<INPUT type="submit" name="done" value="Change">
+			<INPUT type="submit" name="finished" value="done">
 		</form>
 	</div>
 	</body>
