@@ -43,6 +43,8 @@ if(!isset($_POST['done']))
 									//check to see if they are using a legit browser
 									$_SESSION['verify'] = true;
 									$_SESSION['UID'] = $ticket['UID'];
+									$_SESSION['Stamp'] = $ticket['Stamp'];
+									$_SESSION['Created'] = $ticket['Created'];
 									break;
 								}
 							}
@@ -108,6 +110,8 @@ if(isset($_SESSION['verify']) && $_SESSION['verify'])
 				//change password
 				ChangePassword($info['User'],$_POST['password']);
 
+				ChangeForgotStatusToClaimed($_SESSION['Created'],$_SESSION['Stamp']);
+
 				//add session data
 				$_SESSION['Login']['User'] = $info['User'];
 				$_SESSION['Login']['Pass'] = hash('sha512',$_POST['password']);
@@ -150,6 +154,8 @@ if(isset($_SESSION['verify']) && $_SESSION['verify'])
 	{
 	unset($_SESSION['verify']);
 	unset($_SESSION['UID']);
+	unset($_SESSION['Stamp']);
+	unset($_SESSION['Created']);
 ?>
 
 	<html>
