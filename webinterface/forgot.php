@@ -46,22 +46,76 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 }
 
 ?>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<title>
-Forgot user/pass
-</title>
-</head>
-<body>
-<div align="center">
-	<form action="forgot.php" method="post">
-		Enter Email Address:
-		<INPUT type="text" name="email">
-		<br>
-		<br>
-		<INPUT type="submit" name="done" value="Submit">
-	</form>
-</div>
-</body>
+	<head>
+		<title>Autonomous - Retrieve Username and/or Password</title>
+		<link href='css/style.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+		<link href='css/colors.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
+	</head>
+	<body>
+		<div id='header'>
+			<div class='area'>
+				<div id='hleft'>
+					<div class='green headerlg'>Autonomous</div>
+				</div>
+				<div id='hright'>&nbsp;</div>
+			</div>
+			<div class='area'>
+				<div id='hleft'>
+					<div class='ltgrey headermed'>Self-Governing Routing</div>
+				</div>
+				<div id='hright'>
+					<div class='dkgrey nodisplay'>
+						Search for Term:
+						<span class='roundinput'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type='text' />
+						</span>
+						<span class='roundbutton'>
+							<span class='tl'></span>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
+							<input type='submit' value='GO' />
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='divider'><!-- comment for IE --></div>
+		<form action="forgot.php" method="post">
+			<div id="loginform">
+				<p class='loginformhead'>Retrieve Username and/or Password</p>
+				<div class='loginformdiv'><!-- comment for IE --></div>
+				<p class='area'>
+					<label for="email">Enter Email Address:</label>
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input type="text" name="email" id="email" />
+					</span>
+				</p>
+				<div class='loginformspacer'></div>
+				<p>
+					<span class='roundbutton'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input type="submit" name="done" value="Submit" />
+					</span>
+				</p>
+			</div>
+		</form>
+		<div class='divider'><!-- comment for IE --></div>
+		<div id='footer'>
+			Copyright &copy; 2008, Scott Deutsch, Ben Mann, Aaron Ten Clay. All Rights Reserved.
+		</div>
+	</body>
 </html>

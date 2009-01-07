@@ -89,31 +89,33 @@ else
 		<div class='divider'><!-- comment for IE --></div>
 		<form action="login.php" method="POST">
 			<div id="loginform">
-			<p class='loginformhead'>Please Log In</p>
+				<p class='loginformhead'>Please Log In</p>
 				<div class='loginformdiv'><!-- comment for IE --></div>
 				<p class='area'>
-					<label>User Name: </label>
+					<label for="user">User Name:</label>
 					<span class='roundinput'>
 						<span class='tl'></span>
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input type="text" name="user" value='<?= $_POST['user'] ?>' />
+						<input type="text" name="user" id="user" value='<?= $_POST['user'] ?>' />
 					</span>
 				</p>
 				<p class='area'>
-					<label>Password: </label>
+					<label for="pass">Password:</label>
 					<span class='roundinput'>
 						<span class='tl'></span>
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input type="password" name="pass" value='<?= $_POST['pass'] ?>' />
+						<input type="password" name="pass" id="pass" value='<?= $_POST['pass'] ?>' />
 					</span>
 					<span class='error'><?= $msg['error'] ?></span>
 				</p>
+				<p>
+					<a href="forgot.php">Forgot user name or password?</a>
+				</p>
 				<div class='loginformspacer'></div>
-				<a href="forgot.php">Forgot user name or password?</a>
 				<p>
 					<span class='roundbutton'>
 						<span class='tl'></span>

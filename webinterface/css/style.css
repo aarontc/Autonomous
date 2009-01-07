@@ -16,6 +16,7 @@ a { text-decoration: none; }
 a.button { padding: 0px 10px; }
 input.ip { width: 95px; }
 input.port { width: 40px; }
+label { padding-right: 3px; }
 
 .area { overflow: visible; width: 100%; } /* this is for IE */
 .area:after { content:"."; display:block; line-height:0px; font-size:0px; visibility:hidden; clear:both; } /* this is for firefox */
