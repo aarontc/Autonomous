@@ -96,16 +96,16 @@ function CreateUser($user, $pass, $privileges, $email=null)
 	sqlite_close($dbhandle);
 }
 
-function AddToForgot($uid)
+function AddToForgot($uid,$stamp)
 {
 	//connect to the database
 	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	$created = date("m/d/Y");
-	$expiers = date("m/d/Y",strtotime('+1 week'));
+	$expires = date("m/d/Y",strtotime('+1 week'));
 	$status = 1;
 
-	$q = "INSERT INTO forgot VALUES('$uid','$status','$created','$expiers');";
+	$q = "INSERT INTO forgot VALUES('$uid','$status','$created','$expires','$stamp');";
 	//echo $q;
 	$sql = sqlite_exec($dbhandle, $q, $error);
 
@@ -115,6 +115,67 @@ function AddToForgot($uid)
 
 	//close it
 	sqlite_close($dbhandle);
+}
+
+function GetAliveForgets()
+{
+	//connect to the database
+	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q = "SELECT * FROM forgot WHERE Status=1;";
+
+	$query = sqlite_array_query($dbhandle,$q,SQLITE_ASSOC);
+
+	if(!$query)
+	{
+		return null;
+	}
+	
+	//close it
+	sqlite_close($dbhandle);
+
+	return $query;
+}
+
+function ChangeForgotStatusToClaimed($created,$stamp)
+{
+	//connect to the database
+	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q = "UPDATE forgot SET Status=0 WHERE Created='$created' AND Stamp='$stamp';";
+
+	//echo $q;
+	$sql = sqlite_exec($dbhandle, $q, $error);
+
+	if (!$sql) {
+		exit("Error in query: '$error'");
+	}
+
+	//close it
+	sqlite_close($dbhandle);
+}
+
+function IsPasswordInDB($uid, $hash)
+{
+	$ret = false;
+
+	//connect to the database
+	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q = "SELECT * FROM logins WHERE UID='$uid' AND Password='$hash';";
+
+	$query = sqlite_query($dbhandle,$q,$error);
+
+	if($query)
+	{
+		if(sqlite_num_rows($query) > 0)
+			$ret = true;
+	}	
+
+	//close it
+	sqlite_close($dbhandle);
+
+	return $ret;
 }
 
 function IsRulesTableEmpty()
@@ -127,7 +188,7 @@ function IsRulesTableEmpty()
 	//checks how many rows there are in the databasae
 	$q = @sqlite_query($dbhandle, 'SELECT * FROM rules;');
 
-	if(q)
+	if($q)
 	{
 		if(sqlite_num_rows($q) > 0)
 			$ret = false;
@@ -623,6 +684,24 @@ function HowManyUsers()
 	return $num;
 }
 
+function GetInfoFromUID($uid)
+{
+	$ret = null;
+	//connect to database
+	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+	//grab login table
+	$q = sqlite_array_query($dbhandle, "SELECT * FROM logins WHERE UID='$uid' LIMIT 1;",SQLITE_ASSOC);
+	
+	if($q){
+		return $q[0];
+	}
+	
+	//close the sql database
+	sqlite_close($dbhandle);
+	
+	return $ret;
+}
+
 function ChangePriv($user, $priv)
 {
 	//print_r($priv);
@@ -871,7 +950,7 @@ function CreateSqliteFile()
 		exit("Could not create rules_owner table");
 	}
 
-	$q = "CREATE table forgot (UID integer references logins(UID), Status integer, Created text, Expires text);";
+	$q = "CREATE table forgot (UID integer references logins(UID), Status integer, Created text, Expires text, Stamp varchar(32));";
 	$exec = sqlite_exec($dbhandle,$q,$error);
 
 	if(!$exec)

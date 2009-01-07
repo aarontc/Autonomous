@@ -45,7 +45,7 @@
 				{
 					if(!validate_variable("password",$_POST['newpass'],$validation_struct))
 					{
-						$error['newerpass'] = 'INVALID password'; 
+						$error['newerpass'] = 'Password minimum length is 5 characters'; 
 					}
 					else
 					{
@@ -60,7 +60,7 @@
 				{
 					if (!validate_variable("password",$_POST['conpass'],$validation_struct)) 
 					{
-						$error['confpass'] = 'INVALID password'; 
+						$error['confpass'] = 'Password minimum length is 5 characters'; 
 					}
 					else
 					{

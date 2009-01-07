@@ -15,20 +15,23 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 	
 		if(isset($user_info) && $user_info != null)
 		{
+
+			$stamp = md5(time());
 			//add to forgot table
-			AddToForgot($user_info['UID']);
+			AddToForgot($user_info['UID'],$stamp);
 
-			$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?check='.date("m/d/Y").'|'.$user_info['UID'].'|'.$user_info['User'].'|'.$user_info['Password'].'|'.$user_info['Email'];
+			$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?created='.date("m/d/Y").'&stamp='.$stamp.'&uid='.$user_info['UID'].'&hash='.$user_info['Password'];/*.'&email='.$user_info['Email'];*/
 
 
-			$message = "Hello ".$users_info['User']."\n";
+			$message = "Hello ".$user_info['User']."\n";
 			$message .= "Click this link to change your password (once this link is clicked...it will expire)\n";
 			$message .= $linkToSend."\n";
 			$message .= "If you dont click this within 7 days, it will expire\n";
+			$message .= "if this link has expired, you must click on 'forgot username/pass' again\n";
 
 			$message = wordwrap($message,70);
 
-			if(mail($_POST['email'],"Forgot User/Pass",$message))
+			if(mail($_POST['email'],"Retrieve username/pass for Autonomous router",$message))
 				echo "Message Sent";
 			else
 				echo "Delivery failed";
