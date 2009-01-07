@@ -122,7 +122,7 @@ else
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input type="submit" value="submit" />
+						<input type="submit" value="Login" />
 					</span>
 				</p>
 			</div>

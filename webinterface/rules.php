@@ -117,7 +117,7 @@ if(IsRulesTableEmpty())
 								<span class='tr'></span>
 								<span class='bl'></span>
 								<span class='br'></span>
-								<input type="submit" name="submit" value="Submit" title='Update all rules' />
+								<input type="submit" name="submit" value="Update" title='Update all rules' />
 							</span>
 						</div>
 						<?php
@@ -298,7 +298,7 @@ if(IsRulesTableEmpty())
 								<span class='tr'></span>
 								<span class='bl'></span>
 								<span class='br'></span>
-								<input type="submit" name="submit" value="Submit" title='Update all rules' />
+								<input type="submit" name="submit" value="Update" title='Update all rules' />
 							</span>
 						</div>
 					</form>

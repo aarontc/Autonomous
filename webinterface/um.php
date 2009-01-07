@@ -390,7 +390,7 @@ $users_info = GetAllUsersInfo();
 								<span class='tr'></span>
 								<span class='bl'></span>
 								<span class='br'></span>
-								<input type="submit" name="submit" value="Submit" title='Update all Users' />
+								<input type="submit" name="submit" value="Update" title='Update all Users' />
 							</span>
 						</div>
 						<!-- user starts here -->
@@ -579,7 +579,7 @@ $users_info = GetAllUsersInfo();
 								<span class='tr'></span>
 								<span class='bl'></span>
 								<span class='br'></span>
-								<input type="submit" name="submit" value="Submit" title='Update all users' />
+								<input type="submit" name="submit" value="Update" title='Update all users' />
 							</span>
 						</div>
 					</form>
