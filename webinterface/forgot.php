@@ -15,22 +15,18 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 	
 		if(isset($user_info) && $user_info != null)
 		{
-			//echo "Found user info";
-
-			$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?check="'.date("m/d/Y").'|'.$user_info['UID'].'|'.$user_info['User'].'|'.$user_info['Password'].'|'.$user_info['Email'].'"';
-
-//			echo $linkToSend;
-
 			//add to forgot table
+			AddToForgot($user_info['UID']);
 
-			$message = "Hello ".$users_info['User']."\r\n";
-			$message .= "Click this link to change your password (once this link is clicked...it will expire)\r\n";
-			$message .= $linkToSend."\r\n";
-			$message .= "If you dont click this within 7 days, it will expire\r\n";
+			$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?check='.date("m/d/Y").'|'.$user_info['UID'].'|'.$user_info['User'].'|'.$user_info['Password'].'|'.$user_info['Email'];
 
-			//echo "<pre>";
-			//print_r ($message);
-			//echo "</pre>";
+
+			$message = "Hello ".$users_info['User']."\n";
+			$message .= "Click this link to change your password (once this link is clicked...it will expire)\n";
+			$message .= $linkToSend."\n";
+			$message .= "If you dont click this within 7 days, it will expire\n";
+
+			$message = wordwrap($message,70);
 
 			if(mail($_POST['email'],"Forgot User/Pass",$message))
 				echo "Message Sent";

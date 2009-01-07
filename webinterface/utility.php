@@ -96,6 +96,27 @@ function CreateUser($user, $pass, $privileges, $email=null)
 	sqlite_close($dbhandle);
 }
 
+function AddToForgot($uid)
+{
+	//connect to the database
+	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$created = date("m/d/Y");
+	$expiers = date("m/d/Y",strtotime('+1 week'));
+	$status = 1;
+
+	$q = "INSERT INTO forogt VALUES('$uid','$status','$created','$expiers');";
+	//echo $q;
+	$sql = sqlite_exec($dbhandle, $q, $error);
+
+	if (!$sql) {
+		exit("Error in query: '$error'");
+	}
+
+	//close it
+	sqlite_close($dbhandle);
+}
+
 function IsRulesTableEmpty()
 {
 	$ret = true;
