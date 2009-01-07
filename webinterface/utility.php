@@ -3,6 +3,7 @@
 define("PortF",1);
 define("UserMan",2);
 define("UserDataOnly",4);
+define("Website","enyo.homelinux.org");
 
 define("ROUTER_DB_FILE","/tmp/router.sqlite");
 
@@ -679,7 +680,7 @@ function GetEmail($user)
 	//close the sql database
 	sqlite_close($dbhandle);
 
-	if(isset($email))
+	if(isset($email) && $email != null)
 		return $email;
 	
 	return NULL;
@@ -697,6 +698,28 @@ function ChangeEmail($new_email, $user)
 
 	//close the sql database
 	sqlite_close($dbhandle);
+}
+
+function GetInfoFromEmail($email)
+{
+	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q = sqlite_array_query($dbhandle, "SELECT * FROM logins WHERE Email='$email' LIMIT 1;",SQLITE_ASSOC);
+	
+	if(!$q){
+		//exit("Error in Query: cannot use logins");
+		return null;
+	}
+
+	$email = $q[0]['Email'];
+	
+	//close the sql database
+	sqlite_close($dbhandle);
+
+	if(isset($email) && $email != null)
+		return $q[0];
+	
+	return null;
 }
 
 function GetAllUsersInfo()
@@ -825,6 +848,14 @@ function CreateSqliteFile()
 	if(!$exec)
 	{
 		exit("Could not create rules_owner table");
+	}
+
+	$q = "CREATE table forgot (UID integer references logins(UID), Status integer, Created text, Expires text);";
+	$exec = sqlite_exec($dbhandle,$q,$error);
+
+	if(!$exec)
+	{
+		exit("Could not create forgot table");
 	}
 
 	//close the sql database

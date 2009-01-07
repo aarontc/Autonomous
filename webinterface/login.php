@@ -113,6 +113,7 @@ else
 					<span class='error'><?= $msg['error'] ?></span>
 				</p>
 				<div class='loginformspacer'></div>
+				<a href="forgot.php">Forgot user name or password?</a>
 				<p>
 					<span class='roundbutton'>
 						<span class='tl'></span>
