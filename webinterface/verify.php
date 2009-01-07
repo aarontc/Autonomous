@@ -1,4 +1,4 @@
-<?php
+<?php include('utility.php');
 
 if(IsDBEmpty())
 {
