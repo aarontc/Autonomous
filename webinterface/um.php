@@ -78,6 +78,23 @@ $users_info = GetAllUsersInfo();
 							$counter++;
 						}
 					}
+
+					if(isset($_POST['em']['new']) && $_POST['em']['new'] != null)
+					{
+						if(!IsValidEmail($_POST['em']['new']))
+						{
+							$error['new']['email'] = 'Email is invalid'; 
+							$counter--;
+						}
+						else
+						{
+							$email['new'] = $_POST['em']['new'];
+						}
+					}
+					else
+					{
+						$email['new'] = null;
+					}
 					
 					if($counter == 3)
 					{
@@ -102,7 +119,7 @@ $users_info = GetAllUsersInfo();
 					
 							//create the database
 							//echo "Create";
-							CreateUser($name,$_POST['password']['new'], $privileges);
+							CreateUser($name,$_POST['password']['new'], $privileges,$email['new']);
 						}
 					}
 		
@@ -265,6 +282,28 @@ $users_info = GetAllUsersInfo();
 					$change = ChangeUserName($users_info[$i]['User'],$_POST['username'][$i]);
 					if(strcmp($change,"")!=0)
 						$error[$i]['un'] = $change;
+				}
+			}
+
+			//change email here
+			if(isset($_POST['em'][$i]) && $_POST['em'][$i] != null)
+			{
+				if(strcmp($_POST['em'][$i],"N/A") == 0 || strcmp($_POST['em'][$i],"n/a") == 0 || strcmp($_POST['em'][$i],"none") == 0 || strcmp($_POST['em'][$i],"NONE") == 0)
+				{
+					ChangeEmail(null,$users_info[$i]['User']);
+				}
+				else
+				{
+					if(strcmp($_POST['em'][$i],$users_info[$i]['Email'])!=0 || $users_info[$i]['Email'] == null)
+					{
+						//$change = ChangeUserName($users_info[$i]['User'],$_POST['username'][$i]);
+						//if(strcmp($change,"")!=0)
+						//	$error[$i]['un'] = $change;
+						if(IsValidEmail($_POST['em'][$i]))
+							ChangeEmail($_POST['em'][$i],$users_info[$i]['User']);
+						else
+							$error[$i]['email'] = "Invalid email address";
+					}
 				}
 			}
 		}
@@ -432,6 +471,28 @@ $users_info = GetAllUsersInfo();
 											<label class='checklabel' for='nullrules[<?=$i?>]'>Can see unowned rules.</label>
 										</p>
 									</div>
+									<div class='area'>
+									<p>
+									<label class='emaillabel' for='em[<?=$i?>]'>Email:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='em' value='' name='em[<?=$i?>]' id='em[<?=$i?>]' title='Set new e-mail here.'>
+										</span>
+									</p>
+									<?php
+									if(isset($users_info[$i]['Email']) && $users_info[$i]['Email'] != null)
+									{
+									?>
+									
+									<label class='curemaillabel' for='cem[<?=$i?>]' name='cem[<?=$i?>]'>Current Email: <?=$users_info[$i]['Email']?></label>
+									
+									<?php
+									}
+									?>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -496,6 +557,18 @@ $users_info = GetAllUsersInfo();
 											<input type='checkbox' name='nullrules[new]' id='nullrules[new]' title='Can this user see rules owned by no one?' />
 											<label class='checklabel' for='nullrules[new]'>Can see unowned rules.</label>
 										</p>
+									</div>
+									<div class='area'>
+									<p>
+									<label class='emaillabel' for='em[new]'>Email:</label>
+										<span class='roundinput'>
+											<span class='tl'></span>
+											<span class='tr'></span>
+											<span class='bl'></span>
+											<span class='br'></span>
+											<input type='text' class='em' value='' name='em[new]' id='em[new]' title='Optional set e-mail here.'>
+										</span>
+									</p>
 									</div>
 								</div>
 							</div>

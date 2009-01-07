@@ -60,6 +60,15 @@ else
 		}
 	}
 
+	if(isset($_POST['em']) && $_POST['em'] != null)
+	{
+		if (!IsValidEmail($_POST['em']))
+		{
+			$counter--;
+			$error['email'] = 'Invalid Email Address'; 
+		}
+	}
+
 	if($counter == 3)
 	{
 		if(strcmp($_POST['cp'],$_POST['npass'])!=0)
@@ -72,12 +81,19 @@ else
 			$privileges['user management'] = true;
 			$privileges['users data only'] = true;
 
+			$email = null;
+
+			if(isset($_POST['em']))
+				$email = $_POST['em'];
+
 			//create the database
-			CreateUser($_POST['nuser'],$_POST['npass'], $privileges);
+			CreateUser($_POST['nuser'],$_POST['npass'], $privileges, $email);
 
 			//add Session data
 			$_SESSION['Login']['User'] = $_POST['nuser'];
 			$_SESSION['Login']['Pass'] = hash('sha512',$_POST['npass']);
+
+			$_SESSION['Login']['Email'] = $email;
 			
 			
 
@@ -169,6 +185,19 @@ else
 					<span class='error'>
 						<?= $error['cpass'] ?>
 						<?= $error['mismatch'] ?>
+					</span>
+				</p>
+				<p class='area'>
+					<label for='em'>Email (optional):</label>
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input maxlength="100" name="em" id="em" type="text" value='<?= $_POST['em'] ?>' />
+					</span>
+					<span class='error'>
+						<?= $error['email'] ?>
 					</span>
 				</p>
 				<div class='loginformspacer'></div>

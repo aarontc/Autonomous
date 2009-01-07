@@ -15,6 +15,7 @@ else
 	{
 		unset($_SESSION['Login']['User']);
 		unset($_SESSION['Login']['Pass']);
+		unset($_SESSION['Login']['Email']);
 	}
 
 	if(!IsGoodSession())
@@ -34,6 +35,7 @@ else
 				//add Session data
 				$_SESSION['Login']['User'] = $_POST['user'];
 				$_SESSION['Login']['Pass'] = $pass;
+				$_SESSION['Login']['Email'] = GetEmail($_POST['user']);
 				
 				//change where it goes
 				header("Location: rules.php");
