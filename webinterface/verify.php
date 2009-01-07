@@ -30,22 +30,25 @@ if(!isset($_POST['done']))
 				//is there even a forgot ticket that is alive in the database
 				$tickets = GetAliveForgets();
 		
-				foreach($tickets as $ticket)
+				if($tickets != null)
 				{
-					if($ticket['UID']==$_GET['uid'])
+					foreach($tickets as $ticket)
 					{
-						if(strcmp($ticket['Created'],$_GET['created'])==0)
+						if($ticket['UID']==$_GET['uid'])
 						{
-							if(strcmp($ticket['Stamp'],$_GET['stamp'])==0)
+							if(strcmp($ticket['Created'],$_GET['created'])==0)
 							{
-								if(IsPasswordInDB($ticket['UID'],$_GET['hash']))
+								if(strcmp($ticket['Stamp'],$_GET['stamp'])==0)
 								{
-									//check to see if they are using a legit browser
-									$_SESSION['verify'] = true;
-									$_SESSION['UID'] = $ticket['UID'];
-									$_SESSION['Stamp'] = $ticket['Stamp'];
-									$_SESSION['Created'] = $ticket['Created'];
-									break;
+									if(IsPasswordInDB($ticket['UID'],$_GET['hash']))
+									{
+										//check to see if they are using a legit browser
+										$_SESSION['verify'] = true;
+										$_SESSION['UID'] = $ticket['UID'];
+										$_SESSION['Stamp'] = $ticket['Stamp'];
+										$_SESSION['Created'] = $ticket['Created'];
+										break;
+									}
 								}
 							}
 						}
