@@ -38,7 +38,6 @@ if(IsRulesTableEmpty())
 			UpdateRules();
 
 		$owned_rules = GetOwnedRulesFromUser($_SESSION['Login']['User']);
-		//print_r($owned_rules);	
 		?>
 		<div id='header'>
 			<div class='area'>
@@ -49,7 +48,7 @@ if(IsRulesTableEmpty())
 					<div class='login area'>
 						<p class='area'>
 							<span class='um'>
-								Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User']." ".$_SESSION['Login']['Email'] ?></a>
+								Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User']/*." ".$_SESSION['Login']['Email']*/ ?></a>
 								<span class='roundbutton'>
 									<span class='tl'></span>
 									<span class='tr'></span>
@@ -104,7 +103,7 @@ if(IsRulesTableEmpty())
 		<div id='main' class='area'>
 			<div id='sidebar'>
 				<div class='menuitem'>
-					<div class='mititle'><a href='#'>Port Forwarding</a></div>
+					<div class='mititle'><a href='rules.php'>Port Forwarding</a></div>
 					<div class='midesc'>Forward ports to LAN machines.</div>
 				</div>
 			</div>

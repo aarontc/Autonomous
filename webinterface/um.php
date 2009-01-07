@@ -337,7 +337,7 @@ $users_info = GetAllUsersInfo();
 				</div>
 				<div id='hright'>
 					<div class='login'>
-						Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User']." ".$_SESSION['Login']['Email'] ?></a>
+						Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User']/*." ".$_SESSION['Login']['Email']*/ ?></a>
 						<span class='roundbutton'>
 							<span class='tl'></span>
 							<span class='tr'></span>
@@ -377,7 +377,7 @@ $users_info = GetAllUsersInfo();
 		<div id='main' class='area'>
 			<div id='sidebar'>
 				<div class='menuitem'>
-					<div class='mititle'><a href='#'>Port Forwarding</a></div>
+					<div class='mititle'><a href='rules.php'>Port Forwarding</a></div>
 					<div class='midesc'>Forward ports to LAN machines.</div>
 				</div>
 			</div>
@@ -481,19 +481,12 @@ $users_info = GetAllUsersInfo();
 											<span class='tr'></span>
 											<span class='bl'></span>
 											<span class='br'></span>
-											<input type='text' class='em' value='' name='em[<?=$i?>]' id='em[<?=$i?>]' title='Set new e-mail here.'>
+											<input type='text' class='em' value='<?=$users_info[$i]['Email']?>' name='em[<?=$i?>]' id='em[<?=$i?>]' title='Set new e-mail here.'>
 										</span>
 									</p>
-									<?php
-									if(isset($users_info[$i]['Email']) && $users_info[$i]['Email'] != null)
-									{
-									?>
-									
-									<label class='curemaillabel' for='cem[<?=$i?>]' name='cem[<?=$i?>]'>Current Email: <?=$users_info[$i]['Email']?></label>
-									
-									<?php
-									}
-									?>
+									<?php if(isset($users_info[$i]['Email']) && $users_info[$i]['Email'] != null) { ?>
+<!-- 									<label class='curemaillabel' for='cem[<?=$i?>]' name='cem[<?=$i?>]'>Current Email: <?=$users_info[$i]['Email']?></label> -->
+									<?php } ?>
 									</div>
 								</div>
 							</div>

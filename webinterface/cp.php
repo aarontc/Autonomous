@@ -99,7 +99,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>Change Password</title>
+		<title>Autonomous - Change User Settings</title>
 		<link href='css/style.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
 		<link href='css/colors.css?<?= md5 ( time () ); ?>' type='text/css' media='screen,projection' rel='stylesheet' />
 	</head>
@@ -150,7 +150,7 @@
 		<div class='divider'><!-- comment for IE --></div>
 		<form action="cp.php" method="POST">
 			<div id="loginform">
-				<p class='loginformhead'>Change Password for <?= $_SESSION['Login']['User'] ?></p>
+				<p class='loginformhead'>Change settings for <?= $_SESSION['Login']['User'] ?></p>
 				<div class='loginformdiv'><!-- comment for IE --></div>
 				<p class='area'>
 					<label for='ppass'>Previous Password:</label>
@@ -159,7 +159,7 @@
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input maxlength="100" name="ppass" id="ppass" type="password" value='<?= $_POST['ppass'] ?>' />
+						<input maxlength="100" name="ppass" id="ppass" type="password" value='<?= $_POST['ppass'] ?>' title='Enter your old password here (needed for changing your password AND/OR your registered email).' />
 					</span>
 					<span class='error'><?= $error['curpass'] ?></span>
 				</p>
@@ -170,7 +170,7 @@
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input maxlength="100" name="newpass" type="password" value='<?= $_POST['newpass'] ?>' />
+						<input maxlength="100" name="newpass" type="password" value='<?= $_POST['newpass'] ?>' title='Enter your new password here.' />
 					</span>
 					<span class='error'><?= $error['newerpass']; ?></span>
 				</p>
@@ -181,12 +181,23 @@
 						<span class='tr'></span>
 						<span class='bl'></span>
 						<span class='br'></span>
-						<input maxlength="100" name="conpass" type="password" value='<?= $_POST['conpass'] ?>' />
+						<input maxlength="100" name="conpass" type="password" value='<?= $_POST['conpass'] ?>' title='Comfirm your new password here.' />
 					</span>
 					<span class='error'>
 						<?= $error['confpass'] ?>
 						<?= $error['mismatch'] ?>
 					</span>
+				</p>
+				<p class='area'>
+					<label for='email'>Email:</label>
+					<span class='roundinput'>
+						<span class='tl'></span>
+						<span class='tr'></span>
+						<span class='bl'></span>
+						<span class='br'></span>
+						<input  maxlength="100" name="email" id="email" type="text" value='<?= $_SESSION['Login']['Email'] ?>' title='Enter your current email address here (for sending lost password to at a later date).' />
+					</span>
+					<span class='error'><?= $error['email'] ?></span>
 				</p>
 				<div class='loginformspacer'></div>
 				<p>
