@@ -14,9 +14,8 @@ input[type='checkbox'] { border-width: 0px; border-style: none;  }
 p { padding: 0px; margin: 0px; }
 a { text-decoration: none; }
 a.button { padding: 0px 10px; }
-input.ip { width: 120px; }
+input.ip { width: 95px; }
 input.port { width: 40px; }
-
 
 .area { overflow: visible; width: 100%; } /* this is for IE */
 .area:after { content:"."; display:block; line-height:0px; font-size:0px; visibility:hidden; clear:both; } /* this is for firefox */
@@ -26,7 +25,8 @@ div.center { float: none; text-align: center; }
 #header { width: 100%; }
 #hleft { width: 45%; text-align: left; float: left; margin: 0px -10px 0px 10px; }
 #hright { width:45%; text-align: right; float: right; margin: 0px 10px 0px -10px; }
-#hright p { margin-bottom: 5px; }
+#hright p { margin-bottom: 5px; display: block; }
+#hright p .um { float: right; }
 .headerlg { font-size: 28px; font-weight: bold; }
 .headermed { font-size: 20px; }
 .error { float: left; margin-top: 6px; font-weight: bold; }
@@ -42,7 +42,12 @@ div.center { float: none; text-align: center; }
 .loginformhead { font-size: 1.5em; }
 #loginform p { width: 100%; vertical-align: middle; }
 #loginform p label { display: block; width: 45%; text-align: right; float: left; margin-top: 6px; }
-#loginform p .roundinput { float: left; }
+#loginform p .roundinput { margin: 3px 6px 3px 0px; }
+
+input[type='button'].delete, input[type='button'].minimize { margin: 0; padding: 0; border-width: 0px; border-style: none; width: 15px; height: 15px; background-repeat: no-repeat; background-attachment: scroll; background-position: 0 0; }
+input[type='button'].delete:hover { background-color: transparent; background-image: url('../images/delete-light-15x15.png'); cursor: pointer; }
+input[type='button'].minimize { background: transparent url('../images/minimize-15x15.png') no-repeat scroll 0 0; }
+input[type='button'].minimize:hover { background-color: transparent; background-image: url('../images/minimize-light-15x15.png'); cursor: pointer; }
 
 #main { width: 100%; }
 
@@ -53,31 +58,44 @@ div.center { float: none; text-align: center; }
 
 #content { width: 82%; float: left; border-collapse: collapse; margin-right: -1px; border-left-width: 1px; border-left-style: solid; }
 #rules, #users { width: 90%; margin: 0px auto 0px auto; }
-.rulecontainer, .usercontainer { width: 100%; height: 110px; position: relative; }
-.ruleshadow, .rule { width: 99%; height: 102px; position: absolute; }
-.ruleshadow, .usershadow { bottom: 0px; right: 0px; }
+.ruleshadow, .rule, .smallruleshadow, .smallrule, .usershadow, .user  { position: relative; }
+.ruleshadow, .usershadow, .smallruleshadow { left: 5px; top: 5px; margin-right: 5px; }
+.ruleshadow, .usershadow { margin-bottom: 5px; margin-top: 10px; }
+.smallruleshadow { margin-bottom: 5px; }
 .ruleshadow .tr, .ruleshadow .bl, .ruleshadow .br, .usershadow .tr, .usershadow .bl, .usershadow .br { position: absolute; height: 5px; width: 5px; background-repeat: no-repeat; background-attachment: scroll; }
 .ruleshadow .tr, .usershadow .tr { top: 0px; right: 0px; background-position: top right; }
 .ruleshadow .bl, .usershadow .bl {bottom: 0px; left: 0px; background-position: bottom left; }
 .ruleshadow .br, .usershadow .br { bottom: 0px; right: 0px; background-position: bottom right; }
-.rule, .user { top: 0px; left: 0px; border-width: 1px; border-style: solid; }
+.rule, .user, .smallrule { top: -5px; left: -5px; border-width: 1px; border-style: solid; }
 .ruletl, .ruletr, .rulebl, .rulebr, .usertl, .usertr, .userbl, .userbr { position: absolute; width: 5px; height: 5px; background-repeat: no-repeat; background-attachment: scroll; }
 .ruletl, .usertl { top: -1px; left: -1px; background-position: top left; }
 .ruletr, .usertr { top: -1px; right: -1px; background-position: top right; }
 .rulebl, .userbl { bottom: -1px; left: -1px; background-position: bottom left; }
 .rulebr, .userbr { bottom: -1px; right: -1px; background-position: bottom right; }
 .ruletitle, .usertitle { height: 23px; border-bottom-width: 1px; border-bottom-style: solid; border-collapse: collapse; }
-.ruletitle input[type='text'], .usertitle input[type='text'] { border-width: 0px; border-style: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 97%; font-size: 15px; font-weight: bold; float: left; }
-.ruletitle input[type='image'], .usertitle input[type='image'], .ruletitle img, .usertitle img { width: 15px; height: 15px; padding: 4px 5px 0px 0px; border: none; float: right; }
+.ruletitle input[type='text'], .usertitle input[type='text'] { border-width: 0px; border-style: none; padding: 2px 2px 2px 5px; margin: 0px -23px 0px 0px; width: 92%; font-size: 15px; font-weight: bold; float: left; }
+.ruletitle input[type='image'], .ruletitle input[type='button'], .usertitle input[type='image'], .usertitle input[type='button'], .ruletitle img, .usertitle img { width: 15px; height: 15px; margin: 4px 5px 0px 0px; border: none; float: right; }
 .rulebody, .userbody { width: auto; font-weight: bold; padding: 12px; }
 .rulebody div, .userbody div { clear: both; }
-.rulebody p { width: 245px; float: left; }
-.rulebody p label { width: 8.6em; float: left; text-align: right; margin-top: 6px; display: block; }
+.rulebody p { width: 230px; float: left; }
+.rulebody p label { width: 8.6em; float: left; text-align: right; padding: 6px 3px 0px 3px; display: block; }
 .rulebody p input, .userbody p input { float: left; }
 .rulebody p input[type='checkbox'], .userbody p input[type='checkbox'] { float: left; margin: 6px 0.5em 0px 1.5em; display: block; }
 .rulebody p label.checklabel, .userbody p label.checklabel { width: auto; float: left; text-align: left; margin-top: 6px; display: block; }
+.rulebody .roundinput, .rulebody .disabledroundinput, .userbody .roundinput, .userbody .disabledroundinput { margin: 3px 6px 3px 0px; }
 
-.usershadow, .user { width: 99%; height: 102px; position: absolute; }
+.smallrule label { font-size: 11px; font-weight: bold; }
+.smallrule input { font-size: 12px; }
+.smallrule select { font-size: 11px; }
+.smallruleshadow .tr, .smallruleshadow .bl, .smallruleshadow .br { position: absolute; height: 5px; width: 5px; background-repeat: no-repeat; background-attachment: scroll; }
+.smallruleshadow .tr { top: 0px; right: 0px; background-position: top right; }
+.smallruleshadow .bl {bottom: 0px; left: 0px; background-position: bottom left; }
+.smallruleshadow .br { bottom: 0px; right: 0px; background-position: bottom right; }
+.smallrulename { width: 95px; }
+.smallrule p input.minimize, .smallrule p input.delete { float: right; margin-top: 4px; margin-right: 5px; }
+.smallrule p label { padding: 4px 1px 0px 7px; display: inline-block; float: left; }
+.smallrule .roundinput, .smallrule .disabledroundinput { margin: 1px 0px; }
+
 .userbody p { width: auto; float: left; }
 .userbody p label { width: 10em; float: left; text-align: right; margin-top: 6px; display: block; }
 
@@ -90,13 +108,15 @@ div.center { float: none; text-align: center; }
 .roundbutton .bl { bottom: 0px; left: 0px; background-position: bottom left; }
 .roundbutton .br { bottom: 0px; right: 0px; background-position: bottom right; }
 
-.roundinput { position: relative; display: inline-block; margin: 3px; padding: 1px 0px; border-width: 1px; border-style: solid; }
-.roundinput .tl, .roundinput .tr, .roundinput .bl, .roundinput .br { position: absolute; width: 5px; height: 5px; background-repeat: no-repeat; background-attachment: scroll; }
-.roundinput .tl { top: -1px; left: -1px; background-position: top left; }
-.roundinput .tr { top: -1px; right: -1px; background-position: top right; }
-.roundinput .bl { bottom: -1px; left: -1px; background-position: bottom left; }
-.roundinput .br { bottom: -1px; right: -1px; background-position: bottom right; }
-.roundinput input[type='text'], .roundinput input[type='password'] { border-width: 0px; border-style: none; padding: 0px; margin: 0px 2px; }
-.roundinput select { border-width: 0px; border-style: none; padding: 0px; margin: 0px 4px 0px 2px; }
+.roundinput, .disabledroundinput { position: relative; display: inline-block; padding: 1px 0px; border-width: 1px; border-style: solid; float: left; }
+.roundinput .tl, .roundinput .tr, .roundinput .bl, .roundinput .br,
+.disabledroundinput .tl, .disabledroundinput .tr, .disabledroundinput .bl, .disabledroundinput .br { position: absolute; width: 5px; height: 5px; background-repeat: no-repeat; background-attachment: scroll; }
+.roundinput .tl, .disabledroundinput .tl { top: -1px; left: -1px; background-position: top left; }
+.roundinput .tr, .disabledroundinput .tr { top: -1px; right: -1px; background-position: top right; }
+.roundinput .bl, .disabledroundinput .bl { bottom: -1px; left: -1px; background-position: bottom left; }
+.roundinput .br, .disabledroundinput .br { bottom: -1px; right: -1px; background-position: bottom right; }
+.roundinput input[type='text'], .roundinput input[type='password'],
+.disabledroundinput input[type='text'], .disabledroundinput input[type='password'] { border-width: 0px; border-style: none; padding: 0px; margin: 0px 2px; }
+.roundinput select, .disabledroundinput select { border-width: 0px; border-style: none; padding: 0px; margin: 0px 4px 0px 2px; }
 
 #footer { text-align: right; }

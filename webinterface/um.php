@@ -357,7 +357,7 @@ $users_info = GetAllUsersInfo();
 						Search for Term:
 						<span class='roundinput'>
 							<span class='tl'></span>
-			$index				<span class='tr'></span>
+							<span class='tr'></span>
 							<span class='bl'></span>
 							<span class='br'></span>
 							<input type='text' />
@@ -375,9 +375,6 @@ $users_info = GetAllUsersInfo();
 		</div>
 		<div class='divider'><!-- comment for IE --></div>
 		<div id='main' class='area'>
-		<pre>
-		<!-- <?php print_r ($_POST);?> -->
-		</pre>
 			<div id='sidebar'>
 				<div class='menuitem'>
 					<div class='mititle'><a href='#'>Port Forwarding</a></div>
@@ -416,13 +413,10 @@ $users_info = GetAllUsersInfo();
 							$errclass = "nodisplay";
 						?>
 						<div class='<?=$errclass?>'><?=array_pop($error[$i])?></div>
-						<div class='rulespacer'></div>
-						<div class='usercontainer'>
-							<div class='usershadow'>
-								<span class='tr'></span>
-								<span class='bl'></span>
-								<span class='br'></span>
-							</div>
+						<div class='usershadow'>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
 							<div class='user'>
 								<span class='usertl'></span>
 								<span class='usertr'></span>
@@ -504,7 +498,6 @@ $users_info = GetAllUsersInfo();
 								</div>
 							</div>
 						</div>
-						<div class='rulespacer'></div>
 						<!-- user ends here -->
 						<?php
 						}
@@ -518,13 +511,10 @@ $users_info = GetAllUsersInfo();
 							$errclass = "nodisplay";
 						?>
 						<div class='<?=$errclass?>'><?=array_pop($error['new'])?></div>
-						<div class='rulespacer'></div>
-						<div class='usercontainer'>
-							<div class='usershadow'>
-								<span class='tr'></span>
-								<span class='bl'></span>
-								<span class='br'></span>
-							</div>
+						<div class='usershadow'>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
 							<div class='user'>
 								<span class='usertl'></span>
 								<span class='usertr'></span>

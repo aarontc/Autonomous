@@ -46,31 +46,30 @@ if(IsRulesTableEmpty())
 					<div><a href='index.php' class='green headerlg'>Autonomous</a></div>
 				</div>
 				<div id='hright'>
-					<div class='login'>
-						<p>
-							Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User']." ".$_SESSION['Login']['Email'] ?></a>
-							<span class='roundbutton'>
-								<span class='tl'></span>
-								<span class='tr'></span>
-								<span class='bl'></span>
-								<span class='br'></span>
-								<a href='login.php?action=logout' class='button'>logout</a>
+					<div class='login area'>
+						<p class='area'>
+							<span class='um'>
+								Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User']." ".$_SESSION['Login']['Email'] ?></a>
+								<span class='roundbutton'>
+									<span class='tl'></span>
+									<span class='tr'></span>
+									<span class='bl'></span>
+									<span class='br'></span>
+									<a href='login.php?action=logout' class='button'>logout</a>
+								</span>
 							</span>
 						</p>
-						<p>
-							<span class='roundbutton'>
-								<span class='tl'></span>
-								<span class='tr'></span>
-								<span class='bl'></span>
-								<span class='br'></span>
-								<?php if(IsUserAdmin($_SESSION['Login']['User']))
-								{
-								?>
-									<a href='um.php' class='button' >Manage Users</a>
-								<?php
-								}
-								?>
-								
+						<p class='area'>
+							<span class='um'>
+								<?php if(IsUserAdmin($_SESSION['Login']['User'])) { ?>
+								<span class='roundbutton'>
+									<span class='tl'></span>
+									<span class='tr'></span>
+									<span class='bl'></span>
+									<span class='br'></span>
+									<a href='um.php' class='button' >Manage Users</a>	
+								</span>
+								<?php } ?>
 							</span>
 						</p>
 					</div>
@@ -130,14 +129,11 @@ if(IsRulesTableEmpty())
 									continue;
 								//
 						?>
-						<div class='rulespacer'></div>
 						<!-- rule <?= $ruleid ?> starts here -->
-						<div class='rulecontainer'>
-							<div class='ruleshadow'>
-								<span class='tr'></span>
-								<span class='bl'></span>
-								<span class='br'></span>
-							</div>
+						<div class='ruleshadow'>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
 							<div class='rule'>
 								<span class='ruletl'></span>
 								<span class='ruletr'></span>
@@ -213,18 +209,14 @@ if(IsRulesTableEmpty())
 							</div>
 						</div>
 						<!-- rule ends here -->
-						<div class='rulespacer'></div>
 						<?php
 							}
 						?>
-						<div class='rulespacer'></div>
 						<!-- rule NEWRULEFORTEHLOVEOFALLTHATISPACKETY starts here -->
-						<div class='rulecontainer'>
-							<div class='ruleshadow'>
-								<span class='tr'></span>
-								<span class='bl'></span>
-								<span class='br'></span>
-							</div>
+						<div class='ruleshadow'>
+							<span class='tr'></span>
+							<span class='bl'></span>
+							<span class='br'></span>
 							<div class='rule'>
 								<span class='ruletl'></span>
 								<span class='ruletr'></span>
