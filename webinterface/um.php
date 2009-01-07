@@ -291,6 +291,9 @@ $users_info = GetAllUsersInfo();
 				if(strcmp($_POST['em'][$i],"N/A") == 0 || strcmp($_POST['em'][$i],"n/a") == 0 || strcmp($_POST['em'][$i],"none") == 0 || strcmp($_POST['em'][$i],"NONE") == 0)
 				{
 					ChangeEmail(null,$users_info[$i]['User']);
+
+					if(strcmp($_SESSION['Login']['User'],$users_info[$i]['User'])==0)
+						$_SESSION['Login']['Email'] = null;
 				}
 				else
 				{
@@ -300,7 +303,12 @@ $users_info = GetAllUsersInfo();
 						//if(strcmp($change,"")!=0)
 						//	$error[$i]['un'] = $change;
 						if(IsValidEmail($_POST['em'][$i]))
+						{
 							ChangeEmail($_POST['em'][$i],$users_info[$i]['User']);
+
+							if(strcmp($_SESSION['Login']['User'],$users_info[$i]['User'])==0)
+								$_SESSION['Login']['Email'] = $_POST['em'][$i];
+						}
 						else
 							$error[$i]['email'] = "Invalid email address";
 					}
@@ -329,7 +337,7 @@ $users_info = GetAllUsersInfo();
 				</div>
 				<div id='hright'>
 					<div class='login'>
-						Welcome <a href='cp.php' class='loggedinuser'><?=$_SESSION['Login']['User']?></a>
+						Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User']." ".$_SESSION['Login']['Email'] ?></a>
 						<span class='roundbutton'>
 							<span class='tl'></span>
 							<span class='tr'></span>

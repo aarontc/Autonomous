@@ -48,7 +48,7 @@ if(IsRulesTableEmpty())
 				<div id='hright'>
 					<div class='login'>
 						<p>
-							Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User'] ?></a>
+							Welcome <a href='cp.php' class='loggedinuser'><?= $_SESSION['Login']['User']." ".$_SESSION['Login']['Email'] ?></a>
 							<span class='roundbutton'>
 								<span class='tl'></span>
 								<span class='tr'></span>
