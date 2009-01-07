@@ -105,7 +105,7 @@ function AddToForgot($uid)
 	$expiers = date("m/d/Y",strtotime('+1 week'));
 	$status = 1;
 
-	$q = "INSERT INTO forogt VALUES('$uid','$status','$created','$expiers');";
+	$q = "INSERT INTO forgot VALUES('$uid','$status','$created','$expiers');";
 	//echo $q;
 	$sql = sqlite_exec($dbhandle, $q, $error);
 
