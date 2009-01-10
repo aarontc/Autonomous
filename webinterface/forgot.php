@@ -32,19 +32,19 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 			$message = wordwrap($message,70);
 
 			if(mail($_POST['email'],"Retrieve username/pass for Autonomous router",$message))
-				echo "Message Sent";
+				$success = "Message Sent. Please check your email.";
 			else
-				echo "Delivery failed";
+				$error = "Delivery failed";
 
 		}
 		else
 		{
-			echo "There is no user with this email address";
+			$error = "There is no user with this email address";
 		}
 	}
 	else
 	{
-		echo "That is not a email address";
+		$error = "That is not a email address";
 	}
 }
 
@@ -95,6 +95,9 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 				<p class='loginformhead'>Retrieve Username and/or Password</p>
 				<div class='loginformdiv'><!-- comment for IE --></div>
 				<p class='area'>
+					<?php if(isset($success)) { ?>
+					<span class='success'><?= $success ?></span>
+					<?php } else { ?>
 					<label for="email">Enter Email Address:</label>
 					<span class='roundinput'>
 						<span class='tl'></span>
@@ -103,7 +106,11 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 						<span class='br'></span>
 						<input type="text" name="email" id="email" />
 					</span>
+					<?php if(isset($error)) ?>
+					<span class='error'><?= $error ?></span>
+					<?php } ?>
 				</p>
+				<?php if(!isset($success)) { ?>
 				<div class='loginformspacer'></div>
 				<p>
 					<span class='roundbutton'>
@@ -114,6 +121,7 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 						<input type="submit" name="done" value="Submit" />
 					</span>
 				</p>
+				<?php } ?>
 			</div>
 		</form>
 		<div class='divider'><!-- comment for IE --></div>

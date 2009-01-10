@@ -31,6 +31,7 @@ div.center { float: none; text-align: center; }
 .headerlg { font-size: 28px; font-weight: bold; }
 .headermed { font-size: 20px; }
 .error { float: left; margin-top: 6px; font-weight: bold; }
+.success { font-weight: bold; }
 .login { position: absolute; top: 5px; right: 15px; }
 .login a.loggedinuser { font-weight: bold; }
 

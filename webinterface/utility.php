@@ -3,7 +3,7 @@
 define("PortF",1);
 define("UserMan",2);
 define("UserDataOnly",4);
-define("Website","enyo.homelinux.org");
+define("Website","localhost");
 
 define("ROUTER_DB_FILE","/tmp/router.sqlite");
 
