@@ -20,8 +20,13 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 			//add to forgot table
 			AddToForgot($user_info['UID'],$stamp);
 
-			$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?created='.date("m/d/Y").'&stamp='.$stamp.'&uid='.$user_info['UID'].'&hash='.$user_info['Password'];/*.'&email='.$user_info['Email'];*/
-
+			//$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?created='.date("m/d/Y").'&stamp='.$stamp.'&uid='.$user_info['UID'].'&hash='.$user_info['Password'];/*.'&email='.$user_info['Email'];*/
+			$tempString = date("m/d/Y").$stamp.$user_info['UID'].$user_info['Password'];
+			//echo $tempString.'<br>';
+			$hash = hash('sha512',$tempString);
+			//echo $hash;
+			$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?hash='.$hash;
+			//echo $linkToSend;;
 
 			$message = "Hello ".$user_info['User']."\n";
 			$message .= "Click this link to change your password (once this link is clicked...it will expire)\n";

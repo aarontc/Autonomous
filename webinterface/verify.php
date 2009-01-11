@@ -23,38 +23,28 @@ if(!isset($_POST['done']))
 {
 	if(!isset($_SESSION['verify']))
 	{	
-		if(isset($_GET['created']) && isset($_GET['stamp']) && isset($_GET['uid']) && isset($_GET['hash']))
+		if(isset($_GET['hash']) && strlen($_GET['hash'])==128)
 		{
-			if(strlen($_GET['hash'])==128 && strlen($_GET['stamp'])==32)
+			//is there even a forgot ticket that is alive in the database
+			$tickets = GetAliveForgets();
+	
+			if($tickets != null)
 			{
-				//is there even a forgot ticket that is alive in the database
-				$tickets = GetAliveForgets();
-		
-				if($tickets != null)
+				foreach($tickets as $ticket)
 				{
-					foreach($tickets as $ticket)
-					{
-						if($ticket['UID']==$_GET['uid'])
-						{
-							if(strcmp($ticket['Created'],$_GET['created'])==0)
-							{
-								if(strcmp($ticket['Stamp'],$_GET['stamp'])==0)
-								{
-									if(IsPasswordInDB($ticket['UID'],$_GET['hash']))
-									{
-										//check to see if they are using a legit browser
-										$_SESSION['verify'] = true;
-										$_SESSION['UID'] = $ticket['UID'];
-										$_SESSION['Stamp'] = $ticket['Stamp'];
-										$_SESSION['Created'] = $ticket['Created'];
-										break;
-									}
-								}
-							}
-						}
+					$info = GetInfoFromUID($ticket['UID']);
+					$tempString = $ticket['Created'].$ticket['Stamp'].$ticket['UID'].$info['Password'];
+					$hash = hash('sha512',$tempString);
+					if(strcmp($hash,$_GET['hash'])==0)
+					{						
+						$_SESSION['verify'] = true;
+						$_SESSION['UID'] = $ticket['UID'];
+						$_SESSION['Stamp'] = $ticket['Stamp'];
+						$_SESSION['Created'] = $ticket['Created'];
+						break;
 					}
 				}
-			}	
+			}
 		}
 	
 		if(!isset($_SESSION['verify']))
@@ -66,9 +56,6 @@ if(!isset($_POST['done']))
 
 if(isset($_SESSION['verify']) && $_SESSION['verify'])
 {
-	//check password here
-	//if password is correct..change the ticket to claim
-
 	$counter = 0;
 
 	if(isset($_POST['password']))
