@@ -286,9 +286,11 @@ $users_info = GetAllUsersInfo();
 			}
 
 			//change email here
-			if(isset($_POST['em'][$i]) && $_POST['em'][$i] != null)
+			//if(isset($_POST['em'][$i]) && $_POST['em'][$i] != null)
+			if(strcmp($_POST['em'][$i],$users_info[$i]['Email']) != 0)
 			{
-				if(strcmp($_POST['em'][$i],"N/A") == 0 || strcmp($_POST['em'][$i],"n/a") == 0 || strcmp($_POST['em'][$i],"none") == 0 || strcmp($_POST['em'][$i],"NONE") == 0)
+				//if(strcmp($_POST['em'][$i],"N/A") == 0 || strcmp($_POST['em'][$i],"n/a") == 0 || strcmp($_POST['em'][$i],"none") == 0 || strcmp($_POST['em'][$i],"NONE") == 0)
+				if(strlen($_POST['em'][$i])==0)
 				{
 					ChangeEmail(null,$users_info[$i]['User']);
 
@@ -297,21 +299,15 @@ $users_info = GetAllUsersInfo();
 				}
 				else
 				{
-					if(strcmp($_POST['em'][$i],$users_info[$i]['Email'])!=0 || $users_info[$i]['Email'] == null)
+					if(IsValidEmail($_POST['em'][$i]))
 					{
-						//$change = ChangeUserName($users_info[$i]['User'],$_POST['username'][$i]);
-						//if(strcmp($change,"")!=0)
-						//	$error[$i]['un'] = $change;
-						if(IsValidEmail($_POST['em'][$i]))
-						{
-							ChangeEmail($_POST['em'][$i],$users_info[$i]['User']);
+						ChangeEmail($_POST['em'][$i],$users_info[$i]['User']);
 
-							if(strcmp($_SESSION['Login']['User'],$users_info[$i]['User'])==0)
-								$_SESSION['Login']['Email'] = $_POST['em'][$i];
-						}
-						else
-							$error[$i]['email'] = "Invalid email address";
+						if(strcmp($_SESSION['Login']['User'],$users_info[$i]['User'])==0)
+							$_SESSION['Login']['Email'] = $_POST['em'][$i];
 					}
+					else
+						$error[$i]['email'] = "Invalid email address";
 				}
 			}
 		}

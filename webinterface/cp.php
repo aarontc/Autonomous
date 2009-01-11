@@ -40,8 +40,33 @@
 						$counter++;
 					}
 				}
-
-				if(isset($_POST['newpass']))
+				
+				//stuff you can do if you enter the previous password
+				if($counter == 1)
+				{
+					if(strcmp($_POST['email'],$_SESSION['Login']['Email'])!=0)
+					{
+						if(strlen($_POST['email'])>0)
+						{
+							if(!IsValidEmail($_POST['email']))
+							{
+								$error['email'] = 'Email is invalid'; 
+							}
+							else
+							{
+								ChangeEmail($_POST['email'],$_SESSION['Login']['User']);
+								$_SESSION['Login']['Email'] = $_POST['email'];
+							}
+						}
+						else
+						{
+							ChangeEmail(null,$_SESSION['Login']['User']);
+							$_SESSION['Login']['Email'] = NULL;
+						}
+					}
+				}
+				
+				if(isset($_POST['newpass']) && $_POST['newpass'] != null)
 				{
 					if(!validate_variable("password",$_POST['newpass'],$validation_struct))
 					{
@@ -56,7 +81,7 @@
 					}
 				}
 				
-				if(isset($_POST['conpass']))
+				if(isset($_POST['conpass']) && $_POST['conpass'] != null)
 				{
 					if (!validate_variable("password",$_POST['conpass'],$validation_struct)) 
 					{
@@ -76,20 +101,23 @@
 						$counter=0;
 					}
 					else
-					{
-						//change password
-						ChangePassword($_SESSION['Login']['User'],$_POST['newpass']);
-		
-						//add session data
-						$_SESSION['Login']['Pass'] = hash('sha512',$_POST['newpass']);
-		
-						//send counter to the session with 4
-						$counter = 4;
-						$_SESSION['CP'] = $counter;
-						header('Location: cp.php');
-						$stop = true;
-						//kill it
-						$counter=0;
+					{	
+						if(!isset($error['email']))
+						{
+							//change password
+							ChangePassword($_SESSION['Login']['User'],$_POST['newpass']);
+			
+							//add session data
+							$_SESSION['Login']['Pass'] = hash('sha512',$_POST['newpass']);
+			
+							//send counter to the session with 4
+							$counter = 4;
+							$_SESSION['CP'] = $counter;
+							header('Location: cp.php');
+							$stop = true;
+							//kill it
+							$counter=0;
+						}
 					}
 				}
 
