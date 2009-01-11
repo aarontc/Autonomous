@@ -68,7 +68,21 @@ if(IsRulesTableEmpty())
 									<span class='br'></span>
 									<a href='um.php' class='button' >Manage Users</a>	
 								</span>
-								<?php } ?>
+								<?php } 
+								
+								if(isset($_SESSION['Login']['Email']) && $_SESSION['Login']['Email'] != null)
+								{
+								?>
+								<span class='roundbutton'>
+									<span class='tl'></span>
+									<span class='tr'></span>
+									<span class='bl'></span>
+									<span class='br'></span>
+									<a href='er.php' class='button' >Email rules</a>	
+								</span>
+								<?php
+								}
+								?>
 							</span>
 						</p>
 					</div>

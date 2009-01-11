@@ -277,11 +277,23 @@ $users_info = GetAllUsersInfo();
 			//change username
 			if(isset($_POST['username'][$i]))
 			{
+				$switchIt = false;
+				if(strcmp($_SESSION['Login']['User'],$users_info[$i]['User'])==0)
+					$switchIt = true;
 				if(strcmp($_POST['username'][$i],$users_info[$i]['User'])!=0)
 				{
 					$change = ChangeUserName($users_info[$i]['User'],$_POST['username'][$i]);
 					if(strcmp($change,"")!=0)
+					{
 						$error[$i]['un'] = $change;
+					}	
+					else
+					{
+						if($switchIt)
+						{
+							$_SESSION['Login']['User'] = $_POST['username'][$i];
+						}
+					}
 				}
 			}
 
