@@ -19,15 +19,38 @@ if(IsGoodSession())
 //print_r($_SESSION);
 //echo "</pre>";
 
+//check to see if any tickets expired
+$tickets = GetAliveForgets();
+
+if($tickets != null)
+{
+	foreach($tickets as $ticket)
+	{
+		$diff = DiffDates($ticket['Expires'],date("m/d/Y"));
+		if($diff >= 0)
+		{
+			ChangeForgotStatusToExpired($ticket['Created'],$ticket['Expires']);
+		}
+	}
+}
+
+$tickets = null;
+
+
 if(!isset($_POST['done']))
 {
+	//echo "1";
 	if(!isset($_SESSION['verify']))
 	{	
+		//echo "2";
 		if(isset($_GET['hash']) && strlen($_GET['hash'])==128)
 		{
+			//echo "3";
 			//is there even a forgot ticket that is alive in the database
 			$tickets = GetAliveForgets();
-	
+			
+			print_r($tickets);
+			
 			if($tickets != null)
 			{
 				foreach($tickets as $ticket)
@@ -49,13 +72,15 @@ if(!isset($_POST['done']))
 	
 		if(!isset($_SESSION['verify']))
 		{
-			echo "There is no ticket with those settings or it has already been claimed";
+			//echo "4";
+			echo "The ticket could be expired, already clamied, or the hash in the link is wrong";
 		}
 	}
 }
 
 if(isset($_SESSION['verify']) && $_SESSION['verify'])
 {
+	//echo "5";
 	$counter = 0;
 
 	if(isset($_POST['password']))
@@ -86,7 +111,7 @@ if(isset($_SESSION['verify']) && $_SESSION['verify'])
 	{
 		if(strcmp($_POST['confirmpass'],$_POST['password'])!=0)
 		{
-			$error['mismatch'] = 'Password MISTMATCH'; 
+			$error['mismatch'] = 'Password MISMATCH'; 
 		}
 		else
 		{

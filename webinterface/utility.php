@@ -3,7 +3,7 @@
 define("PortF",1);
 define("UserMan",2);
 define("UserDataOnly",4);
-define("Website","localhost");
+define("Website","enyo.homelinux.org");
 
 define("ROUTER_DB_FILE","/tmp/router.sqlite");
 
@@ -142,7 +142,7 @@ function ChangeForgotStatusToClaimed($created,$stamp)
 	//connect to the database
 	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
-	$q = "UPDATE forgot SET Status=0 WHERE Created='$created' AND Stamp='$stamp';";
+	$q = "UPDATE forgot SET Status=0 WHERE Created='$created' AND Stamp='$stamp' AND Status=1;";
 
 	//echo $q;
 	$sql = sqlite_exec($dbhandle, $q, $error);
@@ -154,6 +154,25 @@ function ChangeForgotStatusToClaimed($created,$stamp)
 	//close it
 	sqlite_close($dbhandle);
 }
+
+function ChangeForgotStatusToExpired($created,$expires)
+{
+	//connect to the database
+	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	$q = "UPDATE forgot SET Status=2 WHERE Created='$created' AND Expires='$expires' AND Status=1;";
+
+	//echo $q;
+	$sql = sqlite_exec($dbhandle, $q, $error);
+
+	if (!$sql) {
+		exit("Error in query: '$error'");
+	}
+
+	//close it
+	sqlite_close($dbhandle);
+}
+
 
 function IsPasswordInDB($uid, $hash)
 {
@@ -786,6 +805,28 @@ function GetEmail($user)
 	return NULL;
 }
 
+function DoesEmailAlreadyExist($email)
+{
+	$ret = false;
+
+	//connect to the database
+	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
+
+	//checks how many rows there are in the databasae
+	$q = @sqlite_query($dbhandle, "SELECT * FROM logins WHERE Email='$email' LIMIT 1;");
+
+	if($q)
+	{
+		if(sqlite_num_rows($q) > 0)
+			$ret = true;
+	}	
+
+	//close the datapase
+	sqlite_close($dbhandle);
+
+	return $ret;
+}
+
 function ChangeEmail($new_email, $user)
 {
 	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
@@ -1021,6 +1062,19 @@ function rev_strstr($string, $search)
 	}
 
 	return -1;
+}
+
+function DiffDates($date1,$date2)
+{
+	//$d1 = explode("/",$date1);
+	//$d2 = explode("/",$date2);
+	
+	//$start_date = gregoriantojd($d1[0], $d1[1], $d1[2]);
+	//$end_date = gregoriantojd($d2[0], $d2[1], $d2[2]);
+	
+	//return $end_date - $start_date;
+	
+	return ((strtotime($date2) - strtotime($date1) ) / (60 * 60 * 24));
 }
 
 ?>

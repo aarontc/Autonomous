@@ -15,32 +15,54 @@ if(isset($_POST['email']) && $_POST['email'] != null)
 	
 		if(isset($user_info) && $user_info != null)
 		{
+		
+			//check to see if there is already a claim in the forgot table
+			$claims = GetAliveForgets();
+			$addMe = true;
+			
+			if($claims != null)
+			{
+				foreach($claims as $ticket)
+				{
+					if($ticket['UID']==$user_info['UID'])
+					{
+						$addMe = false;
+						break;
+					}
+				}
+			}
 
-			$stamp = md5(time());
-			//add to forgot table
-			AddToForgot($user_info['UID'],$stamp);
+			if($addMe)
+			{
+				$stamp = md5(time());
+				//add to forgot table
+				AddToForgot($user_info['UID'],$stamp);
 
-			//$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?created='.date("m/d/Y").'&stamp='.$stamp.'&uid='.$user_info['UID'].'&hash='.$user_info['Password'];/*.'&email='.$user_info['Email'];*/
-			$tempString = date("m/d/Y").$stamp.$user_info['UID'].$user_info['Password'];
-			//echo $tempString.'<br>';
-			$hash = hash('sha512',$tempString);
-			//echo $hash;
-			$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?hash='.$hash;
-			//echo $linkToSend;;
+				//$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?created='.date("m/d/Y").'&stamp='.$stamp.'&uid='.$user_info['UID'].'&hash='.$user_info['Password'];/*.'&email='.$user_info['Email'];*/
+				$tempString = date("m/d/Y").$stamp.$user_info['UID'].$user_info['Password'];
+				//echo $tempString.'<br>';
+				$hash = hash('sha512',$tempString);
+				//echo $hash;
+				$linkToSend = 'http://'.Website.'/autonomous/webinterface/verify.php?hash='.$hash;
+				//echo $linkToSend;;
 
-			$message = "Hello ".$user_info['User']."\n";
-			$message .= "Click this link to change your password (once this link is clicked...it will expire)\n";
-			$message .= $linkToSend."\n";
-			$message .= "If you dont click this within 7 days, it will expire\n";
-			$message .= "if this link has expired, you must click on 'forgot username/pass' again\n";
+				$message = "Hello ".$user_info['User']."\n";
+				$message .= "Click this link to change your password (once this link is clicked...it will expire)\n";
+				$message .= $linkToSend."\n";
+				$message .= "If you dont click this within 7 days, it will expire\n";
+				$message .= "if this link has expired, you must click on 'forgot username/pass' again\n";
 
-			$message = wordwrap($message,70);
+				$message = wordwrap($message,70);
 
-			if(mail($_POST['email'],"Retrieve username/pass for Autonomous router",$message))
-				$success = "Message Sent. Please check your email.";
+				if(mail($_POST['email'],"Retrieve username/pass for Autonomous router",$message))
+					$success = "Message Sent. Please check your email.";
+				else
+					$error = "Delivery failed";
+			}
 			else
-				$error = "Delivery failed";
-
+			{
+				$error = "Claim already exists in the database...check your email";
+			}
 		}
 		else
 		{

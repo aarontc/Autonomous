@@ -88,7 +88,15 @@ $users_info = GetAllUsersInfo();
 						}
 						else
 						{
-							$email['new'] = $_POST['em']['new'];
+							if(DoesEmailAlreadyExist($_POST['em']['new']))
+							{
+								$error['new']['email'] = 'Email already exists'; 
+								$counter--;
+							}
+							else
+							{
+								$email['new'] = $_POST['em']['new'];
+							}
 						}
 					}
 					else
@@ -313,10 +321,17 @@ $users_info = GetAllUsersInfo();
 				{
 					if(IsValidEmail($_POST['em'][$i]))
 					{
-						ChangeEmail($_POST['em'][$i],$users_info[$i]['User']);
+						if(DoesEmailAlreadyExist($_POST['em'][$i]))
+						{
+							$error[$i]['email'] = "Email already exists";
+						}
+						else
+						{
+							ChangeEmail($_POST['em'][$i],$users_info[$i]['User']);
 
-						if(strcmp($_SESSION['Login']['User'],$users_info[$i]['User'])==0)
-							$_SESSION['Login']['Email'] = $_POST['em'][$i];
+							if(strcmp($_SESSION['Login']['User'],$users_info[$i]['User'])==0)
+								$_SESSION['Login']['Email'] = $_POST['em'][$i];
+						}
 					}
 					else
 						$error[$i]['email'] = "Invalid email address";

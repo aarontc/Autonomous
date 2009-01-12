@@ -54,8 +54,15 @@
 							}
 							else
 							{
-								ChangeEmail($_POST['email'],$_SESSION['Login']['User']);
-								$_SESSION['Login']['Email'] = $_POST['email'];
+								if(DoesEmailAlreadyExist($_POST['email']))
+								{
+									$error['email'] = 'Email already exists';
+								}
+								else
+								{
+									ChangeEmail($_POST['email'],$_SESSION['Login']['User']);
+									$_SESSION['Login']['Email'] = $_POST['email'];
+								}
 							}
 						}
 						else
