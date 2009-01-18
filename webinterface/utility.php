@@ -775,11 +775,16 @@ function ChangePriv($user, $priv)
 function IsValidEmail($email)
 {
 	//fix this
-	$exp = "([A-Za-z0-9._-]+)@([A-Za-z0-9._-]+)[.]([a-z]{2,4})$";
+	//$exp = "([A-Za-z0-9._-]+)@([A-Za-z0-9._-]+)[.]([a-z]{2,4})$";
 
-	if(eregi($exp,$email))
-		return true;
+	//if(eregi($exp,$email))
+	//	return true;
 
+	//return false;
+	if(preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)+$/i',$email)) {
+		return TRUE;
+    }
+	
 	return false;
 }
 
