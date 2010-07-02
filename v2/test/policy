@@ -1,0 +1,34 @@
+#                                           
+# Shorewall version 3.4 - Policy File       
+#
+# For information about entries in this file, type "man shorewall-policy"
+#
+# See http://www.shorewall.net/3.0/Documentation.htm#Policy for additional information.
+#
+###############################################################################
+#SOURCE         DEST            POLICY          LOG             LIMIT:BURST
+#                                               LEVEL
+vpn             loc             ACCEPT
+vpn             $FW             ACCEPT
+vpn             net             REJECT
+vpn             alex            ACCEPT
+#
+loc             vpn             ACCEPT
+loc             $FW             ACCEPT
+loc             net             ACCEPT
+loc             alex            ACCEPT
+#
+$FW             vpn             ACCEPT
+$FW             loc             ACCEPT
+$FW             net             ACCEPT
+$FW             alex            ACCEPT
+#
+alex            vpn             ACCEPT
+alex            loc             ACCEPT
+alex            net             REJECT
+alex            $FW             ACCEPT
+#
+net             all             DROP
+#
+all             all             REJECT          info
+#LAST LINE -- DO NOT REMOVE

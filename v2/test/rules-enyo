@@ -1,0 +1,30 @@
+#
+# Shorewall version 3.4 - Rules File
+#
+# For information on the settings in this file, type "man shorewall-rules"
+#
+# See http://www.shorewall.net/3.0/Documentation.htm#Rules for additional information.
+#
+#############################################################################################################
+#ACTION SOURCE          DEST            PROTO   DEST    SOURCE          ORIGINAL        RATE            USER/   MARK
+#                                               PORT    PORT(S)         DEST            LIMIT           GROUP
+#SECTION ESTABLISHED
+#SECTION RELATED
+SECTION NEW
+Ping/ACCEPT             all     $FW
+ACCEPT  all               $FW   tcp     ssh
+ACCEPT  net             $FW     tcp     https
+ACCEPT  net             $FW     udp     27005
+ACCEPT  net:74.209.55.24        $FW     udp     27015
+ACCEPT  net             $FW     udp     2000
+ACCEPT  net             $FW     udp     23073
+ACCEPT  net             $FW     udp     23083
+DNAT  net               loc:192.168.2.119       tcp     443
+DNAT    net             loc:192.168.2.119       tcp     3100
+DNAT    net             loc:192.168.2.119       udp     44301
+DNAT    net             loc:192.168.2.119       tcp     9000:9004
+DNAT    net             loc:192.168.2.119       udp     9000:9004
+DNAT    net             loc:192.168.2.119       udp     7777
+DNAT    net             loc:192.168.2.119       udp     6500
+DNAT    net             loc:192.168.2.119       udp     13000
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

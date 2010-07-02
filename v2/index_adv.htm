@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Autonomous</title>
+		<meta content="">
+		<link href='css/style.css' type='text/css' media='screen,projection' rel='stylesheet' />
+		<link href='css/colors.css' type='text/css' media='screen,projection' rel='stylesheet' />
+		<script language='javascript' type='text/javascript' src='js/js.js'></script>
+	</head>
+	<body onload='init()'>
+		<div id='header'>
+			<div class='area'>
+				<div id='hleft'>
+					<div><a href='index.php' class='green headerlg'>Autonomous</a></div>
+				</div>
+				<div id='hright'>
+					<div class='login'>
+						<p>
+							Welcome <a href='cp.php' class='loggedinuser'>testuser</a>
+							<a href='login.php?action=logout' class='button'>logout</a>
+						</p>
+						<p>
+							<a href='um.php' class='button'>Manage Users</a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class='area'>
+				<div id='hleft'>
+					<div class='ltgrey headermed'>Self-Governing Routing</div>
+				</div>
+				<div id='hright'>
+					<div class='dkgrey nodisplay'>
+						Search for Term:
+						<input type='text' />
+						<input type='submit' value='GO' />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='divider'><!-- comment for IE --></div>
+		<div id='main' class='area'>
+			<div id='sidebar'>
+				<div class='menuitem'>
+					<div class='mititle'><a href='#'>Port Forwarding</a></div>
+					<div class='midesc'>Forward ports to LAN machines.</div>
+				</div>
+			</div>
+			<div id='content'>
+				<div id='rules' class='area'>
+					<form method="POST">
+						<div class='center'>
+							<input type="submit" name="submit" value="Submit" title='Update all rules' />
+						</div>
+						<div class='rulespacer'></div>
+						<!-- small rule starts here -->
+						<div class='smallruleshadow'>
+							<div class='smallrule'>
+								<p class='area'>
+									<label for='comment[8]'>Name:</label>
+									<input type='text' class='smallrulename' value='Unnamed Rule' name='comment[8]' id='comment[8]' title='Rule description goes here.' />
+									<label for='destination_ip[8]'>LAN IP:</label>
+									<input type='text' class='ip' value='10.6.0.250' name='destination_ip[8]' id='destination_ip[8]' title='LAN Computers IP Address.' />
+									<label for='protocol[8]'>Protocol:</label>
+									<select name='protocol[8]' id='protocol[8]' title='Select the protocol.'>
+										<option value='tcp' selected>TCP</option>
+										<option value='udp'>UDP</option>
+									</select>
+									<label for='wan_port[8]'>Port:</label>
+									<input type='text' class='smallport' value='52012' name='wan_port[8]' id='wan_port[8]' title='Port.' />
+									<input type='submit' class='delete' title='Delete this rule' alt='Delete' name='delete[8]' id='delete[8]' value='' />
+									<input type='button' class='restore' title='Click for more settings' alt='Minimize' name='minimize[8]' id='minimize[8]' />
+								</p>
+							</div>
+						</div>
+						<!-- small rule ends here -->
+						<!-- small rule starts here -->
+						<div class='smallruleshadow'>
+							<div class='smallrule'>
+								<p class='area'>
+									<label for='comment[9]'>Name:</label>
+									<input type='text' class='smallrulename' value='Unnamed Rule' name='comment[9]' id='comment[9]' title='Rule description goes here.' />
+									<label for='destination_ip[9]'>LAN IP:</label>
+									<input type='text' class='ip' value='10.6.0.250' name='destination_ip[9]' id='destination_ip[9]' title='*REQUIRED* LAN Computers IP Address.' />
+									<label for='protocol[9]'>Protocol:</label>
+									<select name='protocol[9]' id='protocol[9]' title='Select the protocol.'>
+										<option value='tcp' selected>TCP</option>
+										<option value='udp'>UDP</option>
+									</select>
+									<label for='wan_port[9]'>Port:</label>
+									<input type='text' class='smallport' value='range' name='wan_port[9]' id='wan_port[9]' title='Click the Minimize button to access this setting.' disabled='true' />
+									<input type='submit' class='delete' title='Delete this rule' alt='Delete' name='delete[9]' id='delete[9]' value='' />
+									<input type='button' class='restore' title='Click for more settings' alt='Minimize' name='minimize[9]' id='minimize[9]' />
+								</p>
+							</div>
+						</div>
+						<!-- small rule ends here -->
+						<!-- rule starts here -->
+						<div class='ruleshadow'>
+							<div class='rule'>
+								<div class='ruletitle'>
+									<input type='text' value='Unnamed Rule' name='comment[10]' id='comment[10]' title='Rule description goes here.' />
+									<input type='submit' class='delete' title='Delete this rule' alt='Delete' name='delete[10]' id='delete[10]' value='' onclick='test()' />
+									<input type='button' class='minimize' title='Click for more settings' alt='Minimize' name='minimize[10]' id='minimize[10]' />
+								</div>
+								<div class='rulebody'>
+									<div class='area'>
+										<p>
+											<label for='action[10]'>Rule Type:</label>
+											<select name='action[10]' id='action[10]' title='Select the action.' disabled="true">
+												<option value='ACCEPT'>ACCEPT</option>
+												<option value='NONAT'>NONAT</option>
+												<option value='DROP'>DROP</option>
+												<option value='REJECT'>REJECT</option>
+												<option value='DNAT' selected>DNAT</option>
+												<option value='SAME'>SAME</option>
+												<option value='REDIRECT'>REDIRECT</option>
+												<option value='CONTINUE'>CONTINUE</option>
+												<option value='LOG'>LOG</option>
+												<option value='QUEUE'>QUEUE</option>
+												<option value='NFQUEUE'>NFQUEUE</option>
+											</select>
+										</p>
+										<p>
+											<label for='destination_ip[10]'>LAN Computer IP:</label>
+											<input type='text' class='ip' value='10.6.0.250' name='destination_ip[10]' id='destination_ip[10]' title='*REQUIRED* LAN Computers IP Address.' />
+										</p>
+										<p>
+											<label for='protocol[10]'>Protocol:</label>
+											<select name='protocol[10]' id='protocol[10]' title='Select the protocol.'>
+												<option value='tcp' selected>TCP</option>
+												<option value='udp'>UDP</option>
+											</select>
+										</p>
+										<p>
+											<label for='destination_port[10]'>LAN Port:</label>
+											<input type='text' class='port' value='' name='destination_port[10]' id='destination_port[10]' title='*OPTIONAL* LAN Computers Destination Port. If there is a range, this is the starting port.' />
+											<!--<input type='text' class='port' value='' name='destination_port_end[10]' id='destination_port_end[10]' title='*OPTIONAL* If there is a range of ports for the LAN Computers Destination Port, this is the ending port.' />-->
+										</p>
+										<p>
+											<label for='wan_port[10]'>Internet Port:</label>
+											<input type='text' class='port' value='52012' name='wan_port[10]' id='wan_port[10]' title='*REQUIRED* Internet port. If there is a range, this is the starting port.' />
+											<!--<input type='text' class='port' value='' name='wan_port_end[10]' id='wan_port_end[10]' title='*OPTIONAL* If there is a range for Internet ports, then this is the end port.' />-->
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- rule ends here -->
+						<!-- rule NEWRULEFORTEHLOVEOFALLTHATISPACKETY starts here -->
+						<div class='ruleshadow'>
+							<div class='rule'>
+								<div class='ruletitle'>
+									<input type='text' value='New Rule Description' name='comment[new]' id='comment[new]' title='Rule description goes here.' />
+								</div>
+								<div class='rulebody'>
+									<div class='area'>
+										<p>
+											<label for='action[new]'>Rule Type:</label>
+											<select name='action[new]' id='action[new]' title='Select the action.'>
+												<option value='ACCEPT'>ACCEPT</option>
+												<option value='NONAT'>NONAT</option>
+												<option value='DROP'>DROP</option>
+												<option value='REJECT'>REJECT</option>
+												<option value='DNAT' selected>DNAT</option>
+												<option value='SAME'>SAME</option>
+												<option value='REDIRECT'>REDIRECT</option>
+												<option value='CONTINUE'>CONTINUE</option>
+												<option value='LOG'>LOG</option>
+												<option value='QUEUE'>QUEUE</option>
+												<option value='NFQUEUE'>NFQUEUE</option>
+											</select>
+										</p>
+										<p>
+											<label for='source_zone[new]'>Source Zone:</label>
+											<select name='source_zone[new]' id='source_zone[new]' title='Select the source zone.'>
+												<option value='loc'>Local</option>
+												<option value='net' selected>Internet</option>
+												<option value='$FW'>Firewall</option>
+											</select>
+										</p>
+										<p>
+											<label for='source[new]'>Source Interface:</label>
+											<input type='text' class='ip' value='' name='source[new]' id='source[new]' title='*OPTIONAL* Firewalls source interface and/or source IP or IP:Port.' />
+										</p>
+										<p>
+											<label for='destination_zone[new]'>Destination Zone:</label>
+											<select name='destination_zone[new]' id='destination_zone[new]' title='Select the destination zone.'>
+												<option value='loc' selected>Local</option>
+												<option value='net'>Internet</option>
+												<option value='$FW'>Firewall</option>
+											</select>
+										</p>
+										<p>
+											<label for='destination[new]'>LAN Computer IP:</label>
+											<input type='text' class='ip' value='' name='destination[new]' id='destination[new]' title='*REQUIRED* Firewalls destination interface and/or destination IP or IP:Port.' />
+										</p>
+										<p>
+											<label for='protocol[new]'>Protocol:</label>
+											<select name='protocol[new]' id='protocol[new]' title='Select the protocol.'>
+												<option value='tcp' selected>TCP</option>
+												<option value='udp'>UDP</option>
+											</select>
+										</p>
+										<p>
+											<label for='destination_port[new]'>LAN Port:</label>
+											<input type='text' class='port' value='' name='destination_port[new]' id='destination_port[new]' title='*OPTIONAL* LAN Computers Destination Port. If there is a range, this is the starting port.' />
+										</p>
+										<p>
+											<label for='wan_port[new]'>Internet Port:</label>
+											<input type='text' class='port' value='' name='wan_port[new]' id='wan_port[new]' title='*REQUIRED* Internet port. If there is a range, this is the starting port.' />
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- rule ends here -->
+						<div class='rulespacer'></div>
+						<div class='center'>
+							<input type="submit" name="submit" value="Submit" title='Update all rules' />
+						</div>
+					</form>
+					<pre><div id='debug' style='display:none'></div></pre>
+				</div>
+			</div>
+		</div>
+		<div class='divider'><!-- comment for IE --></div>
+		<div id='footer'>
+			Copyright &copy; 2008, Scott Deutsch, Ben Mann. All Rights Reserved.
+		</div>
+	</body>
+</html>

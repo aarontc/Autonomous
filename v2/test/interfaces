@@ -1,0 +1,16 @@
+#
+# Shorewall version 3.4 - Interfaces File
+#
+# For information about entries in this file, type "man shorewall-interfaces"
+#
+# For additional information, see
+# http://www.shorewall.net/3.0/Documentation.htm#Interfaces
+#
+###############################################################################
+#ZONE   INTERFACE       BROADCAST       OPTIONS
+net     $NET_IF         detect          dhcp
+loc     $LOC_IF         detect
+#vpn    $VPN_IF         detect          dhcp
+vpn     tun0
+alex    tun1
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

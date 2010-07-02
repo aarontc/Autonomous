@@ -1,0 +1,215 @@
+<html>
+	<head>
+		<title></title>
+		<meta content="">
+		<style></style>
+	</head>
+	<body>
+		<table border='0' style='border: 1px solid black'>
+			<tr>
+				<th colspan='2' style='border-bottom: 2px solid black'>Rule</th>
+			</tr>
+			<tr>
+				<td colspan='2'>
+					<table width='100%' border='0'>
+						<tr>
+							<td style='border-bottom: 1px dashed black'>
+								<label for='action[10]'>Rule Type:</label>
+								<select name='action[10]' id='action[10]' title='What to do when the connection attempt matchs this rule.'>
+									<option value='ACCEPT'>Accept</option>
+									<option value='NONAT'>Do not translate or redirect</option>
+									<option value='DROP'>Drop</option>
+									<option value='REJECT'>Reject</option>
+									<option value='DNAT' selected>Forward to/from local network</option>
+									<!--<option value='SAME'>SAME</option>-->
+									<option value='REDIRECT'>Redirect</option>
+									<!--<option value='CONTINUE'>CONTINUE</option>-->
+									<option value='LOG'>Log</option>
+									<!--<option value='QUEUE'>Send it to an Application*</option>-->
+									<!--<option value='NFQUEUE'>NFQUEUE</option>-->
+								</select>
+							</td>
+							<td style='border-bottom: 1px dashed black'>
+								<label for='protocol[10]'>Protocol:</label>
+								<select name='protocol[10]' id='protocol[10]' title='What protocal will the connection be using?.'>
+									<option value='-' selected>-</option>
+									<option value='tcp'>TCP</option>
+									<option value='udp'>UDP</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for='orig_dest[10]'>Original Destiation:</label>
+								<input type='text' name='orig_dest[10]' id='orig_dest[10]' style='width:120px;' title='*OPTIONAL* Where was this connection originally destined?' />
+							</td>
+							<td>
+								<label for='rate_limit[10]'>Rate Limit:</label>
+								<input type='text' name='rate_limit[10]' id='rate_limit[10]' style='width:30px;' title='*OPTIONAL* Maximum number of connections per second or minute.' />
+								<label for='rate_limit_time[10]'> per </label>
+								<select name='rate_limit_time[10]' id='rate_limit_time[10]'>
+									<option value='s'>Second</option>
+									<option value='m'>Minute</option>
+								</select>
+							</td>
+						</tr>
+						<!--<tr>
+							<td>
+								<label for='user_group[10]'>User/Group:</label>
+							</td>
+							<td>
+								<label for='mark[10]'>Mark:</label>
+							</td>
+						</tr>-->
+						<!--<tr>
+							<td>
+								<label for='conn_limit[10]'>Connection Limit:</label>--><!-- Needs Shorewall-Perl -->
+							<!--</td>
+							<td>
+								<label for='time[10]'>Time:</label>--><!-- Needs Shorewall-Perl -->
+							<!--</td>
+						</tr>-->
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td style='border-top: 1px dashed black; border-right: 1px dashed black'>
+					<table border='0'>
+						<tr>
+							<th colspan='2' style='border-bottom: 1px solid black'>Source</th>
+						</tr>
+						<tr>
+							<td>
+								<label for='source_zone[10]'>Zone:</label>
+								<select name='source_zone[10]' id='source_zone[10]' title='What zone are these connections coming from?'>
+									<option value='all'>All</option>
+									<option value='loc'>Local</option>
+									<option value='net' selected>Internet</option>
+									<option value='$FW'>Firewall</option>
+								</select>
+							</td>
+							<td>
+								<label for='source_port[10]'>Port:</label>
+								<input type='text' name='source_port[10]' id='source_port[10]' style='width:90px;' />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for='source_iface[10]'>Interface:</label>
+								<select name='source_iface[10]' id='source_iface[10]' title='*OPTIONAL* What interface are these connections expected to show up on?'>
+									<option value=''>Any</option>
+									<option value='eth0'>eth0</option>
+									<option value='eth1'>eth1</option>
+								</select>
+							</td>
+							<td>
+								<label for='source_ips[10]'>IP list:</label>
+								<input type='button' value='Remove' />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for='source_ip[10]'>IP:</label>
+								<input type='text' name='sip[10]' id='source_ip[10]' style='width:120px' title='*OPTIONAL* What IP address will these connections be coming from? (If unknown, leave blank!)' />
+							</td>
+							<td rowspan='2'>
+								<select name='source_ips[10]' id='source_ips[10]' size='5' title=''>
+									<!--<option>192.168.1.1</option>
+									<option>192.168.1.2</option>
+									<option>~00-A0-C9-15-39-78</option>
+									<option>eth1:192.168.1.3</option>
+									<option>192.168.1.5</option>
+									<option>eth1:192.168.1.3</option>
+									<option>eth1:192.168.1.5</option>-->
+									<!--<option>dmz:192.168.2.2</option>-->
+									<option>155.186.235.0/24</option>
+									<option>192.0.2.11-192.0.2.17</option>
+									<option>!192.0.2.11-192.0.2.17</option>
+									<option>155.186.235.0/24</option>
+									<option>!155.186.235.16/28</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td align='center'>
+								<input type='button' value='Add' />
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td style='border-top: 1px dashed black; border-left: 1px dashed black'>
+					<table border='0'>
+						<tr>
+							<th colspan='2' style='border-bottom: 1px solid black'>Destination</th>
+						</tr>
+						<tr>
+							<td>
+								<label for='dest_zone[10]'>Zone:</label>
+								<select name='dest_zone[10]' id='dest_zone[10]' title='Select the source zone.'>
+									<option value='all'>All</option>
+									<option value='loc' selected>Local</option>
+									<option value='net'>Internet</option>
+									<option value='$FW'>Firewall</option>
+								</select>
+							</td>
+							<td>
+								<label for='dest_port[10]'>Port:</label>
+								<input type='text' name='dest_port[10]' id='dest_port[10]' style='width:90px;' />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p>
+									<label for='dest_iface[10]'>Interface:</label>
+									<select name='dest_iface[10]' id='dest_iface[10]' title='Select the interface.'>
+										<option value=''>Any</option>
+										<option value='eth0'>eth0</option>
+										<option value='eth1'>eth1</option>
+									</select>
+								</p>
+								<p>
+									<label for='dest_ip[10]'>IP:</label>
+									<input type='text' name='dest_ip[10]' id='dest_ip[10]' style='width:120px' />
+								</p>
+								<p style='text-align:center;'>
+									<input type='button' value='Add' />
+								</p>
+							</td>
+							<td>
+								<p>
+									<table width='100%' cellpadding='0' cellspacing='0'>
+										<tr>
+											<td width='50%'><label for='dest_ips[10]'>IP list:</label></td>
+											<td width='50%'><input type='button' value='Remove' /></td>
+										</tr>
+									</table>
+								</p>
+								<p>
+									<select name='ip[10]' id='dest_ips[10]' size='5' title=''>
+										<option>192.168.1.1</option>
+										<option>192.168.1.2</option>
+										<option>~00-A0-C9-15-39-78</option>
+										<option>eth1:192.168.1.3</option>
+										<option>192.168.1.5</option>
+										<option>eth1:192.168.1.3</option>
+										<option>eth1:192.168.1.5</option>
+										<!--<option>dmz:192.168.2.2</option>-->
+										<!--<option>net:155.186.235.0/24</option>
+										<option>net:192.0.2.11-192.0.2.17</option>
+										<option>net:!192.0.2.11-192.0.2.17</option>
+										<option>net:155.186.235.0/24</option>
+										<option>net:!155.186.235.16/28</option>-->
+									</select>
+								</p>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+		</table>
+		<!--<p>*Note: The "Application" in "Send it to an Application" (under "Rule Type") must be running on the same computer as the firewall!</p>-->
+	</body>
+</html>

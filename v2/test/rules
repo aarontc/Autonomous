@@ -1,0 +1,139 @@
+#
+# Shorewall version 3.4 - Rules File
+#
+# For information on the settings in this file, type "man shorewall-rules"
+#
+# See http://www.shorewall.net/3.0/Documentation.htm#Rules for additional information.
+#
+#############################################################################################################
+#ACTION	SOURCE		DEST		PROTO	DEST	SOURCE		ORIGINAL	RATE		USER/	MARK
+#						PORT	PORT(S)		DEST		LIMIT		GROUP
+#SECTION ESTABLISHED
+#SECTION RELATED
+SECTION NEW
+#
+#      FTP
+#
+ACCEPT         all             $FW             tcp             21
+#
+#
+#      DistCC
+#
+ACCEPT         all             $FW             tcp             3632
+#
+#
+#      BitTorrent
+#
+ACCEPT         net             $FW             tcp             48000
+ACCEPT         net             $FW             udp             48000
+ACCEPT         all             $FW             tcp             58443
+ACCEPT		net		$FW		tcp		38234:39259
+ACCEPT		net		$FW		udp		38234:39259
+#
+DNAT	net	loc:10.6.0.251	tcp	52012
+DNAT		net		loc:10.6.0.250	udp		52012
+#
+#
+#
+#      UT2K4 Phoning Home
+#
+DROP           loc             net:207.135.145.6
+DROP           loc             net:207.135.145.7
+DROP		all		net:216.27.56.6
+DROP		all		net:216.27.56.7
+#
+#
+#      DNS
+#
+ACCEPT         $FW             all             udp             53
+ACCEPT         loc             $FW             tcp             53
+#
+#
+#      SSH
+#
+ACCEPT         all             $FW             tcp             22
+#
+#
+#      Web server
+#
+ACCEPT         all             $FW             tcp             443
+#
+#
+#      Ping
+#
+ACCEPT         all             $FW             icmp            8
+ACCEPT         $FW             all             icmp
+#
+#
+#      Web
+#
+ACCEPT         loc             $FW             tcp             80
+ACCEPT         $FW             net             tcp             80
+#
+#
+#      Identd
+#
+ACCEPT         all             $FW             tcp             113
+#
+#
+#      NTP
+#
+ACCEPT         all             all             udp             123
+#
+#
+#      Mom VNC
+#
+DNAT           net             loc:10.6.0.101:5900     tcp     5920
+DNAT           net             loc:10.6.0.101:5901     tcp     5921
+DNAT           net             loc:10.6.0.101:5902     tcp     5922
+DNAT           net             loc:10.6.0.101:5903     tcp     5923
+#
+#
+#      Trista VNC
+#
+DNAT           net             loc:10.6.0.100:5900     tcp     5910
+DNAT           net             loc:10.6.0.100:5900     tcp     5911
+DNAT           net             loc:10.6.0.100:5900     tcp     5912
+DNAT           net             loc:10.6.0.100:5900     tcp     5913
+#
+#
+#      Local VNC
+#
+ACCEPT         net             $FW                     tcp     5901
+#
+#      Aaron Web
+#
+DNAT           net             loc:10.6.0.237:80       tcp     8876
+#
+#
+#      Aaron Gaim
+#
+DNAT           net             loc:10.6.0.134          tcp     11012:11020
+#
+#
+#      Epic BT
+#
+DNAT           net             loc:10.6.0.27           tcp     52012
+DNAT           net             loc:10.6.0.27           udp     52012
+#
+#
+#      Dave's BNC
+#
+ACCEPT         net             $FW                     tcp     25543
+#
+#
+#      MySQL
+#
+ACCEPT         net             $FW                     tcp     3306
+#
+#
+#
+DNAT           net             loc:10.6.0.25          tcp     3000
+DNAT		net		loc:10.6.0.203		tcp	40420
+DNAT		net		loc:10.6.0.203		udp	40420
+#
+DNAT		net		loc:10.6.0.107		udp	7777:7788
+DNAT		net		loc:10.6.0.107		tcp	7777:7788
+#
+#
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

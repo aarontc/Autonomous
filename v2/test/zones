@@ -1,0 +1,16 @@
+#
+# Shorewall version 3.4 - Zones File
+#
+# For information about this file, type "man shorewall-zones"
+#
+# For more information, see http://www.shorewall.net/3.0/Documentation.htm#Zones
+#
+###############################################################################
+#ZONE   TYPE            OPTIONS         IN                      OUT
+#                                       OPTIONS                 OPTIONS
+fw      firewall
+loc     ipv4
+net     ipv4
+vpn     ipv4
+alex    ipv4
+#LAST LINE - ADD YOUR ENTRIES ABOVE THIS ONE - DO NOT REMOVE
