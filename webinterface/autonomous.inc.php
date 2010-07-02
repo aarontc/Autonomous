@@ -17,6 +17,8 @@
 	
 //	ShorewallPutRules ( $_SESSION["Rules"] );
 	
+
+// haha this is fun
 	class Rule {
 		var $action;
 		var $source = array();
