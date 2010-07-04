@@ -4,8 +4,10 @@ $rules; // global rules container
 $messages = Array(); // message container
 require("config.php");
 getRules();
-function getRules()
-{
+
+
+
+function getRules() {
 	global $rules;
 	$rule_regexp = genRegExp("DNAT");
 	@ $rf = file_get_contents(SHOREWALL_RULES_FILE) or die("Failed to open ".SHOREWALL_RULES_FILE."\n");
@@ -150,13 +152,13 @@ function getSmallHtmlRule($rulenum = "new")
 function getHtmlRule($rulenum)
 {
 	global $rules;
-	
+
 // [0] = everything
 // [1] = zone
 // [2] = everything else
 	preg_match("/([a-zA-Z]{1,5})(?::([0-9a-zA-Z\:\.,\~\-]+))?/", $rules[$rulenum][4], $src);
 	preg_match("/([a-zA-Z]{1,5})(?::([0-9a-zA-Z\:\.,\~\-]+))?/", $rules[$rulenum][5], $dest);
-	
+
 	ob_start();
 ?>
 <div class='ruleshadow'>
@@ -206,8 +208,7 @@ function getHtmlRule($rulenum)
 	return $ret;
 }
 
-function genRegExp($inc_act = "ACCEPT,NONAT,DROP,REJECT,DNAT,SAME,REDIRECT,CONTINUE,LOG,QUEUE,NFQUEUE,COMMENT")
-{
+function genRegExp($inc_act = "ACCEPT,NONAT,DROP,REJECT,DNAT,SAME,REDIRECT,CONTINUE,LOG,QUEUE,NFQUEUE,COMMENT") {
 	/* SECTIONS
 	ESTABLISHED
 	The only ACTIONs allowed in this section are ACCEPT, DROP, REJECT, LOG and QUEUE
@@ -217,8 +218,8 @@ function genRegExp($inc_act = "ACCEPT,NONAT,DROP,REJECT,DNAT,SAME,REDIRECT,CONTI
 
 	NEW
 	Packets in the NEW and INVALID states are processed by rules in this section.
-	*/
-	/*
+
+
 	ACTION - {ACCEPT[+|!]|NONAT|DROP[!]|REJECT[!]|DNAT[-]|SAME[-]|REDIRECT[-]|CONTINUE[!]|LOG|QUEUE[!]|NFQUEUE[(queuenumber)]|COMMENT|action|macro[(target)]}[:{log-level|none}[!][:tag]]
 	SOURCE - {zone|all[+][-]}[:interface][:{address-or-range[,address-or-range]...[exclusion]|exclusion|+ipset}
 	DEST - {zone|all[+][-]}[:{interface|address-or-range[,address-or-range]...[exclusion]|exclusion|+ipset}][:port[:random]]
@@ -232,7 +233,7 @@ function genRegExp($inc_act = "ACCEPT,NONAT,DROP,REJECT,DNAT,SAME,REDIRECT,CONTI
 	CONNLIMIT - [!]limit[:mask]
 	TIME - timeelement[,timelement...]
 	*/
-// 	echo "inc_act='$inc_act'";
+
 	if(stripos($inc_act, "ACCEPT") !== false) $actions[] = "ACCEPT[!+]?";
 	if(stripos($inc_act, "NONAT") !== false) $actions[] = "NONAT";
 	if(stripos($inc_act, "DROP") !== false) $actions[] = "DROP[!]?";
@@ -246,7 +247,7 @@ function genRegExp($inc_act = "ACCEPT,NONAT,DROP,REJECT,DNAT,SAME,REDIRECT,CONTI
 	if(stripos($inc_act, "NFQUEUE") !== false) $actions[] = "NFQUEUE[0-9]*";
 	if(stripos($inc_act, "COMMENT") !== false) $actions[] = "COMMENT";
 
-	$sep = "[ \\t]+"; // regexp for the rule component seperators
+	$sep = "\s+"; // regexp for the rule component seperators
 
 	$zones = getValidZones(); // get valid zones from zones file
 	$add = "[\+\-0-9a-fA-F,:\!\/\.]*";
@@ -267,17 +268,16 @@ function genRegExp($inc_act = "ACCEPT,NONAT,DROP,REJECT,DNAT,SAME,REDIRECT,CONTI
 	return $rule_regexp;
 }
 
-function getValidZones()
-{
-	if(($zf = fopen(SHOREWALL_ZONES_FILE, 'r')) === false) return "";
-	while($l = fgets($zf)) {
-		$l = trim($l);
-		if(preg_match("/^[a-zA-Z]+\:?[a-zA-Z]*,?[a-zA-Z]*/", $l, $m))
-			$zones[] = $m[0];
-	}
-	fclose($zf);
+function getValidZones($file = SHOREWALL_ZONES_FILE) {
+	$buf = file_get_contents($file);
+	if($buf === false) return false;
+	preg_match_all("/^(?<zones>[a-zA-Z0-9]+)\s+.*$/m", $buf, $matches);
+	$zones = $matches['zones'];
 	return $zones;
 }
+
+
+
 function array_clean($ary) // remove blank elements from array (this include elements filled with just white space)
 {
 	for($i = count($ary) - 1; $i >= 0; $i--)
@@ -285,4 +285,56 @@ function array_clean($ary) // remove blank elements from array (this include ele
 			array_splice($ary, $i, 1);
 	return $ary;
 }
+
+function shorewall_get_zones_regex($file = SHOREWALL_ZONES_FILE) {
+	$zones = getValidZones($file);
+
+}
+
+function get_all_rules($file = "/tmp/rules") {
+	// special magic parsing regex
+	// based on shorewall 4.4 documentation (http://shorewall.net/manpages/shorewall-rules.html)
+
+
+	// step zero, get file contents
+	$buf = file_get_contents($file);
+
+
+	$pattern_ipv4_octet="([0-9]|[0-9]{2}|(0|1)[0-9]{2}|2[0-4][0-9]|25[0-5])";
+	$pattern_ipv4_cidr_mask_bits="([0-9]|(0|1|2)[0-9]|3[0-2])";
+
+	$pattern_ipv4_address="((".$pattern_ipv4_octet."\.){3}".$pattern_ipv4_octet.")";	// Just 1.2.3.4 style IP
+	$pattern_ipv4_address_cidr="(".$pattern_ipv4_address."(\/".$pattern_ipv4_cidr_mask_bits."){0,1})";	// 1.2.3.4 or 1.2.3.4/8
+
+	$pattern_ipv4_address_or_range = "(".$pattern_ipv4_address_cidr."|".$pattern_ipv4_address."-".$pattern_ipv4_address.")";	// 1.2.3.4, 1.2.3.4-1.2.3.5, or 1.2.3.4/12
+
+	// ALL ABOVE REGEX TESTED GOOD :)
+
+
+
+	//  {zone|{all|any}[+][-]}[:interface][:{address-or-range[,address-or-range]...[exclusion]|exclusion|+ipset}
+	$pattern_exclusion="(!$pattern_address_or_range(,$pattern_ipv4_address_or_range)*)";
+	$pattern_shorwall_zones="(\\\$(fw|FW)|";
+
+	$pattern_shorwall_interfaces="(eth0|eth1|eth2|tun0|tun1|tun2)";
+	$pattern_port_or_range="([0-9]+|[0-9]+-[0-9]+)";
+	$pattern_protocol_name="(tcp|udp|blah)";
+	$pattern_PROTO="(-|tcp:syn|ipp2p|ipp2p:udp|ipp2p:all|[0-9]+|".$pattern_protocol_name."|all)";
+	$pattern_PORT="(-|$pattern_port_or_range(,$pattern_port_or_range)*)";
+
+	$pattern_SOURCE="(none|(($pattern_shorewall_zones|((all|any)\+{0,1}-{0,1}))(:$pattern_shorewall_interfaces){0,1}(:$pattern_address_or_range(,$pattern_address_or_range)*(!$pattern_address_or_range)){0,1}))";
+	$pattern_DEST="($pattern_SOURCE((:$pattern_port_or_range){0,1}(:random){0,1}))";
+	$pattern_ACCEPT="(ACCEPT(\+|!){0,1}\s+".$pattern_SOURCE."\s+".$pattern_DEST."\s+".$pattern_PROTO."\s+".$pattern_PORT."\s+".$pattern_PORT."\s+".$pattern_ORIG_DEST."*\s*.*\n)";
+
+
+	$pattern = "/(#.*\n)*(" . $pattern_ACCEPT . ").*\n/";
+	print_r($pattern);
+	preg_match_all($pattern, $buf, $matches);
+
+	print_r($matches);
+
+}
+
+
+
 ?>
