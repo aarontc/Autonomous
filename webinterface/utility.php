@@ -440,8 +440,8 @@ function IsHashInGivenRuleIDs($rules,$hash)
 
 function CheckUserString($user)
 {
-	
-	preg_match("^[a-z0-9 ]+$",$user,$matches);
+	//user name must be at lease 2+ characters and only contain numbers or letters.
+	preg_match("/^([:alpha:]|[:num:]){2,}$/",$user,$matches);
 	if(count($matches) > 0)
 	{
 	  return true;
@@ -1045,6 +1045,60 @@ function validate_variable ( $variable, $value, $validation_struct ) {
 
 	return true;
 				
+}
+
+function ReadLeaseFile()
+{
+			
+	//format of dhcp lease file
+	//timestamp macaddress ip name client-id
+	
+	//read file 
+	if(file_exists(ROUTER_DHCP_LEASE_FILE))
+	{
+	  $content = file_get_contents(ROUTER_DHCP_LEASE_FILE);
+	  $file_line = explode("\n",$content);
+	 
+	  
+	  if(count($file_line) > 0)
+	  {
+		
+		echo "<table border=1>";
+		echo "<tr><td>Timestamp</td><td>Mac Address</td><td>IP</td><td>Name</td><td>Client-ID</td></tr>";
+		
+		foreach($file_line as $line)
+		{
+		  
+		  if($line != null)
+		  {
+			$segments = explode(" ", $line);
+			echo "<tr>";
+			echo "<td>";
+			echo strftime(TIMESTAMP_LEASE_SHOWN,(int)$segments[0])."<br />";
+			echo "</td>";
+			echo "<td>";
+			echo $segments[1];
+			echo "</td>";
+			echo "<td>";
+			echo $segments[2];
+			echo "</td>";
+			echo "<td>";
+			echo $segments[3];
+			echo "</td>";
+			echo "<td>";
+			echo $segments[4];
+			echo "</td>";
+			echo "</tr>";
+		  }
+		}
+		
+		echo "</table>";
+	  }
+	  
+	  return true;
+	}
+	
+	return false;
 }
 
 function rev_strstr($string, $search)

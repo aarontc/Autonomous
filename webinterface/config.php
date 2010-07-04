@@ -9,4 +9,6 @@ define("Website","enyo.homelinux.org");
 
 //Where the database file is located
 define("ROUTER_DB_FILE","/tmp/router.sqlite");
+define("ROUTER_DHCP_LEASE_FILE","/tmp/dhcp.leases");
+define("TIMESTAMP_LEASE_SHOWN","%D %I:%M:%S %p")
 ?>
