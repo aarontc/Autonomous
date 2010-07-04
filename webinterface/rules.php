@@ -119,6 +119,9 @@ if(IsRulesTableEmpty())
 				<div class='menuitem'>
 					<div class='mititle'><a href='rules.php'>Port Forwarding</a></div>
 					<div class='midesc'>Forward ports to LAN machines.</div>
+					<br />
+					<div class='mititle'><a href='dhcpleases.php'>DHCP Leases</a></div>
+					<div class='midesc'>Shows computer name, mac address, ip address, etc.</div>
 				</div>
 			</div>
 			<div id='content'>
