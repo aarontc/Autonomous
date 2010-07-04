@@ -9,9 +9,19 @@ $pattern_ipv4_address_cidr="(".$pattern_ipv4_address."(\/".$pattern_ipv4_cidr_ma
 
 $pattern_ipv4_address_or_range = "(".$pattern_ipv4_address_cidr."|".$pattern_ipv4_address."-".$pattern_ipv4_address.")";
 
+
+$pattern_shorewall_exclusion="(!$pattern_ipv4_address_or_range(,$pattern_ipv4_address_or_range)*)";
+
+// 0 to 65535
+$pattern_port="([0-9]{1,4}|[0-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])";
+
+$pattern_port_or_range_hyphen="(".$pattern_port."|".$pattern_port."-".$pattern_port.")";
+$pattern_port_or_range_colon="(".$pattern_port."|".$pattern_port.":".$pattern_port.")";
+
+
 	$test = $_GET['test'];
 
-	preg_match_all("/^" . $pattern_ipv4_address_or_range . "$/", $test, $matches);
+	preg_match_all("/^" . $pattern_port_or_range_colon . "$/", $test, $matches);
 	print_r($matches);
 
 ?>

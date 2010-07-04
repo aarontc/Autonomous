@@ -3,9 +3,9 @@ session_start();
 $rules; // global rules container
 $messages = Array(); // message container
 require("config.php");
-getRules();
+//getRules();
 
-
+print_r(get_all_rules());
 
 function getRules() {
 	global $rules;
@@ -271,9 +271,8 @@ function genRegExp($inc_act = "ACCEPT,NONAT,DROP,REJECT,DNAT,SAME,REDIRECT,CONTI
 function getValidZones($file = SHOREWALL_ZONES_FILE) {
 	$buf = file_get_contents($file);
 	if($buf === false) return false;
-	preg_match_all("/^(?<zones>[a-zA-Z0-9]+)\s+.*$/m", $buf, $matches);
-	$zones = $matches['zones'];
-	return $zones;
+	preg_match_all("/^\s*(?!#)(?<zones>[a-zA-Z0-9]+)\s+.*$/m", $buf, $matches);
+	return $matches['zones'];
 }
 
 
@@ -287,11 +286,55 @@ function array_clean($ary) // remove blank elements from array (this include ele
 }
 
 function shorewall_get_zones_regex($file = SHOREWALL_ZONES_FILE) {
-	$zones = getValidZones($file);
-
+	return array_to_regex_alternation(getValidZones());
 }
 
-function get_all_rules($file = "/tmp/rules") {
+function shorewall_get_interfaces($file = SHOREWALL_INTERFACES_FILE) {
+	$buf = file_get_contents($file);
+	if($buf === false) return false;
+	preg_match_all("/^\s*(?!#)[a-zA-Z0-9]+\s+(?<interfaces>[a-zA-Z0-9]+).*$/m", $buf, $matches);
+	return $matches['interfaces'];
+}
+
+function shorewall_get_interfaces_regex($file = SHOREWALL_INTERFACES_FILE) {
+	return array_to_regex_alternation(shorewall_get_interfaces());
+}
+
+function array_to_regex_alternation($array) {
+	$result="";
+	foreach($array as $b)
+		$result .= $b . "|";
+
+	if(strlen($result) > 1)
+		$result = substr($result, 0, strlen($result)-1);
+
+	return $result;
+}
+
+function services_get_names($file = SERVICES_FILE) {
+	$buf = file_get_contents($file);
+	if($buf === false) return false;
+	preg_match_all("/^\s*(?!#)(?<services>[a-zA-Z0-9]+)\s+.*$/m", $buf, $matches);
+	return array_unique($matches['services']);
+}
+
+function services_get_names_regex() {
+	return array_to_regex_alternation(services_get_names());
+}
+
+function protocols_get_names($file = PROTOCOLS_FILE) {
+	$buf = file_get_contents($file);
+	if($buf === false) return false;
+	preg_match_all("/^\s*(?!#)(?<protocols>[a-zA-Z0-9]+)\s+.*$/m", $buf, $matches);
+	return array_unique($matches['protocols']);
+}
+
+function protocols_get_names_regex() {
+	return array_to_regex_alternation(protocols_get_names());
+}
+
+
+function get_all_rules($file = SHOREWALL_RULES_FILE) {
 	// special magic parsing regex
 	// based on shorewall 4.4 documentation (http://shorewall.net/manpages/shorewall-rules.html)
 
@@ -300,38 +343,81 @@ function get_all_rules($file = "/tmp/rules") {
 	$buf = file_get_contents($file);
 
 
+	// Not optimized or compacted, left for readability
+	// NOTE: all regex prototypes should be enclosed in a section - () - for compactness
+
 	$pattern_ipv4_octet="([0-9]|[0-9]{2}|(0|1)[0-9]{2}|2[0-4][0-9]|25[0-5])";
-	$pattern_ipv4_cidr_mask_bits="([0-9]|(0|1|2)[0-9]|3[0-2])";
+	$pattern_ipv4_cidr_mask_bits="([0-9]|(0|1|2)[0-9]|3[0-2])";	// accepts 0 to 32, including 00-09
 
 	$pattern_ipv4_address="((".$pattern_ipv4_octet."\.){3}".$pattern_ipv4_octet.")";	// Just 1.2.3.4 style IP
 	$pattern_ipv4_address_cidr="(".$pattern_ipv4_address."(\/".$pattern_ipv4_cidr_mask_bits."){0,1})";	// 1.2.3.4 or 1.2.3.4/8
 
 	$pattern_ipv4_address_or_range = "(".$pattern_ipv4_address_cidr."|".$pattern_ipv4_address."-".$pattern_ipv4_address.")";	// 1.2.3.4, 1.2.3.4-1.2.3.5, or 1.2.3.4/12
 
+
+	// IPv4 exclusion regex for shorewall rules, used in the SOURCE and DEST columns
+	$pattern_shorewall_exclusion="(!$pattern_ipv4_address_or_range(,$pattern_ipv4_address_or_range)*)";
+
+
+	// 0 to 65535
+	$pattern_port="([0-9]{1,4}|[0-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])";
+	$pattern_port_or_range_hyphen="(".$pattern_port."|".$pattern_port."-".$pattern_port.")";
+	$pattern_port_or_range_colon="(".$pattern_port."|".$pattern_port.":".$pattern_port.")";
+
+
+	$pattern_shorewall_zones="(\\\$FW|" . shorewall_get_zones_regex() . ")";
+	$pattern_shorewall_interfaces="(" . shorewall_get_interfaces_regex() . ")";
+
+	$pattern_service_names="(".services_get_names_regex().")";
+	$pattern_protocol_names="(".protocols_get_names_regex().")";
+
+	// hacks
+	$pattern_protocol_number="([0-9]+)"; // - need to verify number is an actual protocol
+
 	// ALL ABOVE REGEX TESTED GOOD :)
 
 
 
-	//  {zone|{all|any}[+][-]}[:interface][:{address-or-range[,address-or-range]...[exclusion]|exclusion|+ipset}
-	$pattern_exclusion="(!$pattern_address_or_range(,$pattern_ipv4_address_or_range)*)";
-	$pattern_shorwall_zones="(\\\$(fw|FW)|";
+	/* File format
 
-	$pattern_shorwall_interfaces="(eth0|eth1|eth2|tun0|tun1|tun2)";
-	$pattern_port_or_range="([0-9]+|[0-9]+-[0-9]+)";
-	$pattern_protocol_name="(tcp|udp|blah)";
-	$pattern_PROTO="(-|tcp:syn|ipp2p|ipp2p:udp|ipp2p:all|[0-9]+|".$pattern_protocol_name."|all)";
-	$pattern_PORT="(-|$pattern_port_or_range(,$pattern_port_or_range)*)";
+	Columns:
+		ACTION - {ACCEPT[+|!]|NONAT|DROP[!]|REJECT[!]|DNAT[-]|REDIRECT[-]|CONTINUE[!]|LOG|QUEUE[!]|NFQUEUE[!]|COUNT[(queuenumber)]|COMMENT|action|macro[(target)]}[:{log-level|none}[!][:tag]]
+		SOURCE - {zone|{all|any}[+][-]}[:interface][:{address-or-range[,address-or-range]...[exclusion]|exclusion|+ipset}
+		DEST -   {zone|{all|any}[+][-]}[:{interface|address-or-range[,address-or-range]...[exclusion]|exclusion|+ipset}][:port[:random]]
+		PROTO (Optional) - {-|tcp:syn|ipp2p|ipp2p:udp|ipp2p:all|protocol-number|protocol-name|all}
+		DEST PORT(S) (Optional) -    {-|port-name-number-or-range[,port-name-number-or-range]...}
+		SOURCE PORT(S)  (Optional) - {-|port-name-number-or-range[,port-name-number-or-range]...}
+		ORIGINAL DEST  (Optional) - [-|address[,address]...[exclusion]|exclusion]
+		RATE LIMIT  (Optional) - [-|[{s|d}:[[name]:]]]rate/{sec|min}[:burst]
+		USER/GROUP  (Optional) - [!][user-name-or-number][:group-name-or-number][+program-name]
+		MARK - [!]value[/mask][:C]
+		CONNLIMIT - [!]limit[:mask]
+		TIME - timeelement[&timelement...]
+	*/
 
-	$pattern_SOURCE="(none|(($pattern_shorewall_zones|((all|any)\+{0,1}-{0,1}))(:$pattern_shorewall_interfaces){0,1}(:$pattern_address_or_range(,$pattern_address_or_range)*(!$pattern_address_or_range)){0,1}))";
-	$pattern_DEST="($pattern_SOURCE((:$pattern_port_or_range){0,1}(:random){0,1}))";
-	$pattern_ACCEPT="(ACCEPT(\+|!){0,1}\s+".$pattern_SOURCE."\s+".$pattern_DEST."\s+".$pattern_PROTO."\s+".$pattern_PORT."\s+".$pattern_PORT."\s+".$pattern_ORIG_DEST."*\s*.*\n)";
+
+	$pattern_SOURCE="(?<source>(".$pattern_shorewall_zones."|(all|any)\+{0,1}-{0,1})(:".$pattern_shorewall_interfaces."(:".$pattern_ipv4_address_or_range."(,".$pattern_ipv4_address_or_range.")*(".$pattern_shorewall_exclusion."){0,1}|".$pattern_shorewall_exclusion.")){0,1})";
+	$pattern_DEST="(?<dest>(".$pattern_shorewall_zones."|(all|any)\+{0,1}-{0,1})(:(".$pattern_shorewall_interfaces."|".$pattern_ipv4_address_or_range."(,".$pattern_ipv4_address_or_range.")*(".$pattern_shorewall_exclusion."){0,1}|".$pattern_shorewall_exclusion.")(:(".$pattern_port_or_range_hyphen."|".$pattern_service_names.")(:random){0,1}){0,1}){0,1})";
+	$pattern_PROTO="(?<proto>(-|tcp:syn|ipp2p|ipp2p:udp|ipp2p:all|".$pattern_protocol_number."|".$pattern_protocol_names."|all))";
+	$pattern_DEST_PORT="(-|(".$pattern_port_or_range_colon."|".$pattern_service_names.")(,(".$pattern_port_or_range_colon."|".$pattern_service_names."))*)";
+	$pattern_SOURCE_PORT=$pattern_DEST_PORT;
+	$pattern_ORIGINAL_DEST="(-|(".$pattern_ipv4_address_cidr."(,".$pattern_ipv4_address_cidr.")*(!".$pattern_ipv4_address_cidr."){0,1}|(!".$pattern_ipv4_address_cidr.")))";
 
 
-	$pattern = "/(#.*\n)*(" . $pattern_ACCEPT . ").*\n/";
-	print_r($pattern);
-	preg_match_all($pattern, $buf, $matches);
+
+
+	$pattern_ACCEPT="(?<accept>(ACCEPT(\+|!){0,1}\s+".$pattern_SOURCE."\s+".$pattern_DEST."(\s+".$pattern_PROTO."(\s+".$pattern_DEST_PORT."(\s+".$pattern_SOURCE_PORT."(\s+".$pattern_ORIGINAL_DEST."){0,1}){0,1}){0,1}){0,1}){1}.*\n)";
+
+
+	$test="ACCEPT		all		\$FW		tcp	ssh\n";
+
+	//$pattern = "/(#.*\n)*" . $pattern_ACCEPT . ".*\n/";
+	print_r($test);
+	print_r($pattern_ACCEPT);
+	preg_match_all("/" . $pattern_ACCEPT . "/m", $test, $matches);
 
 	print_r($matches);
+	die("");
 
 }
 
