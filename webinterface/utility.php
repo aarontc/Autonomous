@@ -1,11 +1,6 @@
-<?php
+<?php require_once("config.php");
 
-define("PortF",1);
-define("UserMan",2);
-define("UserDataOnly",4);
-define("Website","enyo.homelinux.org");
 
-define("ROUTER_DB_FILE","/tmp/router.sqlite");
 
 function IsDBEmpty()
 {
@@ -445,10 +440,19 @@ function IsHashInGivenRuleIDs($rules,$hash)
 
 function CheckUserString($user)
 {
-	if(eregi("^[a-z0-9 ]+$",$user))
-		return true;
-
+	
+	preg_match("^[a-z0-9 ]+$",$user,$matches);
+	if(count($matches) > 0)
+	{
+	  return true;
+	}
+	
 	return false;
+	
+	//if(eregi("^[a-z0-9 ]+$",$user))
+	//	return true;
+
+	//return false;
 }
 
 function ChangePassword($user,$newPass)
