@@ -441,9 +441,13 @@ function IsHashInGivenRuleIDs($rules,$hash)
 function CheckUserString($user)
 {
 	//user name must be at lease 2+ characters and only contain numbers or letters.
-	preg_match("/^([:alpha:]|[:num:]){2,}$/",$user,$matches);
-	if(count($matches) > 0)
+	//if(preg_match("/^([:alpha:]|[:num:]){2,}$/",$user,$matches))
+	if(preg_match("/^([a-zA-Z0-9]){2,}$/",$user,$matches))
 	{
+	//if(count($matches) > 0)
+	//{
+	  //return true;
+	//}
 	  return true;
 	}
 
