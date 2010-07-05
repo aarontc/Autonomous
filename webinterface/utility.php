@@ -12,7 +12,7 @@ function IsDBEmpty()
 
 	if(!$q)
 	{
-		CreateSqliteFile();	
+		CreateSqliteFile();
 		$num = 0;
 	}
 	else
@@ -22,7 +22,7 @@ function IsDBEmpty()
 
 	//close it
 	sqlite_close($dbhandle);
-	
+
 	return ($num > 0 ? false : true);
 }
 
@@ -34,13 +34,13 @@ function CreateUser($user, $pass, $privileges, $email=null)
 	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	//sha512 the password
-	$np = hash('sha512',$pass);	
+	$np = hash('sha512',$pass);
 
 	$q =  "INSERT INTO logins VALUES(null, '$user','$np','$email');";
 
 	//create user
 	$query = sqlite_exec($dbhandle, $q, $error);
-	
+
 	$query = true;
 	if (!$query) {
     		exit("Error in query: '$error'");
@@ -60,7 +60,7 @@ function CreateUser($user, $pass, $privileges, $email=null)
 			//first gather priv. info
 			$q = "SELECT * FROM roles;";
 			$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
-			
+
 			if (!$query) {
 				exit("Error in query: '$error'");
 			} else {
@@ -70,14 +70,14 @@ function CreateUser($user, $pass, $privileges, $email=null)
 				{
 					if($privileges[$entry['Description']])
 					{
-						//add to the database		
+						//add to the database
 						//store privliage
 						$rid = $entry['RID'];
 						//echo $rid;
 						$q = "INSERT INTO logins_roles VALUES($UID,$rid);";
 						//echo $q;
 						$sql = sqlite_exec($dbhandle, $q, $error);
-	
+
 						if (!$sql) {
 							exit("Error in query: '$error'");
 						}
@@ -125,7 +125,7 @@ function GetAliveForgets()
 	{
 		return null;
 	}
-	
+
 	//close it
 	sqlite_close($dbhandle);
 
@@ -184,7 +184,7 @@ function IsPasswordInDB($uid, $hash)
 	{
 		if(sqlite_num_rows($query) > 0)
 			$ret = true;
-	}	
+	}
 
 	//close it
 	sqlite_close($dbhandle);
@@ -206,7 +206,7 @@ function IsRulesTableEmpty()
 	{
 		if(sqlite_num_rows($q) > 0)
 			$ret = false;
-	}	
+	}
 
 	//close the datapase
 	sqlite_close($dbhandle);
@@ -226,7 +226,7 @@ function AddRuleToDB($rule_hash)
 	if(!$query){
 		exit("Error in Query: '$error'");
 	}
-	
+
 	//close the datapase
 	sqlite_close($dbhandle);
 }
@@ -243,7 +243,7 @@ function ChangeRuleInDB($prev_hash, $new_hash)
 	if(!$query){
 		exit("Error in Query: '$error'");
 	}
-	
+
 	//close the database
 	sqlite_close($dbhandle);
 }
@@ -260,7 +260,7 @@ function RemoveRuleInDB($hash)
 	if(!$query){
 		exit("Error in Query: '$error'");
 	}
-	
+
 	//close the database
 	sqlite_close($dbhandle);
 }
@@ -281,7 +281,7 @@ function AttachOwnerToRule($user,$rule_hash)
 	if(!$query){
 		exit("Error in Query: '$error'");
 	}
-	
+
 	//close the database
 	sqlite_close($dbhandle);
 }
@@ -298,7 +298,7 @@ function RemoveOwnerFromRule($user,$rule_hash)
 	if(!$query){
 		exit("Error in Query: '$error'");
 	}
-	
+
 	//close the database
 	sqlite_close($dbhandle);
 }
@@ -330,7 +330,7 @@ function GetOwnedRulesFromUser($user)
 
 //		$query = sqlite_array_query($dbhandle,$q,SQLITE_ASSOC);
 
-//		$id = $query[0]['UID'];	
+//		$id = $query[0]['UID'];
 
 		if(!CanUserSeeOwnDataOnly($user))
 		{
@@ -434,7 +434,7 @@ function IsHashInGivenRuleIDs($rules,$hash)
 
 	//close the database
 	sqlite_close($dbhandle);
-	
+
 	return $ret;
 }
 
@@ -450,9 +450,9 @@ function CheckUserString($user)
 	//}
 	  return true;
 	}
-	
+
 	return false;
-	
+
 	//if(eregi("^[a-z0-9 ]+$",$user))
 	//	return true;
 
@@ -579,8 +579,8 @@ function GoodUserPass($user,$pass)
 	}
 
 	//close the sql database
-	sqlite_close($dbhandle);	
-	
+	sqlite_close($dbhandle);
+
 	return $good;*/
 
 	return QuickFindUserFromPass($user,$pass);
@@ -627,7 +627,7 @@ function RemoveUser($user)
 	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
 	if (!$query) {
 		exit("Error in query: Cannot find UID from logins table");
-	} 
+	}
 
 	$UID = $query[0]['UID'];
 
@@ -677,7 +677,7 @@ function GetPrivFromUser($user)
 	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
 	if (!$query) {
 		exit("Error in query: Cannot Select RID from logins_roles table");
-	} 
+	}
 
 	foreach($query as $entry)
 	{
@@ -718,14 +718,14 @@ function GetInfoFromUID($uid)
 	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 	//grab login table
 	$q = sqlite_array_query($dbhandle, "SELECT * FROM logins WHERE UID='$uid' LIMIT 1;",SQLITE_ASSOC);
-	
+
 	if($q){
 		return $q[0];
 	}
-	
+
 	//close the sql database
 	sqlite_close($dbhandle);
-	
+
 	return $ret;
 }
 
@@ -739,7 +739,7 @@ function ChangePriv($user, $priv)
 	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
 	if (!$query) {
 		exit("Error in query: Cannot Select UID from logins table");
-	} 
+	}
 
 	$UID = $query[0]['UID'];
 
@@ -753,7 +753,7 @@ function ChangePriv($user, $priv)
 	//first gather priv. info
 	$q = "SELECT * FROM roles;";
 	$query = sqlite_array_query($dbhandle, $q, SQLITE_ASSOC);
-	
+
 	if (!$query) {
 		exit("Error in query: Cannot Select * from roles table");
 	} else {
@@ -765,7 +765,7 @@ function ChangePriv($user, $priv)
 
 			if($priv[$entry['Description']])
 			{
-				//add to the database		
+				//add to the database
 				$q = "INSERT INTO logins_roles VALUES($UID,$rid);";
 				$sql = sqlite_exec($dbhandle, $q, $error);
 				if (!$sql) {
@@ -792,7 +792,7 @@ function IsValidEmail($email)
 	if(preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)+$/i',$email)) {
 		return TRUE;
     }
-	
+
 	return false;
 }
 
@@ -801,20 +801,20 @@ function GetEmail($user)
 	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	$q = sqlite_array_query($dbhandle, "SELECT Email FROM logins WHERE User='$user' LIMIT 1;",SQLITE_ASSOC);
-	
+
 	if(!$q){
 		exit("Error in Query: cannot use logins");
 		return NULL;
 	}
 
 	$email = $q[0]['Email'];
-	
+
 	//close the sql database
 	sqlite_close($dbhandle);
 
 	if(isset($email) && $email != null)
 		return $email;
-	
+
 	return NULL;
 }
 
@@ -832,7 +832,7 @@ function DoesEmailAlreadyExist($email)
 	{
 		if(sqlite_num_rows($q) > 0)
 			$ret = true;
-	}	
+	}
 
 	//close the datapase
 	sqlite_close($dbhandle);
@@ -845,7 +845,7 @@ function ChangeEmail($new_email, $user)
 	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	$q = sqlite_exec($dbhandle, "UPDATE logins SET Email='$new_email' WHERE User='$user';",$error);
-	
+
 	if(!$q){
 		exit("Error in Query: '$error'");
 	}
@@ -859,20 +859,20 @@ function GetInfoFromEmail($email)
 	$dbhandle = @sqlite_open(ROUTER_DB_FILE) or die("Connection Failure to Database");
 
 	$q = sqlite_array_query($dbhandle, "SELECT * FROM logins WHERE Email='$email' LIMIT 1;",SQLITE_ASSOC);
-	
+
 	if(!$q){
 		//exit("Error in Query: cannot use logins");
 		return null;
 	}
 
 	$email = $q[0]['Email'];
-	
+
 	//close the sql database
 	sqlite_close($dbhandle);
 
 	if(isset($email) && $email != null)
 		return $q[0];
-	
+
 	return null;
 }
 
@@ -886,7 +886,7 @@ function GetAllUsersInfo()
 	if(!$q){
 		exit("Error in Query: cannot use logins");
 	}
-	
+
 	$id = 0;
 
 	foreach($q as $entry)
@@ -1028,7 +1028,7 @@ $validation_struct = array (
 );
 
 function validate_variable ( $variable, $value, $validation_struct ) {
-	
+
 	if (array_key_exists ($variable, $validation_struct  ) ) {
 		foreach ( $validation_struct[$variable] as $validate => $requirement ) {
 			switch ( $validate ) {
@@ -1048,31 +1048,31 @@ function validate_variable ( $variable, $value, $validation_struct ) {
 	}
 
 	return true;
-				
+
 }
 
 function ReadLeaseFile()
 {
-			
+
 	//format of dhcp lease file
 	//timestamp macaddress ip name client-id
-	
-	//read file 
+
+	//read file
 	if(file_exists(ROUTER_DHCP_LEASE_FILE))
 	{
 	  $content = file_get_contents(ROUTER_DHCP_LEASE_FILE);
 	  $file_line = explode("\n",$content);
-	 
-	  
+
+
 	  if(count($file_line) > 0)
 	  {
-		
+
 		echo "<table border=1>";
 		echo "<tr><td>Timestamp</td><td>Mac Address</td><td>IP</td><td>Name</td><td>Client-ID</td></tr>";
-		
+
 		foreach($file_line as $line)
 		{
-		  
+
 		  if($line != null)
 		  {
 			$segments = explode(" ", $line);
@@ -1095,13 +1095,13 @@ function ReadLeaseFile()
 			echo "</tr>";
 		  }
 		}
-		
+
 		echo "</table>";
 	  }
-	  
+
 	  return true;
 	}
-	
+
 	return false;
 }
 
@@ -1117,7 +1117,7 @@ function rev_strstr($string, $search)
 		{
 			$count = 0;
 			$id = $len;
-			
+
 			for($j=$i; $string[$j] == $search[$id] && $j>0 && $id>0; $count++,$id--,$j--);
 
 			if($count==$len)
@@ -1135,12 +1135,12 @@ function DiffDates($date1,$date2)
 {
 	//$d1 = explode("/",$date1);
 	//$d2 = explode("/",$date2);
-	
+
 	//$start_date = gregoriantojd($d1[0], $d1[1], $d1[2]);
 	//$end_date = gregoriantojd($d2[0], $d2[1], $d2[2]);
-	
+
 	//return $end_date - $start_date;
-	
+
 	return ((strtotime($date2) - strtotime($date1) ) / (60 * 60 * 24));
 }
 
