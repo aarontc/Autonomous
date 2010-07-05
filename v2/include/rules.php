@@ -396,9 +396,9 @@ function get_all_rules($file = SHOREWALL_RULES_FILE) {
 	*/
 
 
-	$pattern_SOURCE="(?<source>(".$pattern_shorewall_zones."|(all|any)\+{0,1}-{0,1})(:".$pattern_shorewall_interfaces."(:".$pattern_ipv4_address_or_range."(,".$pattern_ipv4_address_or_range.")*(".$pattern_shorewall_exclusion."){0,1}|".$pattern_shorewall_exclusion.")){0,1})";
-	$pattern_DEST="(?<dest>(".$pattern_shorewall_zones."|(all|any)\+{0,1}-{0,1})(:(".$pattern_shorewall_interfaces."|".$pattern_ipv4_address_or_range."(,".$pattern_ipv4_address_or_range.")*(".$pattern_shorewall_exclusion."){0,1}|".$pattern_shorewall_exclusion.")(:(".$pattern_port_or_range_hyphen."|".$pattern_service_names.")(:random){0,1}){0,1}){0,1})";
-	$pattern_PROTO="(?<proto>(-|tcp:syn|ipp2p|ipp2p:udp|ipp2p:all|".$pattern_protocol_number."|".$pattern_protocol_names."|all))";
+	$pattern_SOURCE="((".$pattern_shorewall_zones."|(all|any)\+{0,1}-{0,1})(:".$pattern_shorewall_interfaces."(:".$pattern_ipv4_address_or_range."(,".$pattern_ipv4_address_or_range.")*(".$pattern_shorewall_exclusion."){0,1}|".$pattern_shorewall_exclusion.")){0,1})";
+	$pattern_DEST="((".$pattern_shorewall_zones."|(all|any)\+{0,1}-{0,1})(:(".$pattern_shorewall_interfaces."|".$pattern_ipv4_address_or_range."(,".$pattern_ipv4_address_or_range.")*(".$pattern_shorewall_exclusion."){0,1}|".$pattern_shorewall_exclusion.")(:(".$pattern_port_or_range_hyphen."|".$pattern_service_names.")(:random){0,1}){0,1}){0,1})";
+	$pattern_PROTO="((-|tcp:syn|ipp2p|ipp2p:udp|ipp2p:all|".$pattern_protocol_number."|".$pattern_protocol_names."|all))";
 	$pattern_DEST_PORT="(-|(".$pattern_port_or_range_colon."|".$pattern_service_names.")(,(".$pattern_port_or_range_colon."|".$pattern_service_names."))*)";
 	$pattern_SOURCE_PORT=$pattern_DEST_PORT;
 	$pattern_ORIGINAL_DEST="(-|(".$pattern_ipv4_address_cidr."(,".$pattern_ipv4_address_cidr.")*(!".$pattern_ipv4_address_cidr."){0,1}|(!".$pattern_ipv4_address_cidr.")))";
@@ -407,14 +407,17 @@ function get_all_rules($file = SHOREWALL_RULES_FILE) {
 
 
 	$pattern_ACCEPT="(?<accept>(ACCEPT(\+|!){0,1}\s+".$pattern_SOURCE."\s+".$pattern_DEST."(\s+".$pattern_PROTO."(\s+".$pattern_DEST_PORT."(\s+".$pattern_SOURCE_PORT."(\s+".$pattern_ORIGINAL_DEST."){0,1}){0,1}){0,1}){0,1}){1}.*\n)";
+	$pattern_DNAT="(?<dnat>(DNAT-?\s+".$pattern_SOURCE."\s+".$pattern_DEST."(\s+".$pattern_PROTO."(\s+".$pattern_DEST_PORT."(\s+".$pattern_SOURCE_PORT."(\s+".$pattern_ORIGINAL_DEST."){0,1}){0,1}){0,1}){0,1}){1}.*\n)";
 
 
-	$test="ACCEPT		all		\$FW		tcp	ssh\n";
+	//$test="ACCEPT		all		\$FW		tcp	ssh\n";
 
-	//$pattern = "/(#.*\n)*" . $pattern_ACCEPT . ".*\n/";
+	$pattern = "/\s*(#.*\n)*(".$pattern_ACCEPT."|".$pattern_DNAT."|.*)\n/m";
+	$test = $buf;
 	print_r($test);
-	print_r($pattern_ACCEPT);
-	preg_match_all("/" . $pattern_ACCEPT . "/m", $test, $matches);
+	preg_match_all($pattern, $test, $matches);
+
+
 
 	print_r($matches);
 	die("");
