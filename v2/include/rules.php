@@ -402,6 +402,9 @@ function get_all_rules($file = SHOREWALL_RULES_FILE) {
 	$pattern_DEST_PORT="(-|(".$pattern_port_or_range_colon."|".$pattern_service_names.")(,(".$pattern_port_or_range_colon."|".$pattern_service_names."))*)";
 	$pattern_SOURCE_PORT=$pattern_DEST_PORT;
 	$pattern_ORIGINAL_DEST="(-|(".$pattern_ipv4_address_cidr."(,".$pattern_ipv4_address_cidr.")*(!".$pattern_ipv4_address_cidr."){0,1}|(!".$pattern_ipv4_address_cidr.")))";
+	$pattern_RATE_LIMIT="-|(((s|d):([a-zA-Z0-9]:)?)?[0-9]+(/(sec|min))?(:[0-9]+)?)";
+	$pattern_USER_GROUP="!?([a-zA-Z0-9])?(:[a-zA-Z0-9])?(\+[a-zA-Z0-9])?";
+	$pattern_MARK="!?[0-9]+(/[0-9]+)?
 
 
 
